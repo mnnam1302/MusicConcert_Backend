@@ -1,0 +1,104 @@
+version: "3.9"
+
+networks:
+  music-concert-network:
+
+services:
+  # SQL Server
+  sqlserver:
+    container_name: sqlserver-music
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=!Strongpassword
+    ports:
+      - "1433:1433"
+    restart: always
+    mem_limit: 12g
+    memswap_limit: 13g
+    networks:
+      - music-concert-network
+
+  # Redis
+  # redis:
+  #   container_name: redis-music
+  #   image: redis:latest
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - music-concert-network
+
+  # MongoDB
+  # mongo:
+  #   container_name: mongo-music
+  #   image: mongo:5.0.14
+  #   ports:
+  #     - "27017:27017"
+  #   restart: always
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: admin
+  #     MONGO_INITDB_ROOT_PASSWORD: adminsecret
+  #   networks:
+  #     - music-concert-network
+
+  # Mongo Express
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: yarp-mongo-express
+  #   ports:
+  #     - "8080:8080"
+  #   restart: always
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: sa
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: sa1302139
+  #     ME_CONFIG_MONGODB_URL: mongodb://admin:adminsecret@mongo:27017/
+  #   networks:
+  #     - music-concert-network
+
+  # RabbitMQ
+  # rabbitmq:
+  #   container_name: rabbitmq-music
+  #   image: rabbitmq:3-management-alpine
+  #   healthcheck:
+  #     test: rabbitmq-diagnostics -q ping
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   ports:
+  #     - "5672:5672"
+  #     - "15672:15672"
+  #   environment:
+  #     RABBITMQ_DEFAULT_USER: "guest"
+  #     RABBITMQ_DEFAULT_PASS: "guest"
+  #     RABBITMQ_DEFAULT_VHOST: "nhatnam1302"
+  #   networks:
+  #     - music-concert-network
+
+  # Seq
+  seq:
+     container_name: seq-music
+     image: datalust/seq:latest
+     ports:
+        - 5341:5341
+        - 8081:80
+     environment:
+        ACCEPT_EULA: Y
+     networks:
+        - music-concert-network
+
+  # Jaeger
+  # jaeger-all-in-one:
+  #   container_name: jaeger-all-in-one
+  #   image: jaegertracing/all-in-one:latest
+  #   ports:
+  #     - "5775:5775/udp"
+  #     - "6831:6831/udp"
+  #     - "6832:6832/udp"
+  #     - "5778:5778"
+  #     - "16686:16686"
+  #     - "14250:14250"
+  #     - "14268:14268"
+  #     - "14269:14269"
+  #     - "9411:9411" 
+  #   networks:
+  #     - music-concert-network
