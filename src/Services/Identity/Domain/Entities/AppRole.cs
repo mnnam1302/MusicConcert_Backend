@@ -8,5 +8,8 @@ public class AppRole : IdentityRole<Guid>
 
     public string RoleCode { get; set; }
 
+    // Relationships
     public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; }
+
+    //public virtual ICollection<AppCustomer> AppCustomers { get; set; }
 }

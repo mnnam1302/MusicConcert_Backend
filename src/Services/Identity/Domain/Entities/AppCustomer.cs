@@ -24,12 +24,13 @@ public class AppCustomer : IdentityUser<Guid>, IEntity<Guid>, ISoftDeleted, IAud
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }
 
+    // Relationships
+    public Guid RoleId { get; set; }
+    public virtual AppRole AppRole { get; set; }
+
     public virtual ICollection<IdentityUserClaim<Guid>> Claims { get; set; }
 
     public virtual ICollection<IdentityUserLogin<Guid>> Logins { get; set; }
 
     public virtual ICollection<IdentityUserToken<Guid>> Tokens { get; set; }
-
-    // One-to-One relationship - A customer can only have one role
-    public virtual IdentityUserRole<Guid> UserRoles { get; set; }
 }

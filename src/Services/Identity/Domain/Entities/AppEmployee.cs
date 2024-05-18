@@ -18,14 +18,12 @@ public class AppEmployee : IdentityUser<Guid>, IEntity<Guid>, ISoftDeleted
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }
 
+   // Relationships
+    public Guid OrganizationId { get; set; }
+    public virtual Organization Organization { get; set; } // An employee only work for an organization
+
     public virtual ICollection<IdentityUserClaim<Guid>> Claims { get; set; }
-
     public virtual ICollection<IdentityUserLogin<Guid>> Logins { get; set; }
-
     public virtual ICollection<IdentityUserToken<Guid>> Tokens { get; set; }
-
-    // One-to-Many relationship - An employee can have many roles
-    public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; }
-
-
+    public virtual ICollection<IdentityUserRole<Guid>> UserRoles { get; set; } // An employee can have many roles
 }

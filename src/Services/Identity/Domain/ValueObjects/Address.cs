@@ -2,7 +2,7 @@
 
 namespace Domain.ValueObjects;
 
-public sealed class Address : ValueObject
+public class Address : ValueObject
 {
     public string Street { get; init; }
     public string City { get; init; }

@@ -21,11 +21,12 @@ public class Organization : Entity<Guid>, IAuditable, ISoftDeleted
     // Apply Value Object
     public Address Address { get; set; }
 
-    // Auditable
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 
-    // Soft Delete
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }
+
+    // Relationships
+    //public virtual ICollection<AppEmployee>? Employees { get; set; }
 }
