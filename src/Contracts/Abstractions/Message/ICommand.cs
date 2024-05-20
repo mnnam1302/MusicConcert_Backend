@@ -1,5 +1,12 @@
-﻿namespace Contracts.Abstractions.Message;
+﻿using Contracts.Abstractions.Shared;
+using MediatR;
 
-public interface ICommand
+namespace Contracts.Abstractions.Message;
+
+public interface ICommand : IRequest<Result>
+{
+}
+
+public interface ICommand<TResponse> : IRequest<Result<TResponse>>
 {
 }

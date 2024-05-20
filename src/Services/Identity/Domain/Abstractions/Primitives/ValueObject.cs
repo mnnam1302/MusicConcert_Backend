@@ -4,19 +4,19 @@ public abstract class ValueObject : IEquatable<ValueObject>
 {
     public abstract IEnumerable<object> GetAtomicValues();
 
-    public static bool operator ==(ValueObject? a, ValueObject? b)
+    public static bool operator ==(ValueObject? left, ValueObject? right)
     {
-        if (a is null && b is null)
+        if (left is null && right is null)
         {
             return true;
         }
 
-        if (a is null || b is null)
+        if (left is null || right is null)
         {
             return false;
         }
 
-        return a.Equals(b);
+        return left.Equals(right);
     }
 
     public static bool operator !=(ValueObject? a, ValueObject? b)

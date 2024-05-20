@@ -4,7 +4,7 @@ public class ValidationResult<TValue> : Result<TValue>, IValidationResult
 {
     public ValidationResult(Error[] errors)
     : base(default, false, IValidationResult.ValidationError)
-    => Errors = errors;
+        => Errors = errors;
 
     public Error[] Errors { get; }
 

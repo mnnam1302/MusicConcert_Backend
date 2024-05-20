@@ -1,5 +1,8 @@
-﻿namespace Contracts.Abstractions.Message;
+﻿using Contracts.Abstractions.Shared;
+using MediatR;
 
-public interface IQuery
+namespace Contracts.Abstractions.Message;
+
+public interface IQuery<TResponse> : IRequest<Result<TResponse>>
 {
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Persistence.DependencyInjection.Options;
+using Persistence.Interceptors;
 using Persistence.Respositories;
 
 namespace Persistence.DependencyInjection.Extensions;
@@ -17,6 +18,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
+            var auditableInterceptor = provider.GetRequiredService<UpdateAuditableEntitiesInterceptor>();
+
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
 
             builder
@@ -33,7 +36,8 @@ public static class ServiceCollectionExtensions
                                 maxRetryCount: options.CurrentValue.MaxRetryCount,
                                 maxRetryDelay: options.CurrentValue.MaxRetryDelay,
                                 errorNumbersToAdd: options.CurrentValue.ErrorNumbersoAdd))
-                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name));
+                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
+                .AddInterceptors(auditableInterceptor);
         });
 
         services.AddIdentityCore<AppEmployee>(opt =>
@@ -68,6 +72,11 @@ public static class ServiceCollectionExtensions
         });
 
         return services;
+    }
+
+    public static void AddInterceptorPersistence(this IServiceCollection services)
+    {
+        services.AddTransient<UpdateAuditableEntitiesInterceptor>();
     }
 
     public static void AddRepositoryPersistence(this IServiceCollection services)

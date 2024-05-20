@@ -1,6 +1,10 @@
-using Persistence.DependencyInjection.Options;
-using Persistence.DependencyInjection.Extensions;
+using Carter;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
+using API.DependencyInjection.Extensions;
+using Persistence.DependencyInjection.Extensions;
+using Application.DependencyInjection.Extensions;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,19 +26,48 @@ builder.Logging
 
 builder.Host.UseSerilog();
 
+// Carter
+builder.Services.AddCarter();
+
+// Swagger
+builder.Services
+    .AddSwaggerGenNewtonsoftSupport()
+    .AddFluentValidationRulesToSwagger()
+    .AddEndpointsApiExplorer()
+    .AddSwaggerAPI();
+
+// API versioning
+builder.Services
+    .AddApiVersioning(options => options.ReportApiVersions = true)
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
+// Application
+builder.Services.AddMediatRApplication();
+
 // Persistence
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection("SqlServerRetryOptions"));
 builder.Services.AddSqlServerPersistence(builder.Configuration);
+builder.Services.AddInterceptorPersistence();
 builder.Services.AddRepositoryPersistence();
 
+// Midlleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 var app = builder.Build();
+
+// Using Middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.MapCarter();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerAPI();
 }
 
 //app.UseHttpsRedirection();
@@ -56,4 +89,5 @@ finally
     await app.DisposeAsync();
 }
 
-public partial class Program { }
+public partial class Program
+{ }

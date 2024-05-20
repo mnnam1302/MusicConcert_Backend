@@ -28,15 +28,16 @@ internal class OrganizationConfiguration : IEntityTypeConfiguration<Organization
             .HasMaxLength(20);
 
         builder.Property(x => x.HomePage)
-            .HasMaxLength(100);
+            .HasMaxLength(150);
 
         builder.Property(x => x.LogoUrl)
-            .HasMaxLength(100);
+            .HasMaxLength(150);
 
+        //builder.OwnsOne(x => x.Address);
         builder.OwnsOne(x => x.Address, address =>
         {
             address.Property(x => x.Street)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .HasColumnName("Street");
 
             address.Property(x => x.City)
@@ -44,7 +45,7 @@ internal class OrganizationConfiguration : IEntityTypeConfiguration<Organization
                 .HasColumnName("City");
 
             address.Property(x => x.State)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .HasColumnName("State");
 
             address.Property(x => x.Country)
