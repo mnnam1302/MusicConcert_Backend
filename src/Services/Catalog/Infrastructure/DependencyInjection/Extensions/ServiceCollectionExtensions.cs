@@ -1,18 +1,17 @@
-﻿using Contracts.JsonConverters;
-using Infrastructure.BackgroundJobs;
-using Infrastructure.DependencyInjection.Options;
-using Infrastructure.PipelineObservers;
-using MassTransit;
-using Microsoft.Extensions.Configuration;
+﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Quartz;
+using Contracts.JsonConverters;
+using Infrastructure.DependencyInjection.Options;
+using Infrastructure.PipelineObservers;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace Infrastructure.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,
+    public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services, 
         IConfiguration configuration)
     {
         var massTransitConfiguration = new MasstransitConfiguration();
@@ -23,7 +22,7 @@ public static class ServiceCollectionExtensions
 
         services.AddMassTransit(cfg =>
         {
-            //cfg.AddConsumers(Assembly.GetExecutingAssembly());
+            cfg.AddConsumers(Assembly.GetExecutingAssembly());
 
             cfg.SetKebabCaseEndpointNameFormatter();
 
@@ -61,34 +60,17 @@ public static class ServiceCollectionExtensions
                     return settings;
                 });
 
-                bus.ConnectPublishObserver(new LoggingPublishObserver());
+                bus.ConnectConsumeObserver(new LoggingConsumeObserver());
+                bus.ConnectReceiveObserver(new LoggingReceiveObserver());
                 bus.ConnectSendObserver(new LoggingSendObserver());
+                bus.ConnectPublishObserver(new LoggingPublishObserver());
 
                 bus.MessageTopology.SetEntityNameFormatter(new KebabCaseEntityNameFormatter());
+
+                bus.ConfigureEndpoints(context);
             });
         });
 
         return services;
-    }
-
-    public static void AddQuartzInfrastructure(this IServiceCollection services)
-    {
-        services.AddQuartz(configure =>
-        {
-            var jobKey = new JobKey(nameof(ProducerOutboxMessageJob));
-            configure
-                .AddJob<ProducerOutboxMessageJob>(jobKey)
-                .AddTrigger(trigger
-                    => trigger.ForJob(jobKey)
-                        .WithSimpleSchedule(schedule =>
-                        {
-                            schedule.WithInterval(TimeSpan.FromMilliseconds(100));
-                            schedule.RepeatForever();
-                        }));
-
-            configure.UseMicrosoftDependencyInjectionJobFactory();
-        });
-
-        services.AddQuartzHostedService();
     }
 }
