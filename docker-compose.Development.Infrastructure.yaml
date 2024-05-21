@@ -56,23 +56,23 @@ services:
   #     - music-concert-network
 
   # RabbitMQ
-  # rabbitmq:
-  #   container_name: rabbitmq-music
-  #   image: rabbitmq:3-management-alpine
-  #   healthcheck:
-  #     test: rabbitmq-diagnostics -q ping
-  #     interval: 30s
-  #     timeout: 30s
-  #     retries: 3
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: "guest"
-  #     RABBITMQ_DEFAULT_PASS: "guest"
-  #     RABBITMQ_DEFAULT_VHOST: "nhatnam1302"
-  #   networks:
-  #     - music-concert-network
+  rabbitmq:
+    container_name: rabbitmq-music
+    image: rabbitmq:3-management-alpine
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "nhatnam1302"
+    networks:
+      - music-concert-network
 
   # Seq
   seq:

@@ -12,4 +12,6 @@ internal class TableNames
     internal const string AppUserClaims = nameof(AppUserClaims);
     internal const string AppUserLogins = nameof(AppUserLogins);
     internal const string AppUserTokens = nameof(AppUserTokens);
+
+    internal const string OutboxMessages = nameof(OutboxMessages);
 }

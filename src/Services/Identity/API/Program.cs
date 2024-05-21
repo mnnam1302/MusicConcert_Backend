@@ -4,6 +4,7 @@ using Serilog;
 using API.DependencyInjection.Extensions;
 using Persistence.DependencyInjection.Extensions;
 using Application.DependencyInjection.Extensions;
+using Infrastructure.DependencyInjection.Extensions;
 using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +54,10 @@ builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration
 builder.Services.AddSqlServerPersistence(builder.Configuration);
 builder.Services.AddInterceptorPersistence();
 builder.Services.AddRepositoryPersistence();
+
+// Infrastructure
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+builder.Services.AddQuartzInfrastructure();
 
 // Midlleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();

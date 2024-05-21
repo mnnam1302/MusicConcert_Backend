@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Outbox;
 
 namespace Persistence;
 
@@ -22,4 +23,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<AppCustomer> AppCustomers { get; set; }
 
     public DbSet<AppRole> AppRoles { get; set; }
+
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
 }
