@@ -1,17 +1,17 @@
-﻿using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Contracts.JsonConverters;
+﻿using Contracts.JsonConverters;
 using Infrastructure.DependencyInjection.Options;
 using Infrastructure.PipelineObservers;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Infrastructure.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services, 
+    public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         var massTransitConfiguration = new MasstransitConfiguration();

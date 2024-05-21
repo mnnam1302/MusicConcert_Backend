@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Services
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "src\Contracts\Contracts.csproj", "{395BA062-6E23-4538-AF40-E3C36F446D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Services\Identity\Presentation\Presentation.csproj", "{6FD5C8D3-1F85-4548-856B-8A645E06017E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "src\Services\Identity\Presentation\Presentation.csproj", "{6FD5C8D3-1F85-4548-856B-8A645E06017E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Services\Catalog\Presentation\Presentation.csproj", "{4C8548A2-F322-4416-A322-86635877905B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{6FD5C8D3-1F85-4548-856B-8A645E06017E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FD5C8D3-1F85-4548-856B-8A645E06017E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FD5C8D3-1F85-4548-856B-8A645E06017E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8548A2-F322-4416-A322-86635877905B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8548A2-F322-4416-A322-86635877905B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8548A2-F322-4416-A322-86635877905B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8548A2-F322-4416-A322-86635877905B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{6DAF4620-C88C-4DCA-967E-3D35ECCDA5C8} = {10A5A93D-26A8-452B-8685-6BB7FFF85EB2}
 		{395BA062-6E23-4538-AF40-E3C36F446D40} = {172D0E1F-B529-4C78-B6C4-C90C4DEAF810}
 		{6FD5C8D3-1F85-4548-856B-8A645E06017E} = {756EAE19-555E-46A8-8F22-FF43C438472F}
+		{4C8548A2-F322-4416-A322-86635877905B} = {10A5A93D-26A8-452B-8685-6BB7FFF85EB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7B57EF4-BCCA-4A9D-9F18-7E556493ADFC}
