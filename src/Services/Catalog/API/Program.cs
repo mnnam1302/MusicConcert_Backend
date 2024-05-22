@@ -2,6 +2,8 @@ using Carter;
 using Serilog;
 using Application.DependencyInjection.Extensions;
 using Infrastructure.DependencyInjection.Extensions;
+using Persistence.DependencyInjection.Extensions;
+using Persistence.DependencyInjection.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,7 @@ builder.Services.AddSwaggerGen();
 // Add Serilog
 Log.Logger = new LoggerConfiguration().ReadFrom
     .Configuration(builder.Configuration)
-    .Enrich.WithProperty("Application", "Authorization")
+    .Enrich.WithProperty("Application", "Catalog")
     .CreateLogger();
 
 builder.Logging
@@ -26,9 +28,13 @@ builder.Host.UseSerilog();
 // Carter
 builder.Services.AddCarter();
 
-
 // Application
 builder.Services.AddMediatRApplication();
+
+// Persistence
+builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
+builder.Services.AddSqlServerPersistence(builder.Configuration);
+builder.Services.AddRepositoryPersistence();
 
 // Infrastructure
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);

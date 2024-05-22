@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Serilog
 Log.Logger = new LoggerConfiguration().ReadFrom
     .Configuration(builder.Configuration)
-    .Enrich.WithProperty("Application", "Authorization")
+    .Enrich.WithProperty("Application", "Identity")
     .CreateLogger();
 
 builder.Logging
