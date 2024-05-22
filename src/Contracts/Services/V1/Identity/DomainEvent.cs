@@ -8,7 +8,7 @@ public static class DomainEvent
         Guid EventId,
         DateTimeOffset TimeStamp,
         Guid Id,
-        string Name) : IDomainEvent;
+        string Name) : IDomainEvent, ICommand;
 
     public record OrganizationUpdated(
         Guid EventId,
