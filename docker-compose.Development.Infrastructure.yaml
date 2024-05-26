@@ -20,13 +20,13 @@ services:
       - music-concert-network
 
   # Redis
-  # redis:
-  #   container_name: redis-music
-  #   image: redis:latest
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - music-concert-network
+  redis:
+    container_name: redis-music
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - music-concert-network
 
   # MongoDB
   # mongo:

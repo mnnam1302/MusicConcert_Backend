@@ -50,6 +50,9 @@ public class ExceptionHandlingMiddleware : IMiddleware
         {
             // Employee
             EmployeeException.EmployeeAlreadyExistException => StatusCodes.Status400BadRequest,
+            EmployeeException.EmployeeNotFoundException => StatusCodes.Status404NotFound,
+            EmployeeException.EmployeeNotFoundByEmailException => StatusCodes.Status404NotFound,
+
 
             // Organization
             OrganizationException.OrganizationNotFoundException => StatusCodes.Status404NotFound,

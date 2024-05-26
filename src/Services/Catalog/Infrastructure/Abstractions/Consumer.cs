@@ -13,7 +13,7 @@ public abstract class Consumer<TMessage> : IConsumer<TMessage>
     {
         _sender = sender;
     }
-
+        
     public async Task Consume(ConsumeContext<TMessage> context)
     {
         await _sender.Send(context.Message);

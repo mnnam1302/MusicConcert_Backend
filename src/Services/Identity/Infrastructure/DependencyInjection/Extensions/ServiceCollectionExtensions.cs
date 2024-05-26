@@ -2,6 +2,7 @@
 using Contracts.JsonConverters;
 using Infrastructure.Authentication;
 using Infrastructure.BackgroundJobs;
+using Infrastructure.Caching;
 using Infrastructure.DependencyInjection.Options;
 using Infrastructure.HashPassword;
 using Infrastructure.PipelineObservers;
@@ -19,8 +20,18 @@ public static class ServiceCollectionExtensions
     {
         services.AddTransient<IHashPasswordService, HashPasswordService>();
         services.AddTransient<IJwtTokenService, JwtTokenService>();
+        services.AddTransient<ICacheService, CacheService>();
 
         return services;
+    }
+
+    public static void AddRedisInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(redisOptions =>
+        {
+            var connectionString = configuration.GetConnectionString("Redis");
+            redisOptions.Configuration = connectionString;
+        });
     }
 
     public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,

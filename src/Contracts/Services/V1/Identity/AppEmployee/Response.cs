@@ -2,5 +2,10 @@
 
 public static class Response
 {
-    public record AuthenticateResponse(string AccessToken, string RefreshToken, DateTime? RefreshTokenExpiryTime);
+    public record AuthenticateResponse
+    {
+        public string AccessToken { get; init; }
+        public string RefreshToken { get; init; }
+        public DateTime? RefreshTokenExpiryTime { get; init; }
+    }
 }
