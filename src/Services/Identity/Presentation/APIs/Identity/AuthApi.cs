@@ -19,13 +19,26 @@ public class AuthApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
 
-        group1.MapGet("employee/sign-in", AuthenticationEmployeesV1);
+        group1.MapGet("employee/sign-in", SignInEmployeesV1);
+        group1.MapGet("employee/sign-out", SignOutEmployeesV1);
+
         group1.MapGet("customer/sign-in", () => "");
+        group1.MapGet("customer/sign-out", () => "");
     }
 
-    private static async Task<IResult> AuthenticationEmployeesV1(ISender sender, [FromBody] Query.GetEmployeeLoginQuery query)
+    private static async Task<IResult> SignInEmployeesV1(ISender sender, [FromBody] Query.GetEmployeeLoginQuery request)
     {
-        var result = await sender.Send(query);
+        var result = await sender.Send(request);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> SignOutEmployeesV1(ISender sender, [FromBody] Command.LogoutEmployeeCommand request)
+    {
+        var result = await sender.Send(request);
 
         if (result.IsFailure)
             HandlerFailure(result);
