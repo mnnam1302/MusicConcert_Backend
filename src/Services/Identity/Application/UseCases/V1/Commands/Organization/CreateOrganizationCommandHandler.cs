@@ -4,7 +4,7 @@ using Contracts.Services.V1.Identity.Organization;
 using Domain.Abstractions;
 using Domain.Abstractions.Repositories;
 
-namespace Application.UseCases.V1.Organization.Commands;
+namespace Application.UseCases.V1.Commands.Organization;
 
 public class CreateOrganizationCommandHandler : ICommandHandler<Command.CreateOrganizationCommand>
 {

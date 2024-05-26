@@ -23,4 +23,6 @@ public static class Command
         Guid? OrganizationId) : ICommand;
 
     public record DeleteEmployeeCommand(Guid Id) : ICommand;
+
+    public record LogoutEmployeeCommand(string Email, string AccessToken) : ICommand;
 }

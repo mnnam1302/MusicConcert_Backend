@@ -64,7 +64,7 @@ public class JwtTokenService : IJwtTokenService
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
 
         var jwtSecurityToken = securityToken as JwtSecurityToken;
-        if (jwtSecurityToken is null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.RsaSha256, StringComparison.InvariantCulture))
+        if (jwtSecurityToken is null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCulture))
         {
             throw new SecurityTokenException("Invalid token");
         }

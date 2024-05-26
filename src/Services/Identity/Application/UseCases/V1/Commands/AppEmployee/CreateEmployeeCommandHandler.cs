@@ -6,7 +6,7 @@ using Domain.Abstractions;
 using Domain.Abstractions.Repositories;
 using Domain.Exceptions;
 
-namespace Application.UseCases.V1.AppEmployee.Commands;
+namespace Application.UseCases.V1.AppEmployee;
 
 public class CreateEmployeeCommandHandler : ICommandHandler<Command.CreateEmployeeCommand>
 {
