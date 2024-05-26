@@ -1,6 +1,6 @@
 ﻿using Contracts.Abstractions.Message;
 using Contracts.Abstractions.Shared;
-using Contracts.Services.V1.Identity;
+using Contracts.Services.V1.Identity.Organization;
 using Domain.Abstractions;
 using Domain.Abstractions.Repositories;
 using Domain.Entities;

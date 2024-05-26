@@ -1,6 +1,6 @@
 ﻿using Contracts.Abstractions.Message;
 
-namespace Contracts.Services.V1.Identity;
+namespace Contracts.Services.V1.Identity.Organization;
 
 public static class DomainEvent
 {

@@ -1,4 +1,4 @@
-﻿using Contracts.Services.V1.Identity;
+﻿using Contracts.Services.V1.Identity.Organization;
 using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
 using Domain.ValueObjects;
@@ -13,7 +13,7 @@ public class Organization : AggregateRoot<Guid>, IAuditable, ISoftDeleted
      * In your case, the Organization class has a constructor with parameters, including an address parameter that corresponds to the Address property. However, EF Core cannot bind this parameter because Address is an owned entity type, not a simple property that is mapped to a database column.
      */
 
-    private Organization() { }
+    public Organization() { }
 
     public Organization(Guid id, string name, string industry, string phone, string homePage, Address address)
     {

@@ -43,37 +43,6 @@ public static class ServiceCollectionExtensions
                     outboxInterceptors);
         });
 
-        services.AddIdentityCore<AppEmployee>(opt =>
-            {
-                opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                opt.Lockout.MaxFailedAccessAttempts = 3;
-            })
-            .AddRoles<AppRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
-        services.AddIdentityCore<AppCustomer>(opt =>
-            {
-                opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                opt.Lockout.MaxFailedAccessAttempts = 3;
-            })
-            .AddRoles<AppRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.Lockout.AllowedForNewUsers = true;
-            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
-            options.Lockout.MaxFailedAccessAttempts = 3;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequiredLength = 6;
-            options.Password.RequiredUniqueChars = 1;
-        });
-
         return services;
     }
 

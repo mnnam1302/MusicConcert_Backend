@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Persistence.Constants;
@@ -23,9 +22,6 @@ internal class AppCustomerConfiguration : IEntityTypeConfiguration<AppCustomer>
         builder.Property(x => x.Email)
             .HasMaxLength(50)
             .IsRequired();
-
-        builder.Property(x => x.Email)
-            .HasMaxLength(50);
 
         builder.Property(x => x.PasswordHash).IsRequired();
         builder.Property(x => x.PasswordSalt).IsRequired();

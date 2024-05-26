@@ -54,6 +54,7 @@ builder.Services.AddRepositoryPersistence();
 // Infrastructure
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 builder.Services.AddQuartzInfrastructure();
+builder.Services.AddServicesInfrastructure();
 
 // Midlleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();

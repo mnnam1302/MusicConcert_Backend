@@ -1,5 +1,5 @@
 ﻿using Carter;
-using Contracts.Services.V1.Identity;
+using Contracts.Services.V1.Identity.Organization;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

@@ -23,9 +23,6 @@ internal class AppEmployeeConfiguration : IEntityTypeConfiguration<AppEmployee>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(x => x.EmailConfirmed)
-            .HasMaxLength(50);
-
         builder.Property(x => x.PasswordHash).IsRequired();
         builder.Property(x => x.PasswordSalt).IsRequired();
 

@@ -1,6 +1,9 @@
-﻿using Contracts.JsonConverters;
+﻿using Application.Abstractions;
+using Contracts.JsonConverters;
+using Infrastructure.Authentication;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.DependencyInjection.Options;
+using Infrastructure.HashPassword;
 using Infrastructure.PipelineObservers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +15,14 @@ namespace Infrastructure.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddServicesInfrastructure(this IServiceCollection services)
+    {
+        services.AddTransient<IHashPasswordService, HashPasswordService>();
+        services.AddTransient<IJwtTokenService, JwtTokenService>();
+
+        return services;
+    }
+
     public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
