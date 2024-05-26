@@ -1,4 +1,4 @@
-﻿using Contracts.Services.V1.Identity;
+﻿using Contracts.Services.V1.Identity.Organization;
 using Infrastructure.Abstractions;
 using MediatR;
 

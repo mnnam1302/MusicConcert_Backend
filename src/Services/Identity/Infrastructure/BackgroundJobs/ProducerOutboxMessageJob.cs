@@ -1,5 +1,5 @@
 ﻿using Contracts.Abstractions.Message;
-using Contracts.Services.V1.Identity;
+using Contracts.Services.V1.Identity.Organization;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -45,35 +45,73 @@ public class ProducerOutboxMessageJob : IJob
             {
                 switch (domainEvent.GetType().Name)
                 {
+                    // Organization Event
                     case nameof(DomainEvent.OrganizationCreated):
-                        var productCreated = JsonConvert.DeserializeObject<DomainEvent.OrganizationCreated>(
+                        var organizationCreated = JsonConvert.DeserializeObject<DomainEvent.OrganizationCreated>(
                             outboxMessage.Content,
                             new JsonSerializerSettings
                             {
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(productCreated, context.CancellationToken);
+                        await _publishEndpoint.Publish(organizationCreated, context.CancellationToken);
                         break;
 
                     case nameof(DomainEvent.OrganizationUpdated):
-                        var productUpdated = JsonConvert.DeserializeObject<DomainEvent.OrganizationUpdated>(
+                        var organizationUpdated = JsonConvert.DeserializeObject<DomainEvent.OrganizationUpdated>(
                             outboxMessage.Content,
                             new JsonSerializerSettings {
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(productUpdated, context.CancellationToken);
+                        await _publishEndpoint.Publish(organizationUpdated, context.CancellationToken);
                         break;
 
                     case nameof(DomainEvent.OrganizationDeleted):
-                        var productDeleted = JsonConvert.DeserializeObject<DomainEvent.OrganizationDeleted>(
+                        var organizationDeleted = JsonConvert.DeserializeObject<DomainEvent.OrganizationDeleted>(
                             outboxMessage.Content,
                             new JsonSerializerSettings {
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(productDeleted, context.CancellationToken);
+                        await _publishEndpoint.Publish(organizationDeleted, context.CancellationToken);
+                        break;
+
+                    // Employee Event
+                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated):
+                        var employeeCreated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(employeeCreated, context.CancellationToken);
+                        break;
+
+                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeUpdated):
+                        var employeeUpdated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeUpdated>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                                                                                  {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(employeeUpdated, context.CancellationToken);
+                        break;
+
+                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted):
+                        var employeeDeleted = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(employeeDeleted, context.CancellationToken);
+                        break;
+
+                    default:
                         break;
                 }
 

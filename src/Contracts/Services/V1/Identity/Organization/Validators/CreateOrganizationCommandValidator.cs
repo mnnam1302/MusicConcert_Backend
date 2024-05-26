@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Contracts.Services.V1.Identity.Validators;
+namespace Contracts.Services.V1.Identity.Organization.Validators;
 
 public class CreateOrganizationCommandValidator : AbstractValidator<Command.CreateOrganizationCommand>
 {

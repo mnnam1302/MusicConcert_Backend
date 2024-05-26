@@ -48,6 +48,11 @@ public class ExceptionHandlingMiddleware : IMiddleware
     private static int GetStatusCode(Exception exception) =>
         exception switch
         {
+            // Employee
+            EmployeeException.EmployeeAlreadyExistException => StatusCodes.Status400BadRequest,
+
+            // Organization
+            OrganizationException.OrganizationNotFoundException => StatusCodes.Status404NotFound,
 
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
