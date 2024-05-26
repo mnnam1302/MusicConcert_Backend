@@ -5,7 +5,7 @@ using Contracts.Services.V1.Identity.AppEmployee;
 using Domain.Exceptions;
 using System.Security.Claims;
 
-namespace Application.UseCases.V1.Commands.Identity;
+namespace Application.UseCases.V1.Commands.AppEmployee;
 
 public class LogoutEmployeeCommandHandler : ICommandHandler<Command.LogoutEmployeeCommand>
 {

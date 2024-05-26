@@ -11,7 +11,7 @@ namespace Presentation.APIs.Organization;
 
 public class OrganizationApi : ApiEndpoint, ICarterModule
 {
-    private const string BaseUrl = "/api/v{version:apiVersion}/organization";
+    private const string BaseUrl = "/api/v{version:apiVersion}/organizations";
 
     public void AddRoutes(IEndpointRouteBuilder app)
     {

@@ -11,7 +11,7 @@ namespace Presentation.APIs.AppEmployee;
 
 public class AppEmployeeApi : ApiEndpoint, ICarterModule
 {
-    private const string BaseUrl = "/api/v{version:apiVersion}/employee";
+    private const string BaseUrl = "/api/v{version:apiVersion}/employees";
 
     public void AddRoutes(IEndpointRouteBuilder app)
     {

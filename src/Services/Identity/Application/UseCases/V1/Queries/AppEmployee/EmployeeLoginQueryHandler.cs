@@ -6,16 +6,16 @@ using Domain.Abstractions.Repositories;
 using Domain.Exceptions;
 using System.Security.Claims;
 
-namespace Application.UseCases.V1.Identity;
+namespace Application.UseCases.V1.Queries.AppEmployee;
 
-public class GetLoginQueryHandler : IQueryHandler<Query.GetEmployeeLoginQuery, Response.AuthenticateResponse>
+public class EmployeeLoginQueryHandler : IQueryHandler<Query.EmployeeLoginQuery, Response.AuthenticateResponse>
 {
     private readonly IRepositoryBase<Domain.Entities.AppEmployee, Guid> _employeeRepository;
     private readonly IHashPasswordService _hashPasswordService;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ICacheService _cacheService;
 
-    public GetLoginQueryHandler(IRepositoryBase<Domain.Entities.AppEmployee, Guid> employeeRepository, IHashPasswordService hashPasswordService, IJwtTokenService jwtTokenService, ICacheService cacheService)
+    public EmployeeLoginQueryHandler(IRepositoryBase<Domain.Entities.AppEmployee, Guid> employeeRepository, IHashPasswordService hashPasswordService, IJwtTokenService jwtTokenService, ICacheService cacheService)
     {
         _employeeRepository = employeeRepository;
         _hashPasswordService = hashPasswordService;
@@ -23,7 +23,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.GetEmployeeLoginQuery, R
         _cacheService = cacheService;
     }
 
-    public async Task<Result<Response.AuthenticateResponse>> Handle(Query.GetEmployeeLoginQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Response.AuthenticateResponse>> Handle(Query.EmployeeLoginQuery request, CancellationToken cancellationToken)
     {
         // Check email existing?
         var holderEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)

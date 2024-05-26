@@ -26,7 +26,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapGet("customer/sign-out", () => "");
     }
 
-    private static async Task<IResult> SignInEmployeesV1(ISender sender, [FromBody] Query.GetEmployeeLoginQuery request)
+    private static async Task<IResult> SignInEmployeesV1(ISender sender, [FromBody] Query.EmployeeLoginQuery request)
     {
         var result = await sender.Send(request);
 
