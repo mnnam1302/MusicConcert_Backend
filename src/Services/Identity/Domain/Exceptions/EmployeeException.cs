@@ -9,4 +9,20 @@ public static class EmployeeException
         {
         }
     }
+
+    public class EmployeeNotFoundException : NotFoundException
+    {
+        public EmployeeNotFoundException(Guid employeeId)
+            : base($"Employee with Id {employeeId} was not found.")
+        {
+        }
+    }
+
+    public class EmployeeNotFoundByEmailException : NotFoundException
+    {
+        public EmployeeNotFoundByEmailException(string email) 
+            : base($"Employee with Email {email} was not found.")
+        {
+        }
+    }
 }
