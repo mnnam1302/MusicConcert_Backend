@@ -5,13 +5,20 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 
 ## Service Identity
 ### Organization
-	- Create Organization		=> Event: OrganizationCreated
+	- api/v1/organizations				Create Organization		=> Event: OrganizationCreated	OK
 
 ### Employee
-	- Create Employee			=> Event: EmployeeCreated
+	- api/v1/emplpyees					Create Employee			=> Event: EmployeeCreated		OK
 
-### Identity
-	- Employee Login
+### Customer
+	- api/v1/customers					Create Customer			=> Event: CustomerCreated
+
+### Authentication
+	- api/v1/auth/employee/sign-in		Employee Login											OK
+	- api/v1/auth/employee/sign-out		Employee Logout											OK
+
+### Token
+	- api/v1/tokens/employees/refresh-token			Refresh Token								OK
 
 ## Service Catalog
 ### Events

@@ -2,7 +2,7 @@
 
 namespace Contracts.Services.V1.Identity.AppEmployee.Validators;
 
-public class GetEmployeeLoginQuery : AbstractValidator<Query.GetEmployeeLoginQuery>
+public class GetEmployeeLoginQuery : AbstractValidator<Query.EmployeeLoginQuery>
 {
     public GetEmployeeLoginQuery()
     {
