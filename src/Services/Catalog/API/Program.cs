@@ -38,6 +38,7 @@ builder.Services.AddRepositoryPersistence();
 
 // Infrastructure
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+builder.Services.AddInterceptorPersistence();
 
 var app = builder.Build();
 
