@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class OrganizationInfo : Entity<Guid>, ISoftDeleted
 {
-    private OrganizationInfo() { }
+    protected OrganizationInfo() { }
 
     private OrganizationInfo(Guid id, string name)
     {
@@ -17,12 +17,9 @@ public class OrganizationInfo : Entity<Guid>, ISoftDeleted
         var oranizationInfo = new OrganizationInfo(id, name);
         return oranizationInfo;
     }
-    
-    public void Delete()
-    {
-        IsDeleted = true;
-    }
 
     public string Name { get; private set; }
-    public bool IsDeleted { get; private set; }
+    public bool IsDeleted { get; set; }
+
+    public DateTimeOffset? DeletedOnUtc { get; set; }
 }

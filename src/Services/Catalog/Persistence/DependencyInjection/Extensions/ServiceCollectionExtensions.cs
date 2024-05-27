@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Persistence.DependencyInjection.Options;
+using Persistence.Interceptors;
 using Persistence.Repositories;
 
 namespace Persistence.DependencyInjection.Extensions;
@@ -16,6 +17,9 @@ public static class ServiceCollectionExtensions
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
+
+            var auditableInterceptor = provider.GetRequiredService<UpdateAuditableEntitiesInterceptor>();
+            //var outboxInterceptors = provider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptors>();
 
             builder
                 .EnableDetailedErrors(true)
@@ -31,10 +35,17 @@ public static class ServiceCollectionExtensions
                                 maxRetryCount: options.CurrentValue.MaxRetryCount,
                                 maxRetryDelay: options.CurrentValue.MaxRetryDelay,
                                 errorNumbersToAdd: options.CurrentValue.ErrorNumbersoAdd))
-                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name));
+                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
+                .AddInterceptors(auditableInterceptor);
         });
 
         return services;
+    }
+
+    public static void AddInterceptorPersistence(this IServiceCollection services)
+    {
+        services.AddTransient<UpdateAuditableEntitiesInterceptor>();
+        //services.AddTransient<ConvertDomainEventsToOutboxMessagesInterceptors>();
     }
 
     public static void AddRepositoryPersistence(this IServiceCollection services)

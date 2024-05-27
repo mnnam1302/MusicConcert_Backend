@@ -19,5 +19,5 @@ public static class DomainEvent
     public record OrganizationDeleted(
         Guid EventId, 
         DateTimeOffset TimeStamp, 
-        Guid Id) : IDomainEvent;
+        Guid Id) : IDomainEvent, ICommand;
 }

@@ -3,4 +3,5 @@
 public interface ISoftDeleted
 {
     public bool IsDeleted { get; }
+    public DateTimeOffset? DeletedOnUtc { get; }
 }
