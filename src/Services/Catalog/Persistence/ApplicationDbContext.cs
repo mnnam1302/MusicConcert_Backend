@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.OutboxMessages;
 
 namespace Persistence;
 
@@ -16,4 +17,10 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<OrganizationInfo> OrganizationInfos { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Event> Events { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
+
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
 }
