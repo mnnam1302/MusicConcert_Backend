@@ -9,12 +9,17 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 ## Service Identity
 | Entity	|				Features				|     	Event			|
 |---------------|-----------------------------------------------------------------------|------------------------------	|
-| Organization	| Create Organization 	- api/v1/organizations				|	OrganizationCreated	|
-| Employee	| Create Employee 	- api/v1/employees				|				|
-| Customer	| Create Customer 	- api/v1/customers				|	CustomerCreated		|
+| Organization	| Create  - api/v1/organizations				|	organization-created	|
+|               | Delete  - api/v1/organizations/{organizationId}				|	organization-deleted	|
+| Employee	| Create  - api/v1/employees				| employee-created		 |
+|           | Delete  - api/v1/employees/{employeeId}				| employee-deleted    |
+| Customer	| Create - api/v1/customers				|	customer-created		|
+|           | Delete - api/v1/customers/{customerId}				|	customer-deleted		|
 | Authenticate	| Sign-In Employee 	- api/v1/auth/employee/sign-in			|				|
 | 		| Sign-Out Employee 	- api/v1/auth/employee/sign-out			|				|
+| 		| RefreshToken Employee 	- api/v1/auth/employee/refresh			|				|
 | 		| Sign-In Customer 	- api/v1/auth/customer/sign-in			|				|
-| 		| Sign-In Employee 	- api/v1/auth/customer/sign-out			|				|
+| 		| Sign-In Customer 	- api/v1/auth/customer/sign-out			|				|
+| 		| RefreshToken Customer 	- api/v1/auth/customer/refresh			|				|
 
 ## Service Catalog
