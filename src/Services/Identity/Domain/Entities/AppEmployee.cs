@@ -10,7 +10,11 @@ namespace Domain.Entities;
 
 public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
 {
-    public AppEmployee(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
+    protected AppEmployee()
+    {
+    }
+
+    private AppEmployee(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
     {
         Id = id;
         FirstName = firstName;
@@ -40,6 +44,11 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
         employee.RaiseDomainEvent(new DomainEvent.EmployeeCreated(Guid.NewGuid(), DateTimeOffset.UtcNow, employee.Id, employee.FirstName, employee.LastName));
 
         return employee;
+    }
+
+    public void Delete()
+    {
+        RaiseDomainEvent(new DomainEvent.EmployeeDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
     }
 
     private AppEmployee AssignDateOfBirth(DateTime dateOfBirth)

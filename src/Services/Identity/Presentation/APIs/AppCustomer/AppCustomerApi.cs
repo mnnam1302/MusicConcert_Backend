@@ -1,5 +1,6 @@
 ﻿using Carter;
 using Contracts.Services.V1.Identity.Customer;
+using MassTransit.Caching.Internals;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +20,10 @@ public class AppCustomerApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("", CreateCustomersV1);
-        group1.MapGet("customerId", () => "");
-        group1.MapGet("", () => "");
-        group1.MapPut("customerId", () => "");
-        group1.MapDelete("customer", () => "");
+        //group1.MapGet("customerId", () => "");
+        //group1.MapGet("", () => "");
+        //group1.MapPut("customerId", () => "");
+        group1.MapDelete("{customerId}", DeleteCustomersV1);
     }
 
     private static async Task<IResult> CreateCustomersV1(ISender sender, [FromBody] Command.CreateCustomerCommand request)
@@ -31,6 +32,18 @@ public class AppCustomerApi : ApiEndpoint, ICarterModule
 
         if (result.IsFailure)
             return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> DeleteCustomersV1(ISender sender, Guid customerId)
+    {
+        var command  = new Command.DeleteCustomerCommand(customerId);
+
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
 
         return Results.Ok(result);
     }

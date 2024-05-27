@@ -2,10 +2,7 @@
 using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
 using Domain.Exceptions;
-using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 
 namespace Domain.Entities;
 
@@ -15,7 +12,7 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
     {
     }
 
-    private AppCustomer(Guid id, string firstName, string lastName, string fullName, string phoneNumber,string email, string passwordHash, string passwordSalt)
+    private AppCustomer(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
     {
         Id = id;
         FirstName = firstName;
@@ -42,10 +39,14 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
         if (address is not null)
             customer.AssignAddress(address);
 
-
         customer.RaiseDomainEvent(new DomainEvent.CustomerCreated(Guid.NewGuid(), DateTimeOffset.UtcNow, customer.Id, customer.FullName, customer.Email, customer.PhoneNumber));
 
         return customer;
+    }
+
+    public void Delete()
+    {
+        RaiseDomainEvent(new DomainEvent.CustomerDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
     }
 
     private AppCustomer AssignAddress(string address)
@@ -76,10 +77,12 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
 
     // Auditable
     public DateTimeOffset CreatedOnUtc { get; set; }
+
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 
     // SoftDelete
     public bool IsDeleted { get; set; }
+
     public DateTimeOffset? DeletedOnUtc { get; set; }
 
     public virtual ICollection<IdentityUserClaim<Guid>> Claims { get; set; }

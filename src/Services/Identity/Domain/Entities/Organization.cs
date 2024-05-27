@@ -8,27 +8,26 @@ namespace Domain.Entities;
 
 public class Organization : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 {
-    /*
-     * Why need parameterless constructor here?
-     * In your case, the Organization class has a constructor with parameters, including an address parameter that corresponds to the Address property. However, EF Core cannot bind this parameter because Address is an owned entity type, not a simple property that is mapped to a database column.
-     */
+    protected Organization() { }
 
-    public Organization() { }
-
-    public Organization(Guid id, string name, string industry, string phone, string homePage, Address address)
+    private Organization(Guid id, string name, string industry, string phone, string homePage, string street, string city, string state, string country, string zipCode)
     {
         Id = id;
         Name = name;
         Industry = industry;
         Phone = phone;
         HomePage = homePage;
-        Address = address;
+        Street = street;
+        City = city;
+        State = state;
+        Country = country;
+        ZipCode = zipCode;
     }
 
     public static Organization Create(string name, string industry, string? description, string phone, string homepage, string? logoUrl, string street, string city, string state, string country, string zipCode)
     {
         var organization = new Organization(Guid.NewGuid(), name, industry, phone, homepage, 
-            new Address(street, city, state, country, zipCode));
+            street, city, state, country, zipCode);
 
         if (!string.IsNullOrEmpty(description))
             organization.AssignDescription(description);
@@ -69,17 +68,17 @@ public class Organization : AggregateRoot<Guid>, IAuditable, ISoftDeleted
     public string HomePage { get; private set; }
     public string? LogoUrl { get; private set; }
 
-    //public string Street { get; private set; }
-    //public string City { get; private set; }
-    //public string State { get; private set; }
-    //public string Country { get; private set; }
-    //public string ZipCode { get; private set; }
+    public string Street { get; private set; }
+    public string City { get; private set; }
+    public string State { get; private set; }
+    public string Country { get; private set; }
+    public string ZipCode { get; private set; }
 
     // Apply Value Object
     // Note: no nullable here => Read more notion
     // Me: Strreet-null, City-null, ZipCode-null, State-abcdhb => Null or No null => Confuse
     // Check all properties that are all null => Null
-    public Address Address { get; private set; }
+    //public Address Address { get; private set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

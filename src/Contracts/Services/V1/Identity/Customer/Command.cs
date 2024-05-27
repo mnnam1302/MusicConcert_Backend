@@ -16,7 +16,7 @@ public class Command
 
     public record ChangePasswordCommand(Guid Id, string NewPassword, string NewPasswordConfirmation) : ICommand;
 
-    public record DeleteCustomerCommand(Guid Id);
+    public record DeleteCustomerCommand(Guid Id) : ICommand;
 
 
     // Identity

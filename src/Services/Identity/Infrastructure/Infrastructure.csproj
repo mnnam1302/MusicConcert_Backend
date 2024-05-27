@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abtractions\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.2.2" />
     <PackageReference Include="MassTransit.Newtonsoft" Version="8.2.2" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.2" />
