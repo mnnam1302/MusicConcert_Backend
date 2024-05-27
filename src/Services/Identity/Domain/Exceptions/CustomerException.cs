@@ -18,6 +18,14 @@ public static class CustomerException
         }
     }
 
+    public class CustomerNotFoundException : NotFoundException
+    {
+        public CustomerNotFoundException(Guid customerId)
+            : base($"Customer with Id {customerId} was not found.")
+        {
+        }
+    }
+
     public class CustomerNotFoundByEmailException : NotFoundException
     {
         public CustomerNotFoundByEmailException(string email)

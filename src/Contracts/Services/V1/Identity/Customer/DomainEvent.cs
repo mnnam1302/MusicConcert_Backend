@@ -11,4 +11,9 @@ public class DomainEvent
         string FullName,
         string Email,
         string PhoneNumber) : IDomainEvent;
+
+    public record CustomerDeleted(
+        Guid EventId,
+        DateTimeOffset TimeStamp,
+        Guid Id) : IDomainEvent;
 }

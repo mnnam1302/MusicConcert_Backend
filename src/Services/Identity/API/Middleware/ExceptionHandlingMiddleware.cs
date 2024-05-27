@@ -62,6 +62,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
             CustomerException.CustomerAlreadyExistsException => StatusCodes.Status400BadRequest,
             CustomerException.CustomerNotFoundByEmailException => StatusCodes.Status404NotFound,
             CustomerException.CustomerFieldException => StatusCodes.Status400BadRequest,
+            CustomerException.CustomerNotFoundException => StatusCodes.Status404NotFound,
 
             // Organization
             OrganizationException.OrganizationNotFoundException => StatusCodes.Status404NotFound,

@@ -19,10 +19,10 @@ public class AppEmployeeApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("", CreateEmployeesV1);
-        group1.MapGet("", () => "");
-        group1.MapGet("employeeId", () => "");
-        group1.MapPut("employeeId", () => "");
-        group1.MapDelete("employeeId", () => "");
+        //group1.MapGet("", () => "");
+        //group1.MapGet("employeeId", () => "");
+        //group1.MapPut("employeeId", () => "");
+        group1.MapDelete("{employeeId}", DeleteEmployeesV1);
     }
 
     private static async Task<IResult> CreateEmployeesV1(ISender sender, [FromBody] Command.CreateEmployeeCommand command)
@@ -31,6 +31,18 @@ public class AppEmployeeApi : ApiEndpoint, ICarterModule
 
         if (result.IsFailure)
             return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+    
+    private static async Task<IResult> DeleteEmployeesV1(ISender sender, Guid employeeId)
+    {
+        var command = new Command.DeleteEmployeeCommand(employeeId);
+
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
 
         return Results.Ok(result);
     }

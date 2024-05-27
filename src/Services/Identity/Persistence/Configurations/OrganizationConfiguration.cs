@@ -33,33 +33,42 @@ internal class OrganizationConfiguration : IEntityTypeConfiguration<Organization
         builder.Property(x => x.LogoUrl)
             .HasMaxLength(150);
 
-        //builder.OwnsOne(x => x.Address);
-        builder.OwnsOne(x => x.Address, address =>
-        {
-            address.Property(x => x.Street)
-                .HasMaxLength(50)
-                .HasColumnName("Street");
+        builder.Property(x => x.Street)
+            .HasMaxLength(50);
 
-            address.Property(x => x.City)
-                .HasMaxLength(30)
-                .HasColumnName("City");
+        builder.Property(x => x.City)
+            .HasMaxLength(30);
 
-            address.Property(x => x.State)
-                .HasMaxLength(50)
-                .HasColumnName("State");
+        builder.Property(x => x.Country)
+            .HasMaxLength(30);
 
-            address.Property(x => x.Country)
-                .HasMaxLength(30)
-                .HasColumnName("Country");
+        builder.Property(x => x.State)
+            .HasMaxLength(50);
 
-            address.Property(x => x.ZipCode)
-                .HasMaxLength(20)
-                .HasColumnName("ZipCode");
-        });
+        builder.Property(x => x.ZipCode)
+            .HasMaxLength(20);
 
-        // Relationships
-        //builder.HasMany(x => x.Employees)
-        //    .WithOne()
-        //    .HasForeignKey(x => x.OrganizationId);
+        //builder.OwnsOne(x => x.Address, address =>
+        //{
+        //    address.Property(x => x.Street)
+        //        .HasMaxLength(50)
+        //        .HasColumnName("Street");
+
+        //    address.Property(x => x.City)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("City");
+
+        //    address.Property(x => x.State)
+        //        .HasMaxLength(50)
+        //        .HasColumnName("State");
+
+        //    address.Property(x => x.Country)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("Country");
+
+        //    address.Property(x => x.ZipCode)
+        //        .HasMaxLength(20)
+        //        .HasColumnName("ZipCode");
+        //});
     }
 }

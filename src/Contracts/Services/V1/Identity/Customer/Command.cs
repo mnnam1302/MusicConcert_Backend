@@ -14,7 +14,11 @@ public class Command
         string Password,
         string PasswordConfirmation) : ICommand;
 
-    public record LogoutCustomerCommand(string Email) : ICommand;
+    public record ChangePasswordCommand(Guid Id, string NewPassword, string NewPasswordConfirmation) : ICommand;
 
-    public record RevokeTokenCustomerCommand(string Email, string AccessToken) : ICommand;
+    public record DeleteCustomerCommand(Guid Id) : ICommand;
+
+
+    // Identity
+    public record LogoutCustomerCommand(string Email) : ICommand;
 }

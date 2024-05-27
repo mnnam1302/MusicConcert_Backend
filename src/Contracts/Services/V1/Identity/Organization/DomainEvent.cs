@@ -10,11 +10,14 @@ public static class DomainEvent
         Guid Id,
         string Name) : IDomainEvent, ICommand;
 
-    public record OrganizationUpdated(
-        Guid EventId,
-        DateTimeOffset TimeStamp,
-        Guid Id,
-        string Name) : IDomainEvent;
+    //public record OrganizationUpdated(
+    //    Guid EventId,
+    //    DateTimeOffset TimeStamp,
+    //    Guid Id,
+    //    string Name) : IDomainEvent;
 
-    public record OrganizationDeleted(Guid EventId, DateTimeOffset TimeStamp, Guid Id) : IDomainEvent;
+    public record OrganizationDeleted(
+        Guid EventId, 
+        DateTimeOffset TimeStamp, 
+        Guid Id) : IDomainEvent;
 }
