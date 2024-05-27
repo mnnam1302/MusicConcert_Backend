@@ -28,28 +28,30 @@ internal class AppCustomerConfiguration : IEntityTypeConfiguration<AppCustomer>
 
         builder.Property(x => x.PhoneNumber).HasMaxLength(20);
 
-        builder.OwnsOne(x => x.Address, address =>
-        {
-            address.Property(x => x.Street)
-                .HasMaxLength(30)
-                .HasColumnName("Street");
+        builder.Property(x => x.Address).HasMaxLength(255);
 
-            address.Property(x => x.City)
-                .HasMaxLength(30)
-                .HasColumnName("City");
+        //builder.OwnsOne(x => x.Address, address =>
+        //{
+        //    address.Property(x => x.Street)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("Street");
 
-            address.Property(x => x.State)
-                .HasMaxLength(30)
-                .HasColumnName("State");
+        //    address.Property(x => x.City)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("City");
 
-            address.Property(x => x.Country)
-                .HasMaxLength(30)
-                .HasColumnName("Country");
+        //    address.Property(x => x.State)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("State");
 
-            address.Property(x => x.ZipCode)
-                .HasMaxLength(20)
-                .HasColumnName("ZipCode");
-        });
+        //    address.Property(x => x.Country)
+        //        .HasMaxLength(30)
+        //        .HasColumnName("Country");
+
+        //    address.Property(x => x.ZipCode)
+        //        .HasMaxLength(20)
+        //        .HasColumnName("ZipCode");
+        //});
 
         // Each User can have many UserClaims
         builder.HasMany(e => e.Claims)
@@ -68,9 +70,5 @@ internal class AppCustomerConfiguration : IEntityTypeConfiguration<AppCustomer>
             .WithOne()
             .HasForeignKey(userToken => userToken.UserId)
             .IsRequired();
-
-        builder.HasOne(x => x.AppRole)
-            .WithMany()
-            .HasForeignKey(x => x.RoleId);
     }
 }

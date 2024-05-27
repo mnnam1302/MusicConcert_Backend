@@ -1,5 +1,4 @@
 ﻿using Carter;
-using Contracts.Services.V1.Identity.AppEmployee;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,11 +17,22 @@ public class TokenApi : ApiEndpoint, ICarterModule
         var group1 = app.NewVersionedApi("Token")
             .MapGroup(BaseUrl).HasApiVersion(1);
 
-        group1.MapPost("/employee/refresh", RefreshTokenV1);
-        group1.MapPost("/employee/revoke", () => "");
+        group1.MapPost("/employee/refresh", EmployeeRefreshTokenV1);
+
+        group1.MapPost("/customer/refresh", CustomerRefreshTokenV1);
     }
 
-    private static async Task<IResult> RefreshTokenV1(ISender sender, [FromBody] Query.EmployeeRefreshTokenQuery request)
+    private static async Task<IResult> EmployeeRefreshTokenV1(ISender sender, [FromBody] Contracts.Services.V1.Identity.AppEmployee.Query.EmployeeRefreshTokenQuery request)
+    {
+        var result = await sender.Send(request);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> CustomerRefreshTokenV1(ISender sender, [FromBody] Contracts.Services.V1.Identity.Customer.Query.CustomerRefreshTokenQuery request)
     {
         var result = await sender.Send(request);
 

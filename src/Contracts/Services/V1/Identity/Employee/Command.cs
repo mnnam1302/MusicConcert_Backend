@@ -24,7 +24,5 @@ public static class Command
 
     public record DeleteEmployeeCommand(Guid Id) : ICommand;
 
-    public record LogoutEmployeeCommand(string Email, string AccessToken) : ICommand;
-
-    public record RevokeTokenCommand(string Email, string AccessToken) : ICommand;
+    public record LogoutEmployeeCommand(string Email) : ICommand;
 }

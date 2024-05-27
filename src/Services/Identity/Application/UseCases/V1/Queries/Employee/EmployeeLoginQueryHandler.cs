@@ -6,9 +6,9 @@ using Domain.Abstractions.Repositories;
 using Domain.Exceptions;
 using System.Security.Claims;
 
-namespace Application.UseCases.V1.Queries.AppEmployee;
+namespace Application.UseCases.V1.Queries.Employee;
 
-public class EmployeeLoginQueryHandler : IQueryHandler<Query.EmployeeLoginQuery, Response.AuthenticateResponse>
+public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery, Response.AuthenticatedResponse>
 {
     private readonly IRepositoryBase<Domain.Entities.AppEmployee, Guid> _employeeRepository;
     private readonly IHashPasswordService _hashPasswordService;
@@ -23,19 +23,19 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.EmployeeLoginQuery,
         _cacheService = cacheService;
     }
 
-    public async Task<Result<Response.AuthenticateResponse>> Handle(Query.EmployeeLoginQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Response.AuthenticatedResponse>> Handle(Query.LoginEmployeeQuery request, CancellationToken cancellationToken)
     {
-        // Check email existing?
+        // Step 01: Check email existing?
         var holderEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
             ?? throw new EmployeeException.EmployeeNotFoundByEmailException(request.Email);
 
-        // Check password
+        // Step 02: Check password
         bool isAuthenticated = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash, holderEmployee.PasswordSalt);
 
         if (!isAuthenticated)
             throw new IdentityException.AuthenticationException();
 
-        // Get Claims
+        // Step 03: Get Claims
         var claims = new List<Claim>
         {
             new (ClaimTypes.NameIdentifier, holderEmployee.Id.ToString()),
@@ -43,23 +43,20 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.EmployeeLoginQuery,
             new (ClaimTypes.Email, holderEmployee.Email),
         };
 
-        // Get roles
-
-        // Generate Token
+        // Step 04: Generate Token
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
         var refershToken = _jwtTokenService.GenerateRefreshToken();
 
-        var result = new Response.AuthenticateResponse
+        var result = new Response.AuthenticatedResponse
         {
             AccessToken = accessToken,
             RefreshToken = refershToken,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
         };
 
-        // Set cache
+        // Step 05: Set cache
         await _cacheService.SetAsync($"session:{request.Email}", result, cancellationToken);
 
-        // Return result 
         return Result.Success(result);
     }
 }
