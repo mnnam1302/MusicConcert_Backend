@@ -45,6 +45,11 @@ public class Organization : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return organization;
     }
 
+    public void Delete()
+    {
+        RaiseDomainEvent(new DomainEvent.OrganizationDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
+    }
+
     private Organization AssignDescription(string description)
     {
         Description = description;

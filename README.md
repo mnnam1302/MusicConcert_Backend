@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="#bulb-about">Concert Music</a> &nbsp;&bull;&nbsp;
+  <a href="#bulb-about">Concert Music</a>;
 </p>
 
 # Run docker infrastructure enviroment

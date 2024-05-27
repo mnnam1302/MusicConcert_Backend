@@ -14,13 +14,13 @@ public static class OrganizationConsumer
         }
     }
 
-    public class OrganizationUpdatedConsumer : Consumer<DomainEvent.OrganizationUpdated>
-    {
-        public OrganizationUpdatedConsumer(ISender sender)
-            : base(sender)
-        {
-        }
-    }
+    //public class OrganizationUpdatedConsumer : Consumer<DomainEvent.OrganizationUpdated>
+    //{
+    //    public OrganizationUpdatedConsumer(ISender sender)
+    //        : base(sender)
+    //    {
+    //    }
+    //}
 
     public class OrganizationDeletedConsumer : Consumer<DomainEvent.OrganizationDeleted>
     {

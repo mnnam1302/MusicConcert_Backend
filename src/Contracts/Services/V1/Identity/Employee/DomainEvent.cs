@@ -11,12 +11,12 @@ public static class DomainEvent
         string FirstName,
         string LastName) : IDomainEvent;
 
-    public record EmployeeUpdated(
-        Guid EventId,
-        DateTimeOffset TimeStamp,
-        Guid Id,
-        string FirstName,
-        string LastName) : IDomainEvent;
+    //public record EmployeeUpdated(
+    //    Guid EventId,
+    //    DateTimeOffset TimeStamp,
+    //    Guid Id,
+    //    string FirstName,
+    //    string LastName) : IDomainEvent;
 
     public record EmployeeDeleted(
         Guid EventId,

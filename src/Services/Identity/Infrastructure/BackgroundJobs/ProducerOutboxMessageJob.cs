@@ -57,15 +57,16 @@ public class ProducerOutboxMessageJob : IJob
                         await _publishEndpoint.Publish(organizationCreated, context.CancellationToken);
                         break;
 
-                    case nameof(DomainEvent.OrganizationUpdated):
-                        var organizationUpdated = JsonConvert.DeserializeObject<DomainEvent.OrganizationUpdated>(
-                            outboxMessage.Content,
-                            new JsonSerializerSettings {
-                                TypeNameHandling = TypeNameHandling.All
-                            });
+                    // Stop: event organization-updated
+                    //case nameof(DomainEvent.OrganizationUpdated):
+                    //    var organizationUpdated = JsonConvert.DeserializeObject<DomainEvent.OrganizationUpdated>(
+                    //        outboxMessage.Content,
+                    //        new JsonSerializerSettings {
+                    //            TypeNameHandling = TypeNameHandling.All
+                    //        });
 
-                        await _publishEndpoint.Publish(organizationUpdated, context.CancellationToken);
-                        break;
+                    //    await _publishEndpoint.Publish(organizationUpdated, context.CancellationToken);
+                    //    break;
 
                     case nameof(DomainEvent.OrganizationDeleted):
                         var organizationDeleted = JsonConvert.DeserializeObject<DomainEvent.OrganizationDeleted>(
@@ -87,17 +88,6 @@ public class ProducerOutboxMessageJob : IJob
                             });
 
                         await _publishEndpoint.Publish(employeeCreated, context.CancellationToken);
-                        break;
-
-                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeUpdated):
-                        var employeeUpdated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeUpdated>(
-                            outboxMessage.Content,
-                            new JsonSerializerSettings
-                                                                                  {
-                                TypeNameHandling = TypeNameHandling.All
-                            });
-
-                        await _publishEndpoint.Publish(employeeUpdated, context.CancellationToken);
                         break;
 
                     case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted):
