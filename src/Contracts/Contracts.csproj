@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\V1\Catalog\" />
+    <Folder Include="Services\V1\Catalog\Category\Validators\" />
+    <Folder Include="Services\V1\Catalog\Event\" />
+    <Folder Include="Services\V1\Catalog\Ticket\" />
   </ItemGroup>
 
   <ItemGroup>
