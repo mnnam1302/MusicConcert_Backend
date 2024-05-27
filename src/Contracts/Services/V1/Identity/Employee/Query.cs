@@ -4,12 +4,12 @@ namespace Contracts.Services.V1.Identity.AppEmployee;
 
 public static class Query
 {
-    public record EmployeeLoginQuery(
+    public record LoginEmployeeQuery(
         string Email, 
-        string Password) : IQuery<Response.AuthenticateResponse>;
+        string Password) : IQuery<Response.AuthenticatedResponse>;
 
     public record EmployeeRefreshTokenQuery(
         string Email, 
         string AccessToken, 
-        string RefreshToken) : IQuery<Response.AuthenticateResponse>;
+        string RefreshToken) : IQuery<Response.AuthenticatedResponse>;
 }

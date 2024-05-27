@@ -25,4 +25,12 @@ public static class EmployeeException
         {
         }
     }
+
+    public class EmployeeFieldException : BadRequestException
+    {
+        public EmployeeFieldException(string fieldName)
+            : base($"Employee with field {fieldName} is not correct.")
+        {
+        }
+    }
 }

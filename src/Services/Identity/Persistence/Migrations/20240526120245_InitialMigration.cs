@@ -12,6 +12,30 @@ namespace Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AppCustomers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppCustomers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AppRoles",
                 columns: table => new
                 {
@@ -67,41 +91,6 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OutboxMessages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AppCustomers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ZipCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ModifiedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOnUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppCustomers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AppCustomers_AppRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AppRoles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,11 +227,6 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppCustomers_RoleId",
-                table: "AppCustomers",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AppEmployees_OrganizationId",
                 table: "AppEmployees",
                 column: "OrganizationId");
@@ -277,13 +261,13 @@ namespace Persistence.Migrations
                 name: "OutboxMessages");
 
             migrationBuilder.DropTable(
+                name: "AppRoles");
+
+            migrationBuilder.DropTable(
                 name: "AppCustomers");
 
             migrationBuilder.DropTable(
                 name: "AppEmployees");
-
-            migrationBuilder.DropTable(
-                name: "AppRoles");
 
             migrationBuilder.DropTable(
                 name: "Organizations");

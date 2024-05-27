@@ -2,7 +2,7 @@
 
 public static class Response
 {
-    public record AuthenticateResponse
+    public record AuthenticatedResponse
     {
         public string AccessToken { get; init; }
         public string RefreshToken { get; init; }

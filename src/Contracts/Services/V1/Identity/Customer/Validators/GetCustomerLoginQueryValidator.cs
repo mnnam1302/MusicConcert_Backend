@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Contracts.Services.V1.Identity.AppEmployee.Validators;
+namespace Contracts.Services.V1.Identity.Customer.Validators;
 
-public class GetEmployeeLoginQuery : AbstractValidator<Query.EmployeeLoginQuery>
+public class GetCustomerLoginQueryValidator : AbstractValidator<Query.LoginCustomerQuery>
 {
-    public GetEmployeeLoginQuery()
+    public GetCustomerLoginQueryValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

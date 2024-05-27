@@ -2,12 +2,14 @@
 using Contracts.Abstractions.Message;
 using Contracts.Abstractions.Shared;
 using Contracts.Services.V1.Identity.AppEmployee;
+using Domain.Abstractions.Repositories;
+using Domain.Entities;
 using Domain.Exceptions;
 using System.Security.Claims;
 
-namespace Application.UseCases.V1.Queries.AppEmployee;
+namespace Application.UseCases.V1.Queries.Employee;
 
-public class EmployeeRefreshTokenQueryHandler : IQueryHandler<Query.EmployeeRefreshTokenQuery, Response.AuthenticateResponse>
+public class EmployeeRefreshTokenQueryHandler : IQueryHandler<Query.EmployeeRefreshTokenQuery, Response.AuthenticatedResponse>
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ICacheService _cacheService;
@@ -18,10 +20,10 @@ public class EmployeeRefreshTokenQueryHandler : IQueryHandler<Query.EmployeeRefr
         _cacheService = cacheService;
     }
 
-    public async Task<Result<Response.AuthenticateResponse>> Handle(Query.EmployeeRefreshTokenQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Response.AuthenticatedResponse>> Handle(Query.EmployeeRefreshTokenQuery request, CancellationToken cancellationToken)
     {
         // Step 01: Check cache
-        var authenticated = await _cacheService.GetAsync<Response.AuthenticateResponse>($"session:{request.Email}", cancellationToken)
+        var authenticated = await _cacheService.GetAsync<Response.AuthenticatedResponse>($"session:{request.Email}", cancellationToken)
             ?? throw new IdentityException.TokenException("Can not get value from Redis.");
 
         // Step 02: Verify access token
@@ -37,7 +39,7 @@ public class EmployeeRefreshTokenQueryHandler : IQueryHandler<Query.EmployeeRefr
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
         // Step 05: Update cache
-        var result = new Response.AuthenticateResponse
+        var result = new Response.AuthenticatedResponse
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,

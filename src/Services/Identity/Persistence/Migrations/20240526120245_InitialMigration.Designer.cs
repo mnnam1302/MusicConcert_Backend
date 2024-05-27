@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240525055709_InitialMigration")]
+    [Migration("20240526120245_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -33,6 +33,10 @@ namespace Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTimeOffset>("CreatedOnUtc")
                         .HasColumnType("datetimeoffset");
@@ -82,12 +86,7 @@ namespace Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("AppCustomers", (string)null);
                 });
@@ -353,63 +352,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OutboxMessages", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.AppCustomer", b =>
-                {
-                    b.HasOne("Domain.Entities.AppRole", "AppRole")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsOne("Domain.ValueObjects.Address", "Address", b1 =>
-                        {
-                            b1.Property<Guid>("AppCustomerId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("City");
-
-                            b1.Property<string>("Country")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("Country");
-
-                            b1.Property<string>("State")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("State");
-
-                            b1.Property<string>("Street")
-                                .IsRequired()
-                                .HasMaxLength(30)
-                                .HasColumnType("nvarchar(30)")
-                                .HasColumnName("Street");
-
-                            b1.Property<string>("ZipCode")
-                                .IsRequired()
-                                .HasMaxLength(20)
-                                .HasColumnType("nvarchar(20)")
-                                .HasColumnName("ZipCode");
-
-                            b1.HasKey("AppCustomerId");
-
-                            b1.ToTable("AppCustomers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AppCustomerId");
-                        });
-
-                    b.Navigation("Address")
-                        .IsRequired();
-
-                    b.Navigation("AppRole");
                 });
 
             modelBuilder.Entity("Domain.Entities.AppEmployee", b =>

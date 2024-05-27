@@ -9,8 +9,5 @@ public class LogoutEmployeeCommandValidator : AbstractValidator<Command.LogoutEm
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress();
-
-        RuleFor(x => x.AccessToken)
-            .NotEmpty();
     }
 }

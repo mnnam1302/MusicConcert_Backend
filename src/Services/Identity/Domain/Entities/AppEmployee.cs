@@ -1,13 +1,13 @@
 ﻿using Contracts.Services.V1.Identity.AppEmployee;
 using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
+using Domain.Exceptions;
 using MassTransit.SagaStateMachine;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.CompilerServices;
 
 namespace Domain.Entities;
 
-//public class AppEmployee : IdentityUser<Guid>, IEntity<Guid>, ISoftDeleted
 public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
 {
     public AppEmployee(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
@@ -25,6 +25,9 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
     public static AppEmployee Create(string firstName, string lastName, string phoneNumber, DateTime? dateofBirth, Guid? organizationId, string email, string passwordHash, string passwordSalt)
     {
         string fullName = $"{firstName} {lastName}";
+
+        if (fullName.Length > 40)
+            throw new EmployeeException.EmployeeFieldException(nameof(FullName));
 
         var employee = new AppEmployee(Guid.NewGuid(), firstName, lastName, fullName, phoneNumber, email, passwordHash, passwordSalt);
 
