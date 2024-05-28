@@ -23,3 +23,11 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 | 		| RefreshToken Customer 	- api/v1/auth/customer/refresh			|				|
 
 ## Service Catalog
+| Entity	|				Features				|     	Event			|
+|---------------|-----------------------------------------------------------------------|------------------------------	|
+| Category	| Create  - api/v1/categories				|    	|
+|           | Get  - api/v1/categories				|				|
+|           | Get  - api/v1/categories/{categoriesId}				|				|
+|           | Update  - api/v1/categories/{categoriesId}				|				|
+|           | Delete  - api/v1/categories/{categoriesId}				|				|
+
