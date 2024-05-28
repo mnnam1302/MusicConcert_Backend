@@ -38,6 +38,9 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
         builder.Property(x => x.Capacity)
             .IsRequired();
 
+        builder.Property(x => x.OrganizationInfoId)
+            .IsRequired();
+
         builder.Property(x => x.EventType)
             .IsRequired();
 

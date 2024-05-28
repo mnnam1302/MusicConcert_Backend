@@ -51,6 +51,11 @@ public class ExceptionHandlingMiddleware : IMiddleware
             // Category
             CategoryException.CategoryNotFoundException => StatusCodes.Status404NotFound,
 
+            // Event
+            EventException.EventNotFoundException => StatusCodes.Status404NotFound,
+            EventException.EventFieldException => StatusCodes.Status400BadRequest,
+            EventException.EventTypeException => StatusCodes.Status400BadRequest,
+
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,
