@@ -5,9 +5,9 @@ namespace Domain.Entities;
 
 public class Category : AggregateRoot<Guid>, ISoftDeleted
 {
-    public Category() { }
+    protected Category() { }
 
-    public Category(Guid id, string name)
+    private Category(Guid id, string name)
     {
         Id = id;
         Name = name;
@@ -26,7 +26,9 @@ public class Category : AggregateRoot<Guid>, ISoftDeleted
     public void Update(string name, string? description)
     {
         Name = name;
-        Description = description;
+
+        if (!string.IsNullOrEmpty(description))
+            AssignDescription(description);
     }
 
     private Category AssignDescription(string description)

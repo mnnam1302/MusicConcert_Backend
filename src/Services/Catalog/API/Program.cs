@@ -4,6 +4,9 @@ using Application.DependencyInjection.Extensions;
 using Infrastructure.DependencyInjection.Extensions;
 using Persistence.DependencyInjection.Extensions;
 using Persistence.DependencyInjection.Options;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using API.DependencyInjection.Extensions;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +31,25 @@ builder.Host.UseSerilog();
 // Carter
 builder.Services.AddCarter();
 
+// Swagger
+builder.Services
+    .AddSwaggerGenNewtonsoftSupport()
+    .AddFluentValidationRulesToSwagger()
+    .AddEndpointsApiExplorer()
+    .AddSwaggerAPI();
+
+// API versioning
+builder.Services
+    .AddApiVersioning(options => options.ReportApiVersions = true)
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 // Application
 builder.Services.AddMediatRApplication();
+builder.Services.AddAutoMapperApplication();
 
 // Persistence
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
@@ -40,15 +60,20 @@ builder.Services.AddRepositoryPersistence();
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 builder.Services.AddInterceptorPersistence();
 
+// Middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 var app = builder.Build();
+
+// Using middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapCarter();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerAPI();
 }
 
 //app.UseHttpsRedirection();
