@@ -34,6 +34,21 @@ public class RepositoryBase<TEntity, TKey> : IRepositoryBase<TEntity, TKey>, IDi
         return items;
     }
 
+    public async Task<List<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
+    {
+        IQueryable<TEntity> items = _dbContext.Set<TEntity>().AsNoTracking();
+        
+        if (includeProperties != null)
+            foreach (var includeProperty in includeProperties)
+                items = items.Include(includeProperty);
+
+        if (predicate is not null)
+            items = items.Where(predicate);
+
+        var result = await items.ToListAsync();
+        return result;
+    }
+
     public async Task<TEntity> FindByIdAsync(TKey id, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includeProperties)
     {
         return await FindAll(null, includeProperties)
