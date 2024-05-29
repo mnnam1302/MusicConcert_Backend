@@ -29,8 +29,11 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
     public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
         // Step 01: check organization existing?
-        var holderOrganizationInfo = await _organizationInfoRepository.FindByIdAsync(request.OrganizationId, cancellationToken)
-            ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.OrganizationId);
+        if (request.OrganizationId.HasValue)
+        {
+            var holderOrganizationInfo = await _organizationInfoRepository.FindByIdAsync(request.OrganizationId.Value, cancellationToken)
+                ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.OrganizationId.Value);
+        }
 
         // Step 02: check category existing?
         if (request.CategoryId.HasValue)
@@ -47,7 +50,7 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
             request.EndedDateOnUtc,
             request.Capacity,
             request.CategoryId,
-            holderOrganizationInfo.Id,
+            request.OrganizationId,
             request.MeetUrl,
             request.Adrress,
             request.District,

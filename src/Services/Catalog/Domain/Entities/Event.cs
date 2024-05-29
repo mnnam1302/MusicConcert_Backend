@@ -9,14 +9,13 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 {
     protected Event() { }
 
-    private Event(Guid id, string name, DateTimeOffset startDateOnUtc, DateTimeOffset endDateOnUtc, int capacity, Guid organizationId, string eventType)
+    private Event(Guid id, string name, DateTimeOffset startDateOnUtc, DateTimeOffset endDateOnUtc, int capacity, string eventType)
     {
         Id = id;
         Name = name;
         StartedOnUtc = startDateOnUtc;
         EndedOnUtc = endDateOnUtc;
         Capacity = capacity;
-        OrganizationInfoId = organizationId;
         EventType = eventType;
     }
 
@@ -26,7 +25,7 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         DateTimeOffset startedDateOutc, DateTimeOffset endedDateOnUtc, 
         int capacity, 
         Guid? categoryId, 
-        Guid organizationId,
+        Guid? organizationId,
         string? meetUrl, 
         string? address, 
         string? district, 
@@ -35,13 +34,16 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         Domain.Enumerations.EventType eventType)
     {
 
-        var @event = new Event(Guid.NewGuid(), name, startedDateOutc, endedDateOnUtc, capacity, organizationId, eventType);
+        var @event = new Event(Guid.NewGuid(), name, startedDateOutc, endedDateOnUtc, capacity, eventType);
 
         if (!string.IsNullOrWhiteSpace(description))
             @event.AssignDescription(description);
 
         if (categoryId is not null)
             @event.AssignCategory(categoryId.Value);
+
+        if (organizationId is not null)
+            @event.AssignOrganizationInfo(organizationId.Value);
 
         // Business rules
         // Event `online` -> Required MeetUrl
@@ -123,6 +125,12 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
+    private Event AssignOrganizationInfo(Guid organizationId)
+    {
+        OrganizationInfoId = organizationId;
+        return this;
+    }
+
     private Event AssignName(string name)
     {
         Name = name;
@@ -151,8 +159,8 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
     public Guid? CategoryId { get; private set; }
     public virtual Category? Category { get; private set; } = null!;
 
-    public Guid OrganizationInfoId { get; private set; }
-    //public OrganizationInfo? OrganizationInfo { get; private set; } = null!;
+    public Guid? OrganizationInfoId { get; private set; }
+    public virtual OrganizationInfo? OrganizationInfo { get; private set; } = null!;
 
 
     // Image
@@ -186,4 +194,6 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }
+
+    public virtual List<Ticket>? Tickets { get; private set; } = new();
 }

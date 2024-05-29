@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\V1\Queries\Ticket\" />
+  </ItemGroup>
+
 </Project>

@@ -27,8 +27,8 @@ public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, R
             ?? throw new EventException.EventNotFoundException(request.Id);
 
         // Step 02: Get organization info
-        var holderOrganizationInfo = await _organizationRepository.FindByIdAsync(holderEvent.OrganizationInfoId, cancellationToken)
-            ?? throw new OrganizationInfoException.OrganizationNotFoundException(holderEvent.OrganizationInfoId);
+        //var holderOrganizationInfo = await _organizationRepository.FindByIdAsync(holderEvent.OrganizationInfoId, cancellationToken)
+        //    ?? throw new OrganizationInfoException.OrganizationNotFoundException(holderEvent.OrganizationInfoId);
 
         // Step 03: Make response
         var result = new Response.EventDetailsReponse(
@@ -37,7 +37,7 @@ public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, R
             holderEvent.Description,
             holderEvent.Category?.Name ?? string.Empty,
             holderEvent.EventType,
-            holderOrganizationInfo.Name,
+            holderEvent.OrganizationInfo.Name ?? string.Empty,
             holderEvent.LogoImage,
             holderEvent.LayoutImage,                                                                                           
             holderEvent.StartedOnUtc,

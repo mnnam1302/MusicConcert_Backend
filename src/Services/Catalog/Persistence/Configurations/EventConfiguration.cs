@@ -66,8 +66,12 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .WithMany()
             .HasForeignKey(x => x.CategoryId);
 
-        //builder.HasOne(x => x.OrganizationInfo)
-        //    .WithMany()
-        //    .HasForeignKey(x => x.OrganizationInfoId);
+        builder.HasMany(x => x.Tickets)
+            .WithOne()
+            .HasForeignKey(x => x.EventId);
+
+        builder.HasOne(x => x.OrganizationInfo)
+            .WithMany()
+            .HasForeignKey(x => x.OrganizationInfoId);
     }
 }
