@@ -15,7 +15,7 @@ public static class Command
         DateTimeOffset EndedDateOnUtc,
         int Capacity,
         Guid? CategoryId,
-        Guid OrganizationId,
+        Guid? OrganizationId,
         string EventType,
         string? MeetUrl,
         string? Adrress,

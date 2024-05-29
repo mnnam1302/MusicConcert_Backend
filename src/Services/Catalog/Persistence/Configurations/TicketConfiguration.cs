@@ -23,8 +23,8 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
         builder.Property(x => x.UnitInStock)
             .IsRequired();
 
-        builder.HasOne(x => x.Event)
-            .WithMany()
-            .HasForeignKey(x => x.EventId);
+        //builder.HasOne(x => x.Event)
+        //    .WithMany()
+        //    .HasForeignKey(x => x.EventId);
     }
 }
