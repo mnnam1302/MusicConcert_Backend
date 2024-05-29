@@ -1,6 +1,10 @@
-﻿using Contracts.JsonConverters;
+﻿using Application.Abstractions;
+using Contracts.JsonConverters;
+using Firebase.Auth;
+using Firebase.Storage;
 using Infrastructure.DependencyInjection.Options;
 using Infrastructure.PipelineObservers;
+using Infrastructure.UploadImage;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +15,27 @@ namespace Infrastructure.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddFirebaseInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        var fireBaseOptions = new FireBaseOptions();
+        configuration.GetSection(nameof(FireBaseOptions)).Bind(fireBaseOptions);
+
+        // Firebase config
+        services.AddTransient(provider 
+            => new FirebaseConfig(fireBaseOptions.ApiKey));
+
+        // Firebase storage
+        services.AddTransient(provider 
+            => new FirebaseStorage(fireBaseOptions.StorageBucket));
+
+        // Firebase AuthProvider
+        services.AddTransient<FirebaseAuthProvider>();
+
+        services.AddTransient<IFirebaseService, FirebaseService>();
+
+        return services;
+    }
+
     public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {

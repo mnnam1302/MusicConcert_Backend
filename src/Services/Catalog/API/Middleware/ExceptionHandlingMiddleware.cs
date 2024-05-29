@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using Application.Exceptions;
+using Domain.Exceptions;
 using System.Text.Json;
 
 namespace API.Middleware;
@@ -55,6 +56,9 @@ public class ExceptionHandlingMiddleware : IMiddleware
             EventException.EventNotFoundException => StatusCodes.Status404NotFound,
             EventException.EventFieldException => StatusCodes.Status400BadRequest,
             EventException.EventTypeException => StatusCodes.Status400BadRequest,
+
+            // Firebase
+            FirebaseException.FireBaseAuthenticateException => StatusCodes.Status401Unauthorized,
 
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,

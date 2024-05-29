@@ -21,11 +21,40 @@ public class EventApi : ApiEndpoint, ICarterModule
 
 
         group1.MapPost("", CreateEventsV1);
+        group1.MapPut("{eventId}", UpdateEventsV1);
     }
 
     private static async Task<IResult> CreateEventsV1(ISender sender, [FromBody] Command.CreateEventCommand request)
     {
         var command = request with { EventType = EventTypeExtension.ConvertStringToEventType(request.EventType) };
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    //private static async Task<IResult> UpdateEventsV1(ISender sender,
+    //    HttpContext context,
+    //    [AsParameters] Command.UpdateEventCommand request)
+    private static async Task<IResult> UpdateEventsV1(ISender sender, Guid eventId, HttpContext context)
+    {
+        var form = await context.Request.ReadFormAsync();
+        var files = form.Files;
+
+        //var command = new Command.UpdateEventCommand(files["LogoImage"], files["LayoutImage"]);
+        var command = new Command.UpdateEventCommand
+        {
+            Id = eventId,
+            Name = form[nameof(Command.UpdateEventCommand.Name)],
+            Description = form[nameof(Command.UpdateEventCommand.Description)],
+            IsPublished = string.IsNullOrEmpty(form[nameof(Command.UpdateEventCommand.IsPublished)]) 
+                    ? false : true,
+            LogoImage = files[nameof(Command.UpdateEventCommand.LogoImage)],
+            LayoutImage = files[nameof(Command.UpdateEventCommand.LayoutImage)]
+        };
+
         var result = await sender.Send(command);
 
         if (result.IsFailure)
