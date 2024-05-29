@@ -35,5 +35,5 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 | Event		    | Create           | api/v1/events										|                        | pass    |
 |               | Get              | api/v1/events										|                        |		   |
 |               | Get              | api/v1/events/{eventId}							|                        |		   |
-|               | Update           | api/v1/events/{eventId}							|                        |		   |
+|               | Update           | api/v1/events/{eventId}							|                        | pass	   |
 |               | Delete           | api/v1/events/{eventId}							|                        |		   |

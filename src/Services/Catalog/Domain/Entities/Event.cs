@@ -7,17 +7,12 @@ namespace Domain.Entities;
 
 public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 {
-    protected Event()
-    {   
-    }
+    protected Event() { }
 
     private Event(Guid id, string name, DateTimeOffset startDateOnUtc, DateTimeOffset endDateOnUtc, int capacity, Guid organizationId, string eventType)
     {
         Id = id;
         Name = name;
-        //StartDate = startDate;
-        //StartTime = startTime;
-        //EndTime = endTime;
         StartedOnUtc = startDateOnUtc;
         EndedOnUtc = endDateOnUtc;
         Capacity = capacity;
@@ -69,10 +64,36 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return @event;
     }
 
-    //public void Update(string name, string? description, DateTimeOffset startedDateOnUtc, DateTimeOffset endedDateOnUtc, DateTimeOffset? publishedDateOnUtc, Guid? categoryId, string? logoImage, string? layoutImage, string? meetUrl)
-    //{
+    /// <summary>
+    /// This is method aims update Event include: name, description, publishedDateOnUtc, logoImage, layoutImage
+    /// before Published Event
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <param name="publishedDateOnUtc"></param>
+    /// <param name="logoImage"></param>
+    /// <param name="layoutImage"></param>
+    public void Update(string? name, string? description, bool publishedDateOnUtc)
+    {
+        if (!string.IsNullOrWhiteSpace(name))
+            AssignName(name);
 
-    //}
+        if (!string.IsNullOrWhiteSpace(description))
+            AssignDescription(description);
+
+        if (publishedDateOnUtc)
+            AssignPublishedEvent();
+    }
+
+    public void UpdateLogoImage(string logoImage)
+    {
+        LogoImage = logoImage;
+    }
+
+    public void UpdateLayoutImage(string layoutImage)
+    {
+        LayoutImage = layoutImage;
+    }
 
     private Event AssignEventOnline(EventType eventType, string meetUrl)
     {
@@ -97,15 +118,21 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
+
+    private Event AssignName(string name)
+    {
+        Name = name;
+        return this;
+    }
     private Event AssignDescription(string description)
     {
         Description = description;
         return this;
     }
 
-    private Event AssignPublishedEvent(DateTimeOffset publishedOnUtc)
+    private Event AssignPublishedEvent()
     {
-        PublishedOnUtc = publishedOnUtc;
+        PublishedOnUtc = DateTime.UtcNow;
         Status = EventStatus.Published;
         return this;
     }
@@ -128,10 +155,6 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
     public string? LayoutImage { get; private set; }
 
     // Event Time
-    //public DateOnly StartDate { get; private set; }
-    //public TimeOnly StartTime { get; private set; }
-    //public TimeOnly EndTime { get; private set; }
-
     public DateTimeOffset StartedOnUtc { get; private set; }
     public DateTimeOffset EndedOnUtc { get; private set; }
     public DateTimeOffset? PublishedOnUtc { get; private set; }

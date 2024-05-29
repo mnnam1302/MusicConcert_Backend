@@ -59,6 +59,7 @@ builder.Services.AddRepositoryPersistence();
 // Infrastructure
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 builder.Services.AddInterceptorPersistence();
+builder.Services.AddFirebaseInfrastructure(builder.Configuration);
 
 // Middleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();

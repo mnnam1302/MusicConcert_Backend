@@ -1,6 +1,5 @@
 ﻿using Contracts.Abstractions.Message;
-using Contracts.Enumerations;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 
 namespace Contracts.Services.V1.Catalog.Event;
 
@@ -18,9 +17,29 @@ public static class Command
         Guid? CategoryId,
         Guid OrganizationId,
         string EventType,
-        string? MeetUrl, 
+        string? MeetUrl,
         string? Adrress,
         string? District,
         string? City,
         string? Country) : ICommand;
+
+    //public record UpdateEventCommand(
+    //    //Guid Id,
+    //    //string? Name,
+    //    //string? Description,
+    //    IFormFile? LogoImage,
+    //    IFormFile? LayoutImage
+    //    //DateTimeOffset? PublishedOnUtc
+    //    ) : ICommand;
+
+    public record UpdateEventCommand : ICommand
+    {
+        public Guid Id { get; init; }
+        public string? Name { get; init; }
+        public string? Description { get; init; }
+        public bool IsPublished { get; init; }
+
+        public IFormFile? LogoImage { get; init; }
+        public IFormFile? LayoutImage { get; init; }
+    }
 }
