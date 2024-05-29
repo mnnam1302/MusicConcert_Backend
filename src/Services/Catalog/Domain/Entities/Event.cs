@@ -85,6 +85,11 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
             AssignPublishedEvent();
     }
 
+    public void Delete()
+    {
+        Status = EventStatus.Cancelled;
+    }
+
     public void UpdateLogoImage(string logoImage)
     {
         LogoImage = logoImage;
@@ -118,12 +123,12 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
-
     private Event AssignName(string name)
     {
         Name = name;
         return this;
     }
+    
     private Event AssignDescription(string description)
     {
         Description = description;

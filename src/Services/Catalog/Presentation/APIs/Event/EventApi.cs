@@ -21,7 +21,32 @@ public class EventApi : ApiEndpoint, ICarterModule
 
 
         group1.MapPost("", CreateEventsV1);
+        group1.MapGet("", GetEventsV1);
+        group1.MapGet("{eventId}", GetEventsByIdV1);
         group1.MapPut("{eventId}", UpdateEventsV1);
+        group1.MapDelete("{eventId}", DeleteEventsV1);
+    }
+
+    private static async Task<IResult> GetEventsV1(ISender sender)
+    {
+        var query = new Query.GetEventsQuery();
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetEventsByIdV1(ISender sender, Guid eventId)
+    {
+        var query = new Query.GetEventByIdQuery(eventId);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
     }
 
     private static async Task<IResult> CreateEventsV1(ISender sender, [FromBody] Command.CreateEventCommand request)
@@ -55,6 +80,17 @@ public class EventApi : ApiEndpoint, ICarterModule
             LayoutImage = files[nameof(Command.UpdateEventCommand.LayoutImage)]
         };
 
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    public static async Task<IResult> DeleteEventsV1(ISender sender, Guid eventId)
+    {
+        var command = new Command.DeleteEventCommand(eventId);
         var result = await sender.Send(command);
 
         if (result.IsFailure)

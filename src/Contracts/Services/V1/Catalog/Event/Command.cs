@@ -23,15 +23,6 @@ public static class Command
         string? City,
         string? Country) : ICommand;
 
-    //public record UpdateEventCommand(
-    //    //Guid Id,
-    //    //string? Name,
-    //    //string? Description,
-    //    IFormFile? LogoImage,
-    //    IFormFile? LayoutImage
-    //    //DateTimeOffset? PublishedOnUtc
-    //    ) : ICommand;
-
     public record UpdateEventCommand : ICommand
     {
         public Guid Id { get; init; }
@@ -42,4 +33,6 @@ public static class Command
         public IFormFile? LogoImage { get; init; }
         public IFormFile? LayoutImage { get; init; }
     }
+
+    public record DeleteEventCommand(Guid Id) : ICommand;
 }

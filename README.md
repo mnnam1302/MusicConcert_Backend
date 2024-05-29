@@ -33,7 +33,12 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 |               | Update           | api/v1/categories/{categoriesId}                   |                        | pass    |
 |               | Delete           | api/v1/categories/{categoriesId}                   |                        | pass    |
 | Event		    | Create           | api/v1/events										|                        | pass    |
-|               | Get              | api/v1/events										|                        |		   |
-|               | Get              | api/v1/events/{eventId}							|                        |		   |
+|               | Get              | api/v1/events										|                        | pass	   |
+|               | Get              | api/v1/events/{eventId}							|                        | pass	   |
 |               | Update           | api/v1/events/{eventId}							|                        | pass	   |
-|               | Delete           | api/v1/events/{eventId}							|                        |		   |
+|               | Delete           | api/v1/events/{eventId}							|                        | pass	   |
+| Ticket		| Create           | api/v1/tickets										|                        |         |
+|               | Get              | api/v1/tickets										|                        |   	   |
+|               | Get              | api/v1/tickets/{ticketId}							| ticket-created         |   	   |
+|               | Update           | api/v1/tickets/{ticketId}							| ticket-updated         |  	   |
+|               | Delete           | api/v1/tickets/{ticketId}							| ticket-deleted         |   	   |
