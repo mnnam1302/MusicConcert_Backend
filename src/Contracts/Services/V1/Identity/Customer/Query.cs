@@ -10,4 +10,8 @@ public static class Query
         string Email,
         string AccessToken,
         string RefreshToken) : IQuery<Response.AuthenticatedResponse>;
+
+    public record GetCustomerByIdQuery(Guid Id) : IQuery<Response.CustomerDetailsResponse>;
+
+    public record GetCustomersQuery() : IQuery<List<Response.CustomerResponse>>;
 }

@@ -20,10 +20,32 @@ public class AppCustomerApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("", CreateCustomersV1);
-        //group1.MapGet("customerId", () => "");
-        //group1.MapGet("", () => "");
+        group1.MapGet("", GetCustomersV1);
+        group1.MapGet("{customerId}", GetCustomersByIdV1);
         //group1.MapPut("customerId", () => "");
         group1.MapDelete("{customerId}", DeleteCustomersV1);
+    }
+
+    private static async Task<IResult> GetCustomersByIdV1(ISender sender, Guid customerId)
+    {
+        var query = new Query.GetCustomerByIdQuery(customerId);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetCustomersV1(ISender sender)
+    {
+        var query = new Query.GetCustomersQuery();
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
     }
 
     private static async Task<IResult> CreateCustomersV1(ISender sender, [FromBody] Command.CreateCustomerCommand request)
