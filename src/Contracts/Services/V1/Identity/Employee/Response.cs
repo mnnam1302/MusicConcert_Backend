@@ -8,4 +8,16 @@ public static class Response
         public string RefreshToken { get; init; }
         public DateTime? RefreshTokenExpiryTime { get; init; }
     }
+
+    public record EmployeeDetailsResponse(
+        Guid Id,
+        string FirstName,
+        string LastName,
+        string FullName,
+        string Email,
+        string PhoneNumber,
+        DateTime? DateOfBirth,
+        bool IsDirector,
+        bool IsHeadOfDepartment,
+        Guid? ManagerId);
 }

@@ -21,5 +21,10 @@ public class ProfileService : Profile
         CreateMap<
             Domain.Entities.AppCustomer, 
             Contracts.Services.V1.Identity.Customer.Response.CustomerResponse>();
+
+        // Employee
+        CreateMap<
+            Domain.Entities.AppEmployee,
+            Contracts.Services.V1.Identity.AppEmployee.Response.EmployeeDetailsResponse>();
     }
 }

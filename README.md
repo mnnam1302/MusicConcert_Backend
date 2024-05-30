@@ -11,10 +11,16 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 | Entity        | Action           | Url                                                | Event - Queue          | Status  |
 |---------------|------------------|----------------------------------------------------|------------------------|---------|
 | Organization  | Create           | api/v1/organizations                               | organization-created   | pass    |
+|               | Get              | api/v1/organizations                               |                        | pass    |
+|               | Get              | api/v1/organizations/{organizationId}              |                        | pass    |
 |               | Delete           | api/v1/organizations/{organizationId}              | organization-deleted   | pass    |
 | Employee      | Create           | api/v1/employees                                   | employee-created       | pass    |
+|               | Get              | api/v1/employees                                   |                        |         |
+|               | Get              | api/v1/employees/{employeeId}                      |                        | pass    |
 |               | Delete           | api/v1/employees/{employeeId}                      | employee-deleted       | pass    |
 | Customer      | Create           | api/v1/customers                                   | customer-created       | pass    |
+|               | Get              | api/v1/customers                                   |                        | pass    |
+|               | Get              | api/v1/customers/{customerId}                      |                        | pass    |
 |               | Delete           | api/v1/customers/{customerId}                      | customer-deleted       | pass    |
 | Authenticate  | Sign-In Employee | api/v1/auth/employee/sign-in                       |                        | pass    |
 |               | Sign-Out Employee| api/v1/auth/employee/sign-out                      |                        | pass    |

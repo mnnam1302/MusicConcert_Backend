@@ -22,8 +22,8 @@ public class AppCustomerApi : ApiEndpoint, ICarterModule
         group1.MapPost("", CreateCustomersV1);
         group1.MapGet("", GetCustomersV1);
         group1.MapGet("{customerId}", GetCustomersByIdV1);
-        //group1.MapPut("customerId", () => "");
         group1.MapDelete("{customerId}", DeleteCustomersV1);
+        //group1.MapPut("customerId", () => "");
     }
 
     private static async Task<IResult> GetCustomersByIdV1(ISender sender, Guid customerId)

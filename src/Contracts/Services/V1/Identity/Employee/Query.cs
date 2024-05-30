@@ -12,4 +12,6 @@ public static class Query
         string Email, 
         string AccessToken, 
         string RefreshToken) : IQuery<Response.AuthenticatedResponse>;
+
+    public record GetEmployeeByIdQuery(Guid Id) : IQuery<Response.EmployeeDetailsResponse>;
 }
