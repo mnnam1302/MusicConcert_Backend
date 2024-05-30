@@ -4,12 +4,12 @@ namespace Contracts.Services.V1.Identity.AppEmployee;
 
 public static class DomainEvent
 {
-    public record EmployeeCreated(
-        Guid EventId,
-        DateTimeOffset TimeStamp,
-        Guid Id,
-        string FirstName,
-        string LastName) : IDomainEvent;
+    //public record EmployeeCreated(
+    //    Guid EventId,
+    //    DateTimeOffset TimeStamp,
+    //    Guid Id,
+    //    string FirstName,
+    //    string LastName) : IDomainEvent;
 
     //public record EmployeeUpdated(
     //    Guid EventId,
@@ -18,8 +18,8 @@ public static class DomainEvent
     //    string FirstName,
     //    string LastName) : IDomainEvent;
 
-    public record EmployeeDeleted(
-        Guid EventId,
-        DateTimeOffset TimeStamp,
-        Guid Id) : IDomainEvent;
+    //public record EmployeeDeleted(
+    //    Guid EventId,
+    //    DateTimeOffset TimeStamp,
+    //    Guid Id) : IDomainEvent;
 }

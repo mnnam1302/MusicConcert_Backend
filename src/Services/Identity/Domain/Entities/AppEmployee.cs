@@ -41,14 +41,14 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
         if (organizationId.HasValue)
             employee.AssignOrganization(organizationId.Value);
 
-        employee.RaiseDomainEvent(new DomainEvent.EmployeeCreated(Guid.NewGuid(), DateTimeOffset.UtcNow, employee.Id, employee.FirstName, employee.LastName));
+        //employee.RaiseDomainEvent(new DomainEvent.EmployeeCreated(Guid.NewGuid(), DateTimeOffset.UtcNow, employee.Id, employee.FirstName, employee.LastName));
 
         return employee;
     }
 
     public void Delete()
     {
-        RaiseDomainEvent(new DomainEvent.EmployeeDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
+        //RaiseDomainEvent(new DomainEvent.EmployeeDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
     }
 
     private AppEmployee AssignDateOfBirth(DateTime dateOfBirth)

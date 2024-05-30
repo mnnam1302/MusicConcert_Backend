@@ -79,27 +79,27 @@ public class ProducerOutboxMessageJob : IJob
                         break;
 
                     // DomainEvent: Employee
-                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated):
-                        var employeeCreated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated>(
-                            outboxMessage.Content,
-                            new JsonSerializerSettings
-                            {
-                                TypeNameHandling = TypeNameHandling.All
-                            });
+                    //case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated):
+                    //    var employeeCreated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeCreated>(
+                    //        outboxMessage.Content,
+                    //        new JsonSerializerSettings
+                    //        {
+                    //            TypeNameHandling = TypeNameHandling.All
+                    //        });
 
-                        await _publishEndpoint.Publish(employeeCreated, context.CancellationToken);
-                        break;
+                    //    await _publishEndpoint.Publish(employeeCreated, context.CancellationToken);
+                    //    break;
 
-                    case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted):
-                        var employeeDeleted = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted>(
-                            outboxMessage.Content,
-                            new JsonSerializerSettings
-                            {
-                                TypeNameHandling = TypeNameHandling.All
-                            });
+                    //case nameof(Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted):
+                    //    var employeeDeleted = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.AppEmployee.DomainEvent.EmployeeDeleted>(
+                    //        outboxMessage.Content,
+                    //        new JsonSerializerSettings
+                    //        {
+                    //            TypeNameHandling = TypeNameHandling.All
+                    //        });
 
-                        await _publishEndpoint.Publish(employeeDeleted, context.CancellationToken);
-                        break;
+                    //    await _publishEndpoint.Publish(employeeDeleted, context.CancellationToken);
+                    //    break;
 
                     // DomainEvent: Customer
                     case nameof(Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerCreated):

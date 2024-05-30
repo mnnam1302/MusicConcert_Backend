@@ -1,4 +1,5 @@
 ﻿using Application.Behaviors;
+using Application.Mapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,12 @@ public static class ServiceCollectionExtensions
             .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>))
             .AddValidatorsFromAssembly(Contracts.AssemblyReference.Assembly, includeInternalTypes: true);
 
+        return services;
+    }
+
+    public static IServiceCollection AddAutoMapperApplication(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(ProfileService));
         return services;
     }
 }

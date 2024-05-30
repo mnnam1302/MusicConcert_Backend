@@ -20,10 +20,33 @@ public class OrganizationApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("", CreateOrganizationsV1);
+        group1.MapGet("", GetOrganizationsV1);
+        group1.MapGet("{organizationId}", GetOrganizationsByIdV1);
         group1.MapDelete("{organizationId}", DeleteOrganizationsV1);
-        //group1.MapGet("", () => "");
-        //group1.MapGet("organizationId", () => "");
         //group1.MapPut("organizationId", () => "");
+    }
+
+    private static async Task<IResult> GetOrganizationsByIdV1(ISender sender, Guid organizationId)
+    {
+        var query = new Query.GetOrganizaitionByIdQuery(organizationId);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetOrganizationsV1(ISender sender)
+    {
+        var query = new Query.GetOrganizationsQuery();
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
     }
 
     public static async Task<IResult> CreateOrganizationsV1(ISender sender, [FromBody] Command.CreateOrganizationCommand command)
