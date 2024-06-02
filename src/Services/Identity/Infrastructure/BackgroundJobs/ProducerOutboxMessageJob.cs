@@ -113,6 +113,17 @@ public class ProducerOutboxMessageJob : IJob
                         await _publishEndpoint.Publish(customerCreated, context.CancellationToken);
                         break;
 
+                    case nameof(Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerUpdated):
+                        var customerUpdated = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerUpdated>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(customerUpdated, context.CancellationToken);
+                        break;
+
                     case nameof(Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerDeleted):
                         var customerDeleted = JsonConvert.DeserializeObject<Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerDeleted>(
                             outboxMessage.Content,

@@ -13,6 +13,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
-    public DbSet<Domain.Entities.CustomerInfo> CustomerInfos { get; set; }
-    public DbSet<Domain.Entities.OrderInfo> OrderInfos { get; set; }
+    public DbSet<Domain.Entities.CustomerInfo> CustomerInfo { get; set; }
+    public DbSet<Domain.Entities.OrderInfo> OrderInfo { get; set; }
 }

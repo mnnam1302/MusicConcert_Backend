@@ -1,4 +1,5 @@
 ﻿using Domain.Exceptions;
+using System.Text.Json;
 
 namespace API.Middleware;
 
@@ -47,6 +48,10 @@ public class ExceptionHandlingMiddleware : IMiddleware
     private static int GetStatusCode(Exception exception) =>
         exception switch
         {
+            // CustomerInfo
+            CustomerInfoException.CustomerInfoAlreadyExistsException => StatusCodes.Status409Conflict,
+            CustomerInfoException.CustomerInfoNotFoundException => StatusCodes.Status404NotFound,
+
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,

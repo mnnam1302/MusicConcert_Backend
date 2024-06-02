@@ -10,10 +10,18 @@ public class DomainEvent
         Guid Id,
         string FullName,
         string Email,
-        string PhoneNumber) : IDomainEvent;
+        string PhoneNumber) : IDomainEvent, ICommand;
+
+    public record CustomerUpdated(
+        Guid EventId,
+        DateTimeOffset TimeStamp,
+        Guid Id,
+        string FullName,
+        string Email,
+        string PhoneNumber) : IDomainEvent, ICommand;
 
     public record CustomerDeleted(
         Guid EventId,
         DateTimeOffset TimeStamp,
-        Guid Id) : IDomainEvent;
+        Guid Id) : IDomainEvent, ICommand;
 }

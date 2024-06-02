@@ -1,11 +1,11 @@
 using Carter;
 using Serilog;
-
 using API.DependencyInjection.Extensions;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Persistence.DependencyInjection.Extensions;
 using Application.DependencyInjection.Extensions;
 using API.Middleware;
+using Infrastructure.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +50,9 @@ builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration
 builder.Services.AddSqlServerPersistence(builder.Configuration);
 builder.Services.AddInterceptorPersistence();
 builder.Services.AddRepositoryPersistence();
+
+// Infrastructure
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 

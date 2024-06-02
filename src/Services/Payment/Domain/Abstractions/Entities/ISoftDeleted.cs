@@ -1,6 +1,6 @@
 ﻿namespace Domain.Abstractions.Entities;
 
-public interface ISoftDelete
+public interface ISoftDeleted
 {
     public bool IsDeleted { get; }
 

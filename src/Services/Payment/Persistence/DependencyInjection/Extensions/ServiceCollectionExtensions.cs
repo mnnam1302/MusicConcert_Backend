@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Persistence.DependencyInjection.Options;
+using Persistence.Interceptors;
 using Persistence.Repository;
 
 namespace Persistence.DependencyInjection.Extensions;
@@ -15,7 +16,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
-            //var auditableInterceptor = provider.GetRequiredService<UpdateAuditableEntitiesInterceptor>();
+            var auditableInterceptor = provider.GetRequiredService<UpdateAuditableEntitiesInterceptor>();
             //var outboxInterceptors = provider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptors>();
 
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
@@ -34,10 +35,9 @@ public static class ServiceCollectionExtensions
                                 maxRetryCount: options.CurrentValue.MaxRetryCount,
                                 maxRetryDelay: options.CurrentValue.MaxRetryDelay,
                                 errorNumbersToAdd: options.CurrentValue.ErrorNumbersoAdd))
-                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name));
-                //.AddInterceptors(
-                //    auditableInterceptor,
-                //    outboxInterceptors);
+                        .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
+                .AddInterceptors(
+                    auditableInterceptor);
         });
 
         return services;
@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
 
     public static void AddInterceptorPersistence(this IServiceCollection services)
     {
-        //services.AddTransient<UpdateAuditableEntitiesInterceptor>();
+        services.AddTransient<UpdateAuditableEntitiesInterceptor>();
         //services.AddTransient<ConvertDomainEventsToOutboxMessagesInterceptors>();
     }
 
