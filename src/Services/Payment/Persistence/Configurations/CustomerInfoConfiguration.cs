@@ -10,6 +10,14 @@ public class CustomerInfoConfiguration
     public void Configure(EntityTypeBuilder<CustomerInfo> builder)
     {
         builder.ToTable(TableNames.CustomerInfo);
+        
         builder.HasKey(x => x.Id);
+
+
+        builder.Property(x => x.Email)
+            .IsRequired();
+
+        builder.Property(x => x.PhoneNumer)
+            .IsRequired();
     }
 }

@@ -44,6 +44,22 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
         return customer;
     }
 
+    public void Update(string firstName, string lastName, string email, string phoneNumber)
+    {
+        string fullName = $"{firstName} {lastName}";
+
+        if (fullName.Length > 40)
+            throw new CustomerException.CustomerFieldException(nameof(FullName));
+
+        FirstName = firstName;
+        LastName = lastName;
+        FullName = fullName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+
+        RaiseDomainEvent(new DomainEvent.CustomerUpdated(Guid.NewGuid(), DateTime.UtcNow, Id, FullName, Email, PhoneNumber));
+    }
+
     public void Delete()
     {
         RaiseDomainEvent(new DomainEvent.CustomerDeleted(Guid.NewGuid(), DateTime.UtcNow, Id));
