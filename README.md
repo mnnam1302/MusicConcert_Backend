@@ -31,20 +31,44 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 
 ## Service Catalog
 
-| Entity        | Action           | Url                                                | Event - Queue          | Status  |
-|---------------|------------------|----------------------------------------------------|------------------------|---------|
-| Category      | Create           | api/v1/categories                                  |                        | pass    |
-|               | Get              | api/v1/categories                                  |                        | pass    |
-|               | Get              | api/v1/categories/{categoriesId}                   |                        | pass    |
-|               | Update           | api/v1/categories/{categoriesId}                   |                        | pass    |
-|               | Delete           | api/v1/categories/{categoriesId}                   |                        | pass    |
-| Event		    | Create           | api/v1/events										|                        | pass    |
-|               | Get              | api/v1/events										|                        | pass	   |
-|               | Get              | api/v1/events/{eventId}							|                        | pass	   |
-|               | Update           | api/v1/events/{eventId}							|                        | pass	   |
-|               | Delete           | api/v1/events/{eventId}							|                        | pass	   |
-| Ticket		| Create           | api/v1/tickets										| ticket-created         | pass	   |
-|               | Get              | api/v1/tickets										|                        |   	   |
-|               | Get              | api/v1/tickets/{ticketId}							|				         |   	   |
-|               | Update           | api/v1/tickets/{ticketId}							|						 |  	   |
-|               | Delete           | api/v1/tickets/{ticketId}							| ticket-deleted         | pass    |
+| Entity              | Action           | Url                                                | Event - Queue          | Status  |
+|---------------------|------------------|----------------------------------------------------|------------------------|---------|
+| Category            | Create           | api/v1/categories                                  |                        | pass    |
+|                     | Get              | api/v1/categories                                  |                        | pass    |
+|                     | Get              | api/v1/categories/{categoriesId}                   |                        | pass    |
+|                     | Update           | api/v1/categories/{categoriesId}                   |                        | pass    |
+|                     | Delete           | api/v1/categories/{categoriesId}                   |                        | pass    |
+| Event		          | Create           | api/v1/events									  |                        | pass    |
+|                     | Get              | api/v1/events									  |                        | pass	 |
+|                     | Get              | api/v1/events/{eventId}							  |                        | pass	 |
+|                     | Update           | api/v1/events/{eventId}							  |                        | pass	 |
+|                     | Delete           | api/v1/events/{eventId}							  |                        | pass	 |
+| Ticket		      | Create           | api/v1/tickets									  | ticket-created         | pass	 |
+|                     | Get              | api/v1/tickets									  |                        |   	     |
+|                     | Get              | api/v1/tickets/{ticketId}						  |				           |   	     |
+|                     | Update           | api/v1/tickets/{ticketId}						  |						   |  	     |
+|                     | Delete           | api/v1/tickets/{ticketId}						  | ticket-deleted         | pass    |
+|Consume Organization | Created          | 													  | organization-created   | pass	 |
+|                     | Deleted          | 													  | organizayion-deleted   | pass  	 |
+
+## Service Order
+
+| Entity           | Action           | Url                                                 | Event - Queue          | Status  |
+|------------------|------------------|-----------------------------------------------------|------------------------|---------|
+| Order	           | Create           | api/v1/orders                                       |                        |		   |
+|                  | Get              | api/v1/orders                                       |                        |		   |
+|                  | Get              | api/v1/orders/{orderId}                             |                        |		   |
+|                  | Update           | api/v1/orders/{orderId}                             |                        |		   |
+|                  | Delete           | api/v1/orders/{orderId}                             |                        |		   |
+| OrderDetails	   | Create           | 													|                        |		   |
+|                  | Get              | 													|                        | 		   |
+|                  | Get              | 													|                        | 		   |
+|                  | Update           | 													|                        | 		   |
+|                  | Delete           | 													|                        | 		   |
+|Consume Ticket    | Created          | 													| ticket-created         | 	       |
+|                  | Deleted          | 													| ticket-deleted         |   	   |
+|Consume Customer  | Created          | 													| customer-created       | 	       |
+|                  | Deleted          | 													| customer-deleted       |   	   |
+
+## Service Payment
+

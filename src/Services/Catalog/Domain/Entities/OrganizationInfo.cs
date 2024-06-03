@@ -20,6 +20,5 @@ public class OrganizationInfo : Entity<Guid>, ISoftDeleted
 
     public string Name { get; private set; }
     public bool IsDeleted { get; set; }
-
     public DateTimeOffset? DeletedOnUtc { get; set; }
 }
