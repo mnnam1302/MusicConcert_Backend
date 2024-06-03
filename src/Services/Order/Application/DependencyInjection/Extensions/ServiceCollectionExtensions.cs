@@ -1,0 +1,31 @@
+﻿using Application.Behaviors;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.DependencyInjection.Extensions;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddMediatRApplication(this IServiceCollection services)
+    {
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly))
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(TracingPipelineBehavior<,>))
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>))
+            .AddValidatorsFromAssembly(Contracts.AssemblyReference.Assembly, includeInternalTypes: true);
+
+        return services;
+    }
+
+    //public static IServiceCollection AddAutoMapperApplication(this IServiceCollection services)
+    //{
+    //    services.AddAutoMapper(typeof(ProfileService));
+    //    return services;
+    //}
+}

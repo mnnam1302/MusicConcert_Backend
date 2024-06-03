@@ -2,9 +2,12 @@ using Carter;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Serilog;
 
+using Application.DependencyInjection.Extensions;
 using Persistence.DependencyInjection.Extensions;
 using Persistence.DependencyInjection.Options;
 using API.DependencyInjection.Extensions;
+using Infrastructure.DependencyInjection.Extensions;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,17 +46,25 @@ builder.Services
 
 
 // Application
+builder.Services.AddMediatRApplication();
+
+// Persistence
 builder.Services.AddSqlServerPersistence(builder.Configuration);
 builder.Services.AddInterceptorPersistence();
 builder.Services.AddRepositoryPersistence();
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 
-// Persistence
-
 
 // Infrastructure
+builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+
+// Middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 var app = builder.Build();
+
+// Using Middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
