@@ -51,17 +51,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "src\Contracts\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{8285C084-B9DF-49A2-A46E-C7458E800B00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "src\Services\Payment\API\API.csproj", "{15135B68-85E6-42C7-846B-64B7987A2D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "src\Services\Payment\API\API.csproj", "{15135B68-85E6-42C7-846B-64B7987A2D38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Services\Payment\Application\Application.csproj", "{AFD4B439-0798-4DEA-AAFB-E9714F1A20B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Services\Payment\Application\Application.csproj", "{AFD4B439-0798-4DEA-AAFB-E9714F1A20B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Services\Payment\Domain\Domain.csproj", "{4A521D8D-742D-4179-840E-99F0C47CD9B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Services\Payment\Domain\Domain.csproj", "{4A521D8D-742D-4179-840E-99F0C47CD9B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "src\Services\Payment\Persistence\Persistence.csproj", "{8C45C1D1-8C11-4C81-96B9-B9613C79F0A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\Services\Payment\Persistence\Persistence.csproj", "{8C45C1D1-8C11-4C81-96B9-B9613C79F0A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Services\Payment\Infrastructure\Infrastructure.csproj", "{0ABA2323-ACE2-4B26-B75A-564D2DA03764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Services\Payment\Infrastructure\Infrastructure.csproj", "{0ABA2323-ACE2-4B26-B75A-564D2DA03764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "src\Services\Payment\Presentation\Presentation.csproj", "{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "src\Services\Payment\Presentation\Presentation.csproj", "{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{A7374BAC-027F-4730-8481-7C70B2338116}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "src\Services\Order\API\API.csproj", "{B015A354-03F1-485F-845C-990C296F4FF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -149,6 +153,10 @@ Global
 		{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B015A354-03F1-485F-845C-990C296F4FF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B015A354-03F1-485F-845C-990C296F4FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B015A354-03F1-485F-845C-990C296F4FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B015A354-03F1-485F-845C-990C296F4FF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,6 +187,8 @@ Global
 		{8C45C1D1-8C11-4C81-96B9-B9613C79F0A3} = {8285C084-B9DF-49A2-A46E-C7458E800B00}
 		{0ABA2323-ACE2-4B26-B75A-564D2DA03764} = {8285C084-B9DF-49A2-A46E-C7458E800B00}
 		{C4CCD83A-1133-40A3-B1DD-9A9EFAB5376B} = {8285C084-B9DF-49A2-A46E-C7458E800B00}
+		{A7374BAC-027F-4730-8481-7C70B2338116} = {01C0A65D-4448-4EE7-BBB8-4C545FEC5EF5}
+		{B015A354-03F1-485F-845C-990C296F4FF7} = {A7374BAC-027F-4730-8481-7C70B2338116}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7B57EF4-BCCA-4A9D-9F18-7E556493ADFC}
