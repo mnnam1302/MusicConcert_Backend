@@ -8,9 +8,9 @@ public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
     {
     }
 
-    private CustomerInfo(Guid customerId, string fullName, string email, string phoneNumber)
+    public CustomerInfo(Guid customerId, string fullName, string email, string phoneNumber)
     {
-        Id = Guid.NewGuid();
+        Id = Guid.NewGuid(); // Surrogate key in Service Payment
         CustomerId = customerId;
         FullName = fullName;
         Email = email;
