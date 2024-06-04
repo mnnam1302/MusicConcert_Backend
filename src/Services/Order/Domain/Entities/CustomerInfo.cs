@@ -10,11 +10,11 @@ public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
 
     public CustomerInfo(Guid customerId)
     {
-        Id = Guid.NewGuid(); // Surrogate key in Service Order
-        CustomerId = customerId;
+        Id = customerId; // Surrogate key in Service Order
+        //CustomerId = customerId;
     }
 
-    public Guid CustomerId { get; private set; }
+    //public Guid CustomerId { get; private set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

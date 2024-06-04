@@ -17,4 +17,12 @@ public static class TicketInfoException
         {
         }
     }
+
+    public class  TicketInfoNotExistsingException : NotFoundException
+    {
+        public TicketInfoNotExistsingException(string message)
+            : base(message)
+        {
+        }
+    }
 }

@@ -7,13 +7,14 @@ public class TicketInfo : Entity<Guid>, IAuditable, ISoftDeleted
     public TicketInfo()
     {
     }
+
     public TicketInfo(Guid ticketId)
     {
-        Id = Guid.NewGuid();
-        TicketId = ticketId;
+        Id = ticketId;
+        //TicketId = ticketId;
     }
 
-    public Guid TicketId { get; private set; } // Surrogate key
+    //public Guid TicketId { get; private set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

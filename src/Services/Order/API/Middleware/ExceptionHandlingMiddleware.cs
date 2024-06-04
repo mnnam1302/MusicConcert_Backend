@@ -48,6 +48,21 @@ public class ExceptionHandlingMiddleware : IMiddleware
     private static int GetStatusCode(Exception exception) =>
         exception switch
         {
+            // CustomerInfo
+            CustomerInfoException.CustomerInfoAlreadyExistsException => StatusCodes.Status400BadRequest,
+            CustomerInfoException.CustomerInfoNotFoundException => StatusCodes.Status404NotFound,
+
+            // TicketInfo
+            TicketInfoException.TicketInfoAlreadyExistsException => StatusCodes.Status400BadRequest,
+            TicketInfoException.TicketInfoNotFoundException => StatusCodes.Status404NotFound,
+            TicketInfoException.TicketInfoNotExistsingException => StatusCodes.Status404NotFound,
+
+            // Order
+            OrderException.OrderFieldException => StatusCodes.Status400BadRequest,
+
+            //OrderDetails
+            OrderDetailsException.OrderDetailsWithQuantityException => StatusCodes.Status400BadRequest,
+
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,

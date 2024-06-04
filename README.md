@@ -55,7 +55,7 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 
 | Entity           | Action           | Url                                                 | Event - Queue          | Status  |
 |------------------|------------------|-----------------------------------------------------|------------------------|---------|
-| Order	           | Create           | api/v1/orders                                       |                        |		   |
+| Order	           | Create           | api/v1/orders                                       |                        | pass	   |
 |                  | Get              | api/v1/orders                                       |                        |		   |
 |                  | Get              | api/v1/orders/{orderId}                             |                        |		   |
 |                  | Update           | api/v1/orders/{orderId}                             |                        |		   |
@@ -65,10 +65,10 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 |                  | Get              | 													|                        | 		   |
 |                  | Update           | 													|                        | 		   |
 |                  | Delete           | 													|                        | 		   |
-|Consume Ticket    | Created          | 													| ticket-created         | 	       |
-|                  | Deleted          | 													| ticket-deleted         |   	   |
-|Consume Customer  | Created          | 													| customer-created       | 	       |
-|                  | Deleted          | 													| customer-deleted       |   	   |
+|Consume Ticket    | Created          | 													| ticket-created         | pass    |
+|                  | Deleted          | 													| ticket-deleted         | pass    |
+|Consume Customer  | Created          | 													| customer-created       | pass	   |
+|                  | Deleted          | 													| customer-deleted       | pass    |
 
 ## Service Payment
 
