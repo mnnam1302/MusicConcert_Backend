@@ -2,6 +2,7 @@
 using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
 using Domain.Enumerations;
+using Domain.Exceptions;
 using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Entities;
@@ -39,6 +40,27 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
             Guid.NewGuid(),
             DateTimeOffset.UtcNow,
             Id));
+    }
+
+    public Ticket AssignQuantity(int quantity)
+    {
+        var newUnitInStock = UnitInStock - quantity;
+
+        if (UnitInStock < 0)
+        {
+            throw new TicketException.TicketQuantityNotEnoughException(Id);
+        }
+        else if (newUnitInStock == 0)
+        {
+            UnitInStock = newUnitInStock;
+            Status = TicketStatus.SoldOut;
+        }
+        else
+        {
+            UnitInStock = newUnitInStock;
+        }
+
+        return this;
     }
 
     public string Name { get; private set; }

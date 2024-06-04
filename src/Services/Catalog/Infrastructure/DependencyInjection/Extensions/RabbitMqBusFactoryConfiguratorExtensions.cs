@@ -1,5 +1,4 @@
 ﻿using Contracts.Abstractions.Message;
-using Contracts.Services.V1.Identity.Organization;
 using Infrastructure.Consumers.Events;
 using MassTransit;
 
@@ -9,8 +8,19 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
 {
     public static void ConfigureEventReceiveEndpoints(this IRabbitMqBusFactoryConfigurator cfg, IRegistrationContext context)
     {
-        cfg.ConfigureEventReceiveEndpoint<OrganizationConsumer.OrganizationCreatedConsumer, DomainEvent.OrganizationCreated>(context);
-        cfg.ConfigureEventReceiveEndpoint<OrganizationConsumer.OrganizationDeletedConsumer, DomainEvent.OrganizationDeleted>(context);
+        // Organizaiton
+        cfg.ConfigureEventReceiveEndpoint<
+            OrganizationConsumer.OrganizationCreatedConsumer,
+
+            Contracts.Services.V1.Identity.Organization.DomainEvent.OrganizationCreated>(context);
+        cfg.ConfigureEventReceiveEndpoint<
+            OrganizationConsumer.OrganizationDeletedConsumer,
+            Contracts.Services.V1.Identity.Organization.DomainEvent.OrganizationDeleted>(context);
+    
+        // Order
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.OrderCreatedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.OrderCreated>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)

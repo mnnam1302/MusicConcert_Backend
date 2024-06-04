@@ -57,6 +57,7 @@ builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration
 
 // Infrastructure
 builder.Services.AddMasstransitRabbitMQInfrastructure(builder.Configuration);
+builder.Services.AddQuartzInfrastructure();
 
 // Middleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
