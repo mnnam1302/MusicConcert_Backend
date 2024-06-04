@@ -57,6 +57,9 @@ public class ExceptionHandlingMiddleware : IMiddleware
             EventException.EventFieldException => StatusCodes.Status400BadRequest,
             EventException.EventTypeException => StatusCodes.Status400BadRequest,
 
+            // Organization
+            OrganizationInfoException.OrganizationNotFoundException => StatusCodes.Status404NotFound,
+
             // Firebase
             FirebaseException.FireBaseAuthenticateException => StatusCodes.Status401Unauthorized,
 

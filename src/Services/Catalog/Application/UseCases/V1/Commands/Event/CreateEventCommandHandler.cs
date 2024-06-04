@@ -29,17 +29,22 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
     public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
         // Step 01: check organization existing?
+        Guid organizationId = new();
         if (request.OrganizationId.HasValue)
         {
-            var holderOrganizationInfo = await _organizationInfoRepository.FindByIdAsync(request.OrganizationId.Value, cancellationToken)
+            var organizationInfoHolder = await _organizationInfoRepository.FindSingleAsync(
+                x => x.OrganizaitonId.Equals(request.OrganizationId.Value), cancellationToken)
                 ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.OrganizationId.Value);
+
+            // Using suggrorate key here
+            organizationId = organizationInfoHolder.Id;
         }
 
         // Step 02: check category existing?
         if (request.CategoryId.HasValue)
         {
             var category = await _categoryRepository.FindByIdAsync(request.CategoryId.Value, cancellationToken)
-                ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.CategoryId.Value);
+                ?? throw new CategoryException.CategoryNotFoundException(request.CategoryId.Value);
         }
 
         // Step 03: Create event
@@ -49,8 +54,9 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
             request.StartedDateOnUtc,
             request.EndedDateOnUtc,
             request.Capacity,
-            request.CategoryId,
-            request.OrganizationId,
+            request.CategoryId, 
+            //request.OrganizationId,
+            organizationId,
             request.MeetUrl,
             request.Adrress,
             request.District,

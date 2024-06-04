@@ -13,11 +13,19 @@ public class CustomerInfoConfiguration
         
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.CustomerId)
+            .IsRequired();
+
+        builder.Property(x => x.FullName)
+            .IsRequired();
 
         builder.Property(x => x.Email)
             .IsRequired();
 
         builder.Property(x => x.PhoneNumer)
             .IsRequired();
+
+        builder.Property(x => x.IsDeleted)
+            .HasDefaultValue(false);
     }
 }

@@ -22,13 +22,14 @@ public class CustomerCreatedConsumerHandler : ICommandHandler<DomainEvent.Custom
     public async Task<Result> Handle(DomainEvent.CustomerCreated request, CancellationToken cancellationToken)
     {
         // Step 01: Check customer existsing?
-        var customerHolder = await _customerRepository.FindSingleAsync(x => x.Id.Equals(request.Id), cancellationToken);
+        var customerHolder = await _customerRepository.FindSingleAsync(x => x.CustomerId.Equals(request.Id), cancellationToken);
 
         if (customerHolder is not null)
             throw new CustomerInfoException.CustomerInfoAlreadyExistsException(request.Id);
 
         // Step 02: Create a new CustomerInfo
-        var customerInfo = CustomerInfo.Create(request.Id, request.FullName, request.Email, request.PhoneNumber);
+        //var customerInfo = CustomerInfo.Create(request.Id, request.FullName, request.Email, request.PhoneNumber);
+        var customerInfo = new CustomerInfo(request.Id, request.FullName, request.Email, request.PhoneNumber);
 
         // Step 03: Persistence into DB
         _customerRepository.Add(customerInfo);

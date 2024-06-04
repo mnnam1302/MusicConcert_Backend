@@ -4,6 +4,7 @@ using Contracts.Services.V1.Identity.Organization;
 using Domain.Abstractions;
 using Domain.Abstractions.Repositories;
 using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Application.UseCases.V1.Events.Organization;
 
@@ -20,7 +21,14 @@ public class OrganizationCreatedDomainEventHandler : ICommandHandler<DomainEvent
 
     public async Task<Result> Handle(DomainEvent.OrganizationCreated request, CancellationToken cancellationToken)
     {
-        var organizationInfo = OrganizationInfo.Create(request.Id, request.Name);
+        // Step 01: Check if the organization already exists
+        var organizationHolder = await _organizationInfoRepository.FindSingleAsync(x => x.OrganizaitonId.Equals(request.Id), cancellationToken);
+
+        if (organizationHolder is not null)
+            throw new OrganizationInfoException.OrganizaitonInfoAlreadyExistsException(request.Id);
+
+        //var organizationInfo = OrganizationInfo.Create(request.Id, request.Name);
+        var organizationInfo = new OrganizationInfo(request.Id, request.Name);
 
         _organizationInfoRepository.Add(organizationInfo);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

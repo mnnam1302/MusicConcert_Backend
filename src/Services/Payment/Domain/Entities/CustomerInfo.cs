@@ -2,23 +2,24 @@
 
 namespace Domain.Entities;
 
-public class CustomerInfo : Entity<Guid>, ISoftDeleted
+public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
 {
     protected CustomerInfo()
     {
     }
 
-    private CustomerInfo(Guid id, string fullName, string email, string phoneNumber)
+    public CustomerInfo(Guid customerId, string fullName, string email, string phoneNumber)
     {
-        Id = id;
+        Id = Guid.NewGuid(); // Surrogate key in Service Payment
+        CustomerId = customerId;
         FullName = fullName;
         Email = email;
         PhoneNumer = phoneNumber;
     }
-
-    public static CustomerInfo Create(Guid id, string fullName, string email, string phoneNumber)
+    
+    public static CustomerInfo Create(Guid customerId, string fullName, string email, string phoneNumber)
     {
-        var customerInfo = new CustomerInfo(id, fullName, email, phoneNumber);
+        var customerInfo = new CustomerInfo(customerId, fullName, email, phoneNumber);
         return customerInfo;
     }
 
@@ -29,13 +30,14 @@ public class CustomerInfo : Entity<Guid>, ISoftDeleted
         PhoneNumer = phoneNumber;
     }
 
+    public Guid CustomerId { get; private set; }
     public string FullName { get; set; }
-
     public string Email { get; set; }
-
     public string PhoneNumer { get; set; }
 
-    public bool IsDeleted { get; set; }
+    public DateTimeOffset CreatedOnUtc { get; set; }
+    public DateTimeOffset? ModifiedOnUtc { get; set; }
 
+    public bool IsDeleted { get; set; }
     public DateTimeOffset DeletedOnUtc { get; set; }
 }
