@@ -66,6 +66,8 @@ var app = builder.Build();
 // Using Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.MapCarter();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

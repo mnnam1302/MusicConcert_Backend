@@ -21,7 +21,8 @@ public class TicketCreatedConsumerHandler : ICommandHandler<DomainEvent.TicketCr
     public async Task<Result> Handle(DomainEvent.TicketCreated request, CancellationToken cancellationToken)
     {
         // Step 01: check ticket info exists?
-        var ticketHolder = await _ticketInfoRepository.FindSingleAsync(x => x.TicketId.Equals(request.Id), cancellationToken);
+        var ticketHolder = await _ticketInfoRepository.FindByIdAsync(request.Id, cancellationToken);
+        //var ticketHolder = await _ticketInfoRepository.FindSingleAsync(x => x.TicketId.Equals(request.Id), cancellationToken);
 
         if (ticketHolder is not null)
             throw new TicketInfoException.TicketInfoAlreadyExistsException(request.Id);

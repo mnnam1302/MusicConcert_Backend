@@ -13,7 +13,7 @@ public class TicketInfoConfiguration : IEntityTypeConfiguration<TicketInfo>
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.TicketId)
-            .IsRequired();
+        //builder.Property(x => x.TicketId)
+        //    .IsRequired();
     }
 }

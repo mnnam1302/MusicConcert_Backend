@@ -6,14 +6,14 @@ public class OrderDetails : AggregateRoot<Guid>
 {
     protected OrderDetails() { }
 
-    public OrderDetails(Guid id, Guid orderId, Guid ticketId, decimal unitPrice, int quantity, float discount)
+    public OrderDetails(Guid id, Guid orderId, Guid ticketId, decimal unitPrice, int quantity)
     {
         Id = id;
         OrderId = orderId;
         TicketInfoId = ticketId;
         Quantity = quantity;
         UnitPrice = unitPrice;
-        Discount = discount;
+        //Discount = discount;
     }
 
     public Guid OrderId { get; private set; }
@@ -24,5 +24,5 @@ public class OrderDetails : AggregateRoot<Guid>
 
     public decimal UnitPrice { get; private set; }
     public int Quantity { get; private set; }
-    public float Discount { get; private set; } // 0.1% => 10%
+    //public float Discount { get; private set; } // 0.1% => 10%
 }

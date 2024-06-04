@@ -21,7 +21,10 @@ public class TicketDeletedConsumerHandler : ICommandHandler<DomainEvent.TicketDe
     public async Task<Result> Handle(DomainEvent.TicketDeleted request, CancellationToken cancellationToken)
     {
         // Step 01: check ticket info exists?
-        var ticketHolder = await _ticketInfoRepository.FindSingleAsync(x => x.TicketId.Equals(request.Id), cancellationToken)
+        //var ticketHolder = await _ticketInfoRepository.FindSingleAsync(x => x.TicketId.Equals(request.Id), cancellationToken)
+            //?? throw new TicketInfoException.TicketInfoNotFoundException(request.Id);
+
+        var ticketHolder = await _ticketInfoRepository.FindByIdAsync(request.Id, cancellationToken)
             ?? throw new TicketInfoException.TicketInfoNotFoundException(request.Id);
 
         // Step 02: remove ticket info
