@@ -94,6 +94,7 @@ public static class ServiceCollectionExtensions
 
                 bus.MessageTopology.SetEntityNameFormatter(new KebabCaseEntityNameFormatter());
 
+                bus.ConfigureEventReceiveEndpoints(context);
                 bus.ConfigureEndpoints(context);
             });
         });

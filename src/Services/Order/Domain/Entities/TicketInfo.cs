@@ -4,6 +4,9 @@ namespace Domain.Entities;
 
 public class TicketInfo : Entity<Guid>, IAuditable, ISoftDeleted
 {
+    public TicketInfo()
+    {
+    }
     public TicketInfo(Guid ticketId)
     {
         Id = Guid.NewGuid();

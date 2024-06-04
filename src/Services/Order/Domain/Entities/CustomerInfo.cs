@@ -4,7 +4,7 @@ namespace Domain.Entities;
 
 public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
 {
-    private CustomerInfo()
+    public CustomerInfo()
     {
     }
 
