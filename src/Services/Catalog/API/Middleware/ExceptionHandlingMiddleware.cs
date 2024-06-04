@@ -57,6 +57,10 @@ public class ExceptionHandlingMiddleware : IMiddleware
             EventException.EventFieldException => StatusCodes.Status400BadRequest,
             EventException.EventTypeException => StatusCodes.Status400BadRequest,
 
+            // Ticket
+            TicketException.TicketNotFoundException => StatusCodes.Status404NotFound,
+            TicketException.TicketQuantityNotEnoughException => StatusCodes.Status400BadRequest,
+
             // Organization
             OrganizationInfoException.OrganizationNotFoundException => StatusCodes.Status404NotFound,
 

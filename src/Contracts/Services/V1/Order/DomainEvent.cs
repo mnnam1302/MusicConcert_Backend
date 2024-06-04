@@ -4,7 +4,7 @@ namespace Contracts.Services.V1.Order;
 
 public static class DomainEvent
 {
-    public record OrderCreated : IDomainEvent
+    public record OrderCreated : IDomainEvent, ICommand
     {
         public Guid EventId { get; init; }
         public DateTimeOffset TimeStamp { get; init; }
