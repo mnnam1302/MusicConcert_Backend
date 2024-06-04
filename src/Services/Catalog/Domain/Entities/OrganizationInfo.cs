@@ -2,23 +2,24 @@
 
 namespace Domain.Entities;
 
-public class OrganizationInfo : Entity<Guid>, ISoftDeleted
+public class OrganizationInfo : Entity<Guid>, IAuditable, ISoftDeleted
 {
     protected OrganizationInfo() { }
 
-    private OrganizationInfo(Guid id, string name)
+    public OrganizationInfo(Guid organizationId, string name)
     {
-        Id = id;
+        Id = Guid.NewGuid();
+        OrganizaitonId = organizationId;
         Name = name;
     }
 
-    public static OrganizationInfo Create(Guid id, string name)
-    {
-        var oranizationInfo = new OrganizationInfo(id, name);
-        return oranizationInfo;
-    }
-
+    public Guid OrganizaitonId { get; private set; }
+    
     public string Name { get; private set; }
+
+    public DateTimeOffset CreatedOnUtc { get; set; }
+    public DateTimeOffset? ModifiedOnUtc { get; set; }
+
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }
 }

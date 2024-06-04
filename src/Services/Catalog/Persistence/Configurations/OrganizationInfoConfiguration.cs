@@ -13,6 +13,8 @@ public class OrganizationInfoConfiguration : IEntityTypeConfiguration<Organizati
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.OrganizaitonId).IsRequired();
+
         builder.Property(x => x.IsDeleted).HasDefaultValue(false);
     }
 }

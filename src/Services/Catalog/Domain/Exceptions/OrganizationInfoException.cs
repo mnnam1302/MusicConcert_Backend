@@ -5,7 +5,15 @@ public static class OrganizationInfoException
     public class OrganizationNotFoundException : NotFoundException
     {
         public OrganizationNotFoundException(Guid organizationId)
-            : base($"The organization info with Id {organizationId} was not found.")
+            : base($"Organization info with Id {organizationId} was not found.")
+        {
+        }
+    }
+
+    public class OrganizaitonInfoAlreadyExistsException : Exception
+    {
+        public OrganizaitonInfoAlreadyExistsException(Guid organizationId)
+            : base($"Organizaiton info with Id {organizationId} already exists.")
         {
         }
     }
