@@ -27,6 +27,10 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
         builder.Property(x => x.TotalPrice)
             .IsRequired();
 
+        builder.Property(x => x.Status)
+            .IsRequired()
+            .HasMaxLength(20);
+
         // Relationships
         builder.HasOne(x => x.CustomerInfo)
             .WithMany()

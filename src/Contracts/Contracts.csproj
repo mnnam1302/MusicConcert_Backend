@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Services\V1\Catalog\Category\Validators\" />
     <Folder Include="Services\V1\Catalog\Ticket\Validators\" />
-    <Folder Include="Services\V1\Payment\" />
   </ItemGroup>
 
   <ItemGroup>

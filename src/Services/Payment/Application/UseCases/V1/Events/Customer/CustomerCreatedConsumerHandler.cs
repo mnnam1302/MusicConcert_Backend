@@ -22,7 +22,7 @@ public class CustomerCreatedConsumerHandler : ICommandHandler<DomainEvent.Custom
     public async Task<Result> Handle(DomainEvent.CustomerCreated request, CancellationToken cancellationToken)
     {
         // Step 01: Check customer existsing?
-        var customerHolder = await _customerRepository.FindSingleAsync(x => x.CustomerId.Equals(request.Id), cancellationToken);
+        var customerHolder = await _customerRepository.FindByIdAsync(request.Id, cancellationToken);
 
         if (customerHolder is not null)
             throw new CustomerInfoException.CustomerInfoAlreadyExistsException(request.Id);

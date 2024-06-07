@@ -13,9 +13,6 @@ public class CustomerInfoConfiguration
         
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.CustomerId)
-            .IsRequired();
-
         builder.Property(x => x.FullName)
             .IsRequired();
 

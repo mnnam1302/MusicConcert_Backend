@@ -9,9 +9,21 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
 {
     public static void ConfigureEventReceiveEndpoints(this IRabbitMqBusFactoryConfigurator cfg, IRegistrationContext context)
     {
-        cfg.ConfigureEventReceiveEndpoint<CustomerConsumer.CustomerCreatedConsumer, DomainEvent.CustomerCreated>(context);
-        cfg.ConfigureEventReceiveEndpoint<CustomerConsumer.CustomerUpdatedConsumer, DomainEvent.CustomerUpdated>(context);
-        cfg.ConfigureEventReceiveEndpoint<CustomerConsumer.CustomerDeletedConsumer, DomainEvent.CustomerDeleted>(context);
+        // Customer Service
+        cfg.ConfigureEventReceiveEndpoint<
+            CustomerConsumer.CustomerCreatedConsumer,
+            Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerCreated>(context);
+        cfg.ConfigureEventReceiveEndpoint<
+            CustomerConsumer.CustomerUpdatedConsumer,
+            Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerUpdated>(context);
+        cfg.ConfigureEventReceiveEndpoint<
+            CustomerConsumer.CustomerDeletedConsumer,
+            Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerDeleted>(context);
+
+        // Order Service
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.OrderValidatedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.OrderValidated>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)

@@ -46,6 +46,8 @@ public static class DomainEvent
         public DateTimeOffset TimeStamp { get; set; }
 
         public Guid OrderId { get; set; }
+        public Guid CustomerId { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 
 

@@ -10,8 +10,7 @@ public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
 
     public CustomerInfo(Guid customerId, string fullName, string email, string phoneNumber)
     {
-        Id = Guid.NewGuid(); // Surrogate key in Service Payment
-        CustomerId = customerId;
+        Id = customerId;
         FullName = fullName;
         Email = email;
         PhoneNumer = phoneNumber;
@@ -30,7 +29,6 @@ public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
         PhoneNumer = phoneNumber;
     }
 
-    public Guid CustomerId { get; private set; }
     public string FullName { get; set; }
     public string Email { get; set; }
     public string PhoneNumer { get; set; }

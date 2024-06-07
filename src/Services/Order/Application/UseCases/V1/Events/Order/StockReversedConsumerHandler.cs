@@ -24,11 +24,13 @@ public class StockReversedConsumerHandler : ICommandHandler<DomainEvent.StockRev
     public async Task<Result> Handle(DomainEvent.StockReversed request, CancellationToken cancellationToken)
     {
         // Step 01: Check order existsing?
-        var orderHolder = await _orderRepository.FindByIdAsync(request.OrderId, cancellationToken)
+        var orderHolder = await _orderRepository.FindByIdAsync(request.OrderId, cancellationToken, x => x.OrderDetails)
             ?? throw new OrderException.OrderNotFoundException(request.OrderId);
 
         // Step 02: Update status 'OrderValidated' -> RaiseEvent: OrderValidate (Payment Service)
-        orderHolder.AssignValidatedSuccess(OrderStatus.OrderValidated);
+        var totalAmount = orderHolder.OrderDetails.Sum(x => x.UnitPrice * x.Quantity);
+
+        orderHolder.AssignValidatedSuccess(OrderStatus.OrderValidated, totalAmount);
 
         // Step 03: Persistence into database
         _orderRepository.Update(orderHolder);
