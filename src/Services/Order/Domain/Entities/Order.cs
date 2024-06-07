@@ -1,6 +1,7 @@
 ﻿using Contracts.Services.V1.Order;
 using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
+using Domain.Enumerations;
 using Domain.Exceptions;
 
 namespace Domain.Entities;
@@ -39,7 +40,7 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         {
             EventId = Guid.NewGuid(),
             TimeStamp = DateTime.UtcNow,
-            Id = order.Id,
+            OrderId = order.Id,
             CustomerId = order.CustomerInfoId,
             TotalAmount = order.OrderDetails.Sum(x => x.UnitPrice * x.Quantity),
 
@@ -49,14 +50,6 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
                 x.TicketInfoId,
                 x.UnitPrice,
                 x.Quantity)).ToList()
-
-            //Details = order.OrderDetails.Select(x => new DomainEvent.OrderDetail(
-            //    x.Id,
-            //    order.Id,
-            //    x.TicketInfoId,
-            //    x.UnitPrice,
-            //    x.Quantity,
-            //    x.Discount)).ToList()
         });
 
         return order;
@@ -70,9 +63,38 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
+    public Order AssignValidatedSuccess(OrderStatus status)
+    {
+        RaiseDomainEvent(new DomainEvent.OrderValidated
+        {
+            EventId = Guid.NewGuid(),
+            TimeStamp = DateTime.UtcNow,
+            OrderId = Id
+        });
+
+        Status = status;
+        return this;
+    }
+
+    public Order AssignValidatedFailed(OrderStatus status, string reason)
+    {
+        RaiseDomainEvent(new DomainEvent.OrderCancelled
+        {
+            EventId = Guid.NewGuid(),
+            TimeStamp = DateTime.UtcNow,
+            OrderId = Id,
+            CustomerId = CustomerInfoId,
+            Reason = reason
+        });
+
+        Status = status;
+        return this;
+    }
 
     public Guid CustomerInfoId { get; set; }
     public virtual  CustomerInfo CustomerInfo { get; set; } // must belong one CustomerInfo
+
+    public string Status { get; set; } = OrderStatus.OrderCreated;
 
     public virtual List<OrderDetails> OrderDetails { get; private set; } = new();
 

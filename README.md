@@ -46,16 +46,18 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 | Ticket		      | Create           | api/v1/tickets									  | ticket-created         | pass	 |
 |                     | Get              | api/v1/tickets									  |                        |   	     |
 |                     | Get              | api/v1/tickets/{ticketId}						  |				           |   	     |
-|                     | Update           | api/v1/tickets/{ticketId}						  |						   |  	     |
 |                     | Delete           | api/v1/tickets/{ticketId}						  | ticket-deleted         | pass    |
+|				      | Update           | 													  | stock-reversed         | pass	 |
+|				      |                  | 													  | stock-reversed-failed  | pass	 |
 |Consume Organization | Created          | 													  | organization-created   | pass	 |
-|                     | Deleted          | 													  | organizayion-deleted   | pass  	 |
+|                     | Deleted          | 													  | organization-deleted   | pass  	 |
+|Consume Order        |                  | 													  | order-created          | pass	 |
 
 ## Service Order
 
 | Entity           | Action           | Url                                                 | Event - Queue          | Status  |
 |------------------|------------------|-----------------------------------------------------|------------------------|---------|
-| Order	           | Create           | api/v1/orders                                       |                        | pass	   |
+| Order	           | Create           | api/v1/orders                                       | order-created          | pass	   |
 |                  | Get              | api/v1/orders                                       |                        |		   |
 |                  | Get              | api/v1/orders/{orderId}                             |                        |		   |
 |                  | Update           | api/v1/orders/{orderId}                             |                        |		   |
@@ -69,6 +71,25 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 |                  | Deleted          | 													| ticket-deleted         | pass    |
 |Consume Customer  | Created          | 													| customer-created       | pass	   |
 |                  | Deleted          | 													| customer-deleted       | pass    |
+|Consume Order     |                  | 													| stock-reversed         | pass    |
+|				   |                  | 													| stock-reversed-failed  | pass	   |
+|				   |                  | 													| order-validated        | pass	   |
+
+
 
 ## Service Payment
+
+| Entity           | Action           | Url                                                 | Event - Queue          | Status   |
+|------------------|------------------|-----------------------------------------------------|------------------------|----------|
+| Invoice	       | Create           | api/v1/invoices                                     |                        | pass	    |
+|                  | Get              | api/v1/invoices                                     |                        |		    |
+|                  | Get              | api/v1/invoices/{invoiceId}                         |                        |		    |
+|                  | Update           | api/v1/invoices/{invoiceId}                         |                        |		    |
+|                  | Delete           | api/v1/invoices/{invoiceId}                         |                        |		    |
+| OrderDetails	   | Create           | 													|                        | pass	    |
+|                  | Get              | 													|                        | 		    |
+|                  | Get              | 													|                        | 		    |
+|                  | Update           | 													|                        | 		    |
+|                  | Delete           | 													|                        | 		    |
+|Consume Order     | Created          | 													| order-validated        | progress |
 

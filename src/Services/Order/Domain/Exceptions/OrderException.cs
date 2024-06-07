@@ -9,4 +9,12 @@ public static class OrderException
         {
         }
     }
+
+    public class OrderNotFoundException : NotFoundException
+    {
+        public OrderNotFoundException(Guid orderId)
+            : base($"The order with Id {orderId} was not found.")
+        {
+        }
+    }
 }

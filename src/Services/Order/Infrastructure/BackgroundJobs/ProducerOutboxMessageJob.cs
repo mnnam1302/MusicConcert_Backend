@@ -45,7 +45,7 @@ public class ProducerOutboxMessageJob : IJob
             {
                 switch (domainEvent.GetType().Name)
                 {
-                    // DomainEvent: Order
+                    // DomainEvent: Order at Order Service
                     case (nameof(DomainEvent.OrderCreated)):
                         var orderCreated = JsonConvert.DeserializeObject<DomainEvent.OrderCreated>(
                             outboxMessage.Content,
@@ -55,9 +55,29 @@ public class ProducerOutboxMessageJob : IJob
                             });
 
                         await _publishEndpoint.Publish(orderCreated, context.CancellationToken);
-
                         break;
-                    
+
+                    case (nameof(DomainEvent.OrderValidated)):
+                        var orderValidated = JsonConvert.DeserializeObject<DomainEvent.OrderValidated>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(orderValidated, context.CancellationToken);
+                        break;
+
+                    case (nameof(DomainEvent.OrderCancelled)):
+                        var orderCancelled = JsonConvert.DeserializeObject<DomainEvent.OrderCancelled>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(orderCancelled, context.CancellationToken);
+                        break;
 
                     default:
                         break;

@@ -1,15 +1,14 @@
-﻿using Contracts.Services.V1.Catalog.Ticket;
-using Domain.Abstractions.Aggregates;
+﻿using Domain.Abstractions.Aggregates;
 using Domain.Abstractions.Entities;
 using Domain.Enumerations;
 using Domain.Exceptions;
-using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace Domain.Entities;
 
 public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
 {
-    protected Ticket() { }
+    protected Ticket()
+    { }
 
     private Ticket(Guid id, string name, decimal unitPrice, int unitInStock, Guid eventId)
     {
@@ -24,9 +23,9 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
     {
         var ticket = new Ticket(Guid.NewGuid(), name, unitPrice, unitInStock, eventId);
 
-        ticket.RaiseDomainEvent(new DomainEvent.TicketCreated(
-            Guid.NewGuid(), 
-            DateTimeOffset.UtcNow, 
+        ticket.RaiseDomainEvent(new Contracts.Services.V1.Catalog.Ticket.DomainEvent.TicketCreated(
+            Guid.NewGuid(),
+            DateTimeOffset.UtcNow,
             ticket.Id));
 
         return ticket;
@@ -36,7 +35,7 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
     {
         Status = TicketStatus.Discontinued;
 
-        RaiseDomainEvent(new DomainEvent.TicketDeleted(
+        RaiseDomainEvent(new Contracts.Services.V1.Catalog.Ticket.DomainEvent.TicketDeleted(
             Guid.NewGuid(),
             DateTimeOffset.UtcNow,
             Id));

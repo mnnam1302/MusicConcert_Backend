@@ -1,6 +1,4 @@
 ﻿using Contracts.Abstractions.Message;
-using Contracts.Services.V1.Catalog.Ticket;
-using Contracts.Services.V1.Identity.Customer;
 using Infrastructure.Consumers;
 using MassTransit;
 
@@ -31,6 +29,15 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
         cfg.ConfigureEventReceiveEndpoint<
             TicketConsumer.TicketDeletedConsumer,
             Contracts.Services.V1.Catalog.Ticket.DomainEvent.TicketDeleted>(context);
+
+        // Reverse UnitInStocker from 'Catalog Service'
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.StockReversedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.StockReversed>(context);
+
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.StockReversedFailedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.StockReversedFailed>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)
