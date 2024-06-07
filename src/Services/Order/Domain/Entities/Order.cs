@@ -63,13 +63,15 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
-    public Order AssignValidatedSuccess(OrderStatus status)
+    public Order AssignValidatedSuccess(OrderStatus status, decimal totalAmount)
     {
         RaiseDomainEvent(new DomainEvent.OrderValidated
         {
             EventId = Guid.NewGuid(),
             TimeStamp = DateTime.UtcNow,
-            OrderId = Id
+            OrderId = Id,
+            CustomerId = CustomerInfoId,
+            TotalAmount = totalAmount,
         });
 
         Status = status;

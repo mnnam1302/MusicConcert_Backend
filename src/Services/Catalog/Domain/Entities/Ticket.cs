@@ -45,7 +45,7 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
     {
         var newUnitInStock = UnitInStock - quantity;
 
-        if (UnitInStock < 0)
+        if (newUnitInStock < 0)
         {
             throw new TicketException.TicketQuantityNotEnoughException(Id);
         }

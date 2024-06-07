@@ -52,6 +52,10 @@ public class ExceptionHandlingMiddleware : IMiddleware
             CustomerInfoException.CustomerInfoAlreadyExistsException => StatusCodes.Status409Conflict,
             CustomerInfoException.CustomerInfoNotFoundException => StatusCodes.Status404NotFound,
 
+            // OrderInfo
+            OrderInfoException.OrderInfoNotFoundException => StatusCodes.Status404NotFound,
+            OrderInfoException.OrderInfoAlreadyExistsException => StatusCodes.Status409Conflict,
+
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,

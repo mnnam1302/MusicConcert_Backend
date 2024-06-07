@@ -86,10 +86,8 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 |                  | Get              | api/v1/invoices/{invoiceId}                         |                        |		    |
 |                  | Update           | api/v1/invoices/{invoiceId}                         |                        |		    |
 |                  | Delete           | api/v1/invoices/{invoiceId}                         |                        |		    |
-| OrderDetails	   | Create           | 													|                        | pass	    |
-|                  | Get              | 													|                        | 		    |
-|                  | Get              | 													|                        | 		    |
-|                  | Update           | 													|                        | 		    |
-|                  | Delete           | 													|                        | 		    |
-|Consume Order     | Created          | 													| order-validated        | progress |
+| Consume Customer | Created          | 													| customer-created       | pass	    |
+|                  | Deleted          | 													| customer-deleted       | pass     |
+| Consume Order    | Created          | 													| order-validated        | pass     |
+
 
