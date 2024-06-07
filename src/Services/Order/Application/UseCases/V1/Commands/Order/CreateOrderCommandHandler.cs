@@ -30,8 +30,6 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
     public async Task<Result> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
     {
         // Step 01: Check customer existsing
-        //var customerHolder = await _customerInfoRepository.FindSingleAsync(x => x.CustomerId.Equals(request.CustomerId), cancellationToken)
-        //    ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.CustomerId);
         var customerHolder = await _customerInfoRepository.FindByIdAsync(request.CustomerId, cancellationToken)
            ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.CustomerId);
 
@@ -45,7 +43,6 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
                 "There is existing at least one TicketId was not found.");
 
         // Step 03: Create order
-        //var order = Domain.Entities.Order.Create(Guid.NewGuid(), customerHolder.CustomerId, request.Details);
         var order = Domain.Entities.Order.Create(customerHolder.Id, request.Details);
 
         // Step 04: Persistence into database

@@ -13,6 +13,13 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.CustomerInfoId)
+            .IsRequired();
+
+        builder.Property(x => x.Status)
+            .IsRequired()
+            .HasMaxLength(30);
+
         // Relationships
         builder
             .HasOne(x => x.CustomerInfo)
