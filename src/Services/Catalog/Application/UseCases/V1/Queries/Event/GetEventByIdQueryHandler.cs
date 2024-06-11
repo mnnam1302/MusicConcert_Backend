@@ -23,7 +23,11 @@ public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, R
     public async Task<Result<Response.EventDetailsReponse>> Handle(Query.GetEventByIdQuery request, CancellationToken cancellationToken)
     {
         // Step 01: Check event existsing
-        var holderEvent = await _eventRepository.FindByIdAsync(request.Id, cancellationToken, e => e.Category)
+        var holderEvent = await _eventRepository.FindByIdAsync(
+                request.Id,
+                cancellationToken,
+                e => e.Category,
+                e => e.OrganizationInfo)
             ?? throw new EventException.EventNotFoundException(request.Id);
 
         // Step 02: Get organization info
