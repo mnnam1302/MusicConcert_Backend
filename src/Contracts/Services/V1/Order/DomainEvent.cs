@@ -61,7 +61,7 @@ public static class DomainEvent
         public string TransactionCode { get; set; }
     }
 
-    public record PaymentProcessedFailed : IDomainEvent
+    public record PaymentProcessedFailed : IDomainEvent, ICommand
     {
         public Guid EventId { get; set; }
         public DateTimeOffset TimeStamp { get; set; }

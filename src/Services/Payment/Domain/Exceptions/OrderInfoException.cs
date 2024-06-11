@@ -2,7 +2,7 @@
 
 public class OrderInfoException
 {
-    public class OrderInfoAlreadyExistsException : Exception
+    public class OrderInfoAlreadyExistsException : BadRequestException
     {
         public OrderInfoAlreadyExistsException(Guid orderId)
             : base($"Order with Id {orderId} already exists.")

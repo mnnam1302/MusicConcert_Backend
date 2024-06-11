@@ -43,6 +43,10 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
         cfg.ConfigureEventReceiveEndpoint<
             OrderConsumer.PaymentProcessedConsumer,
             Contracts.Services.V1.Order.DomainEvent.PaymentProcessed>(context);
+
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.PaymentProcessedFailedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.PaymentProcessedFailed>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)
