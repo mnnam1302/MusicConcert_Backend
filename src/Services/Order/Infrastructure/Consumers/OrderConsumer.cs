@@ -22,5 +22,11 @@ public static class OrderConsumer
         }
     }
 
-
+    public class PaymentProcessedConsumer : Consumer<DomainEvent.PaymentProcessed>
+    {
+        public PaymentProcessedConsumer(ISender sender)
+            : base(sender)
+        {
+        }
+    }
 }

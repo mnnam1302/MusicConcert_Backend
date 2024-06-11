@@ -51,7 +51,7 @@ public static class DomainEvent
     }
 
 
-    public record PaymentProcessed : IDomainEvent
+    public record PaymentProcessed : IDomainEvent, ICommand
     {
         public Guid EventId { get; set; }
         public DateTimeOffset TimeStamp { get; set; }

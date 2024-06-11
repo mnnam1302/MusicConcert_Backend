@@ -60,6 +60,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
             // Order
             OrderException.OrderFieldException => StatusCodes.Status400BadRequest,
             OrderException.OrderNotFoundException => StatusCodes.Status404NotFound,
+            OrderException.OrderNotBelongCustomerException => StatusCodes.Status400BadRequest,
 
             //OrderDetails
             OrderDetailsException.OrderDetailsWithQuantityException => StatusCodes.Status400BadRequest,

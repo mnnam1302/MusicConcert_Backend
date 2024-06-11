@@ -17,4 +17,12 @@ public static class OrderException
         {
         }
     }
+
+    public class OrderNotBelongCustomerException : BadRequestException
+    {
+        public OrderNotBelongCustomerException(Guid orderId)
+            : base($"The order with Id {orderId} is not belong to the customer.")
+        {
+        }
+    }
 }
