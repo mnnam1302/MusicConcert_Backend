@@ -84,6 +84,18 @@ public class ProducerOutboxMessageJob : IJob
                             context.CorrelationId = context.Message.OrderId);
                         break;
 
+                    case (nameof(DomainEvent.OrderCompleted)):
+                        var orderCompleted = JsonConvert.DeserializeObject<DomainEvent.OrderCompleted>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+
+                        await _publishEndpoint.Publish(orderCompleted, context =>
+                            context.CorrelationId = context.Message.OrderId);
+                        break;
+
                     default:
                         break;
                 }

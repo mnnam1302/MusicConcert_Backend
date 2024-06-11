@@ -80,6 +80,8 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 
     public Order AssignValidatedFailed(OrderStatus status, string reason)
     {
+        Status = status;
+
         RaiseDomainEvent(new DomainEvent.OrderCancelled
         {
             EventId = Guid.NewGuid(),
@@ -89,7 +91,37 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
             Reason = reason
         });
 
+        return this;
+    }
+
+    public Order AssignPaymentProcessed(OrderStatus status, string transactionCode)
+    {
         Status = status;
+
+        RaiseDomainEvent(new DomainEvent.OrderCompleted
+        {
+            EventId = Guid.NewGuid(),
+            TimeStamp = DateTime.UtcNow,
+            OrderId = Id,
+            TransactionCode = transactionCode
+        });
+
+        return this;
+    }
+
+    public Order AssignPaymentProcessedFailed(OrderStatus status, string reason)
+    {
+        Status = status;
+
+        RaiseDomainEvent(new DomainEvent.OrderCancelled
+        {
+            EventId = Guid.NewGuid(),
+            TimeStamp = DateTime.UtcNow,
+            OrderId = Id,
+            CustomerId = CustomerInfoId,
+            Reason = reason
+        });
+
         return this;
     }
 

@@ -8,7 +8,7 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
 {
     public static void ConfigureEventReceiveEndpoints(this IRabbitMqBusFactoryConfigurator cfg, IRegistrationContext context)
     {
-        // Customer
+        // Identity
         cfg.ConfigureEventReceiveEndpoint<
             CustomerConsumer.CustomerCreatedConsumer,
             Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerCreated>(context);
@@ -21,7 +21,7 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
             CustomerConsumer.CustomerDeletedConsumer,
             Contracts.Services.V1.Identity.Customer.DomainEvent.CustomerDeleted>(context);
 
-        // Ticket
+        // Catalog
         cfg.ConfigureEventReceiveEndpoint<
             TicketConsumer.TicketCreatedConsumer,
             Contracts.Services.V1.Catalog.Ticket.DomainEvent.TicketCreated>(context);
@@ -38,6 +38,11 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
         cfg.ConfigureEventReceiveEndpoint<
             OrderConsumer.StockReversedFailedConsumer,
             Contracts.Services.V1.Order.DomainEvent.StockReversedFailed>(context);
+
+        // Payment
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.PaymentProcessedConsumer,
+            Contracts.Services.V1.Order.DomainEvent.PaymentProcessed>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)
