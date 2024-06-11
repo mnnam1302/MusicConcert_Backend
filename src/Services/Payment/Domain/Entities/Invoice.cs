@@ -36,13 +36,13 @@ public class Invoice : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return invoice;
     }
 
-    private Invoice AssignOrderInfo(Guid orderId)
+    public Invoice AssignOrderInfo(Guid orderId)
     {
         OrderInfoId = orderId;
         return this;
     }
 
-    private Invoice AssignCustomerInfo(Guid customerId)
+    public Invoice AssignCustomerInfo(Guid customerId)
     {
         CustomerInfoId = customerId;
         return this;

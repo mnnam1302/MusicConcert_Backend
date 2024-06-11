@@ -59,7 +59,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                     Reason = $"TicketId: {orderDetail.TicketId} is not existing.",
                 };
 
-                await _publishEndpoint.Publish(stockkReversedFailed, cancellationToken);
+                await _publishEndpoint.Publish(stockkReversedFailed, context => context.CorrelationId = context.Message.OrderId);
                 return Result.Success();
             }
 
@@ -75,7 +75,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                     Reason = $"TicketId: {ticketHolder.Id} and Name: {ticketHolder.Name} with Quantity {ticketHolder.UnitInStock} is not enough.",
                 };
 
-                await _publishEndpoint.Publish(stockkReversedFailed, cancellationToken);
+                await _publishEndpoint.Publish(stockkReversedFailed, context => context.CorrelationId = context.Message.OrderId);
                 return Result.Success();
             }
 
@@ -92,7 +92,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
             OrderId = request.OrderId
         };
 
-        await _publishEndpoint.Publish(stockReversed, cancellationToken);
+        await _publishEndpoint.Publish(stockReversed, context => context.CorrelationId = context.Message.OrderId);
 
         // Step 04: Save changes
         await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -12,4 +12,25 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+
+    public static IServiceCollection AddCorsAPI(this IServiceCollection services)
+    {
+        //services.AddCors(options =>
+        //{
+        //    options.AddPolicy("mypolicy", builder =>
+        //    {
+        //        //builder.WithOrigins("http://localhost:5173/")
+        //        //    .AllowAnyMethod()
+        //        //    .AllowAnyHeader();
+
+        //        builder.AllowAnyOrigin()
+        //                .AllowAnyMethod()
+        //                .AllowAnyHeader();
+        //    });
+        //});
+
+        services.AddCors();
+
+        return services;
+    }
 }

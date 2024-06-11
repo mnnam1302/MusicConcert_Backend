@@ -54,7 +54,9 @@ public class ProducerOutboxMessageJob : IJob
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(orderCreated, context.CancellationToken);
+                        await _publishEndpoint.Publish(orderCreated, context => 
+                            context.CorrelationId = context.Message.OrderId);
+
                         break;
 
                     case (nameof(DomainEvent.OrderValidated)):
@@ -65,7 +67,9 @@ public class ProducerOutboxMessageJob : IJob
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(orderValidated, context.CancellationToken);
+                        await _publishEndpoint.Publish(orderValidated, context =>
+                            context.CorrelationId = context.Message.OrderId);
+
                         break;
 
                     case (nameof(DomainEvent.OrderCancelled)):
@@ -76,7 +80,8 @@ public class ProducerOutboxMessageJob : IJob
                                 TypeNameHandling = TypeNameHandling.All
                             });
 
-                        await _publishEndpoint.Publish(orderCancelled, context.CancellationToken);
+                        await _publishEndpoint.Publish(orderCancelled, context =>
+                            context.CorrelationId = context.Message.OrderId);
                         break;
 
                     default:
