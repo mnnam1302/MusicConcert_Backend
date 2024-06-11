@@ -6,4 +6,6 @@ internal class TableNames
     internal const string CustomerInfo = nameof(CustomerInfo);
 
     internal const string Invoices = nameof(Invoices);
+
+    internal const string OutboxMessages = nameof(OutboxMessages);
 }

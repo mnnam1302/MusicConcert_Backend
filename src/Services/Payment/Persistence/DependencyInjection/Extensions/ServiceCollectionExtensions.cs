@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
             var auditableInterceptor = provider.GetRequiredService<UpdateAuditableEntitiesInterceptor>();
-            //var outboxInterceptors = provider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptors>();
+            var outboxInterceptors = provider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptors>();
 
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
 
@@ -37,7 +37,8 @@ public static class ServiceCollectionExtensions
                                 errorNumbersToAdd: options.CurrentValue.ErrorNumbersoAdd))
                         .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name))
                 .AddInterceptors(
-                    auditableInterceptor);
+                    auditableInterceptor,
+                    outboxInterceptors);
         });
 
         return services;
@@ -46,7 +47,7 @@ public static class ServiceCollectionExtensions
     public static void AddInterceptorPersistence(this IServiceCollection services)
     {
         services.AddTransient<UpdateAuditableEntitiesInterceptor>();
-        //services.AddTransient<ConvertDomainEventsToOutboxMessagesInterceptors>();
+        services.AddTransient<ConvertDomainEventsToOutboxMessagesInterceptors>();
     }
 
     public static void AddRepositoryPersistence(this IServiceCollection services)
