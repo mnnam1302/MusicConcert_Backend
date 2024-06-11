@@ -42,12 +42,12 @@ public class CancelInvoiceCommandHandler : ICommandHandler<Command.CancelInvoice
             ?? throw new InvoiceException.InvoiceNotFoundException(request.InvoiceId);
 
         //2.
-        var order = await _orderRepository.FindByIdAsync(request.OrderId, cancellationToken)
-            ?? throw new OrderInfoException.OrderInfoNotFoundException(request.OrderId);
+        if (invoice.OrderInfoId != request.OrderId)
+            throw new InvoiceException.InvoiceFieldException(nameof(invoice.OrderInfo));
 
         //3.
-        var customer = await _customerRepository.FindByIdAsync(request.CustomerId, cancellationToken)
-            ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.CustomerId);
+        if (invoice.CustomerInfoId != request.CustomerId)
+            throw new InvoiceException.InvoiceFieldException(nameof(invoice.CustomerInfo));
 
         //4.
         invoice.PaymentProcessFailedInvoice();

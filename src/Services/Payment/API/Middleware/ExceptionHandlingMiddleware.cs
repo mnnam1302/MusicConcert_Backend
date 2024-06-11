@@ -58,6 +58,7 @@ public class ExceptionHandlingMiddleware : IMiddleware
 
             // Invoice
             InvoiceException.InvoiceNotFoundException => StatusCodes.Status404NotFound,
+            InvoiceException.InvoiceFieldException => StatusCodes.Status400BadRequest,
 
             // Domain
             BadRequestException => StatusCodes.Status400BadRequest,
