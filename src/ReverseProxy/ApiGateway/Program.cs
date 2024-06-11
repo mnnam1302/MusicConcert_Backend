@@ -21,6 +21,8 @@ builder.Host.UseSerilog();
 // Yarp Reverse Proxy
 builder.Services.AddYarpReverseProxyApiGateway(builder.Configuration);
 
+builder.Services.AddCorsAPI();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,6 +31,13 @@ var app = builder.Build();
 
 //app.UseAuthentication();
 //app.UseAuthorization();
+
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 app.MapReverseProxy();
 
