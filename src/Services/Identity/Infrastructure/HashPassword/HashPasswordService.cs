@@ -5,47 +5,14 @@ namespace Infrastructure.HashPassword;
 
 public class HashPasswordService : IHashPasswordService
 {
-    private readonly int keySize = 64;
-    private readonly int iteration = 1000;
-    private readonly HashAlgorithmName passwordHashAlgorithm = HashAlgorithmName.SHA512;
-
-    public string GenerateSalt()
+    public string HashPassword(string password)
     {
-        using var rng = RandomNumberGenerator.Create();
-
-        var saltBytes = new byte[keySize];
-        rng.GetBytes(saltBytes);
-
-        return Convert.ToBase64String(saltBytes);
+        string passwordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 10);
+        return passwordHash;
     }
 
-    public string HashPassword(string password, string salt)
+    public bool VerifyPassword(string password, string passwordHashed)
     {
-        var saltPassword = Convert.FromBase64String(salt);
-
-        var passwordHash = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                saltPassword,
-                iteration,
-                passwordHashAlgorithm,
-                keySize);
-
-        return Convert.ToBase64String(passwordHash);
-    }
-
-    public bool VerifyPassword(string plaintextPassword, string ciphertextPassword, string salt)
-    {
-        var passwordSalt = Convert.FromBase64String(salt);
-
-        var passwordHash = Rfc2898DeriveBytes.Pbkdf2(
-                plaintextPassword,
-                passwordSalt,
-                iteration,
-                passwordHashAlgorithm,
-                keySize);
-
-        var passwordHashString = Convert.ToBase64String(passwordHash);
-
-        return passwordHashString.Equals(ciphertextPassword);
+        return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHashed);
     }
 }

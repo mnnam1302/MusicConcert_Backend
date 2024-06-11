@@ -26,17 +26,25 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
 
     public async Task<Result<Response.AuthenticatedResponse>> Handle(Query.LoginCustomerQuery request, CancellationToken cancellationToken)
     {
-        // Step 01: Check email customer
+        /*
+            1. check email customer
+            2. compare password in db and request password
+            3. get claims
+            4. generate token
+            5. set cache
+         */
+
+        //1.
         var holderCustomer = await _customerRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
             ?? throw new CustomerException.CustomerNotFoundByEmailException(request.Email);
 
-        // Step 02: Check password
-        bool isAuthenticated = _hashPasswordService.VerifyPassword(request.Password, holderCustomer.PasswordHash, holderCustomer.PasswordSalt);
+        //2.
+        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, holderCustomer.PasswordHash);
 
-        if (!isAuthenticated)
+        if (!isMatch)
             throw new IdentityException.AuthenticationException();
 
-        // Step 03: Get Claims
+        //3.
         var claims = new List<Claim>
         {
             new (ClaimTypes.NameIdentifier, holderCustomer.Id.ToString()),
@@ -44,7 +52,7 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
             new (ClaimTypes.Email, holderCustomer.Email),
         };
 
-        // Step 04: Generate Token
+        //4.
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
         var refershToken = _jwtTokenService.GenerateRefreshToken();
 
@@ -55,7 +63,7 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
         };
 
-        // Step 05: Set cache
+        //5.
         await _cacheService.SetAsync($"session:{request.Email}", result, cancellationToken);
 
         return Result.Success(result);

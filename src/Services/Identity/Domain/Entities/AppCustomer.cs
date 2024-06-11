@@ -12,7 +12,7 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
     {
     }
 
-    private AppCustomer(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
+    private AppCustomer(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash)
     {
         Id = id;
         FirstName = firstName;
@@ -21,17 +21,16 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
         PhoneNumber = phoneNumber;
         Email = email;
         PasswordHash = passwordHash;
-        PasswordSalt = passwordSalt;
     }
 
-    public static AppCustomer Create(string firstName, string lastName, string phoneNumber, DateTime? dateofBirth, string? address, string email, string passwordHash, string passwordSalt)
+    public static AppCustomer Create(string firstName, string lastName, string phoneNumber, DateTime? dateofBirth, string? address, string email, string passwordHash)
     {
         string fullName = $"{firstName} {lastName}";
 
         if (fullName.Length > 40)
             throw new CustomerException.CustomerFieldException(nameof(FullName));
 
-        var customer = new AppCustomer(Guid.NewGuid(), firstName, lastName, fullName, phoneNumber, email, passwordHash, passwordSalt);
+        var customer = new AppCustomer(Guid.NewGuid(), firstName, lastName, fullName, phoneNumber, email, passwordHash);
 
         if (dateofBirth.HasValue)
             customer.AssignDateOfBirth(dateofBirth.Value);
@@ -89,7 +88,6 @@ public class AppCustomer : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted, IAu
 
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
-    public string PasswordSalt { get; private set; }
 
     // Auditable
     public DateTimeOffset CreatedOnUtc { get; set; }
