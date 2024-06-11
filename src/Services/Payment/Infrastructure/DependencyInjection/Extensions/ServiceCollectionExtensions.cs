@@ -64,6 +64,8 @@ public static class ServiceCollectionExtensions
 
                 bus.ConnectConsumeObserver(new LoggingConsumeObserver());
                 bus.ConnectReceiveObserver(new LoggingReceiveObserver());
+                bus.ConnectSendObserver(new LoggingSendObserver());
+                bus.ConnectPublishObserver(new LoggingPublishObserver());
 
                 bus.MessageTopology.SetEntityNameFormatter(new KebabCaseEntityNameFormatter());
 
