@@ -17,6 +17,8 @@ builder.Logging
 
 builder.Host.UseSerilog();
 
+// Jwt Authentication
+builder.Services.AddJwtAuthenticationApiGateway(builder.Configuration);
 
 // Yarp Reverse Proxy
 builder.Services.AddYarpReverseProxyApiGateway(builder.Configuration);
@@ -29,9 +31,6 @@ var app = builder.Build();
 
 //app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
-
 app.UseCors(options =>
 {
     options.AllowAnyOrigin()
@@ -39,22 +38,26 @@ app.UseCors(options =>
         .AllowAnyHeader();
 });
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapReverseProxy();
 
 try
 {
-await app.RunAsync();
-Log.Information("Stopped cleanly");
+    await app.RunAsync();
+    Log.Information("Stopped cleanly");
 }
 catch (Exception ex)
 {
-Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
-await app.StopAsync();
+    Log.Fatal(ex, "An unhandled exception occured during bootstrapping");
+    await app.StopAsync();
 }
 finally
 {
-Log.CloseAndFlush();
-await app.DisposeAsync();
+    Log.CloseAndFlush();
+    await app.DisposeAsync();
 }
 
-public partial class Program { }
+public partial class Program
+{ }

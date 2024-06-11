@@ -55,39 +55,40 @@ docker-compose -f docker-compose.Development.Infrastructure.yaml up -d
 
 ## Service Order
 
-| Entity           | Action           | Url                                                 | Event - Queue          | Status  |
-|------------------|------------------|-----------------------------------------------------|------------------------|---------|
-| Order	           | Create           | api/v1/orders                                       | order-created          | pass	   |
-|                  | Get              | api/v1/orders                                       |                        |		   |
-|                  | Get              | api/v1/orders/{orderId}                             |                        |		   |
-|                  | Update           | api/v1/orders/{orderId}                             |                        |		   |
-|                  | Delete           | api/v1/orders/{orderId}                             |                        |		   |
-| OrderDetails	   | Create           | 													|                        |		   |
-|                  | Get              | 													|                        | 		   |
-|                  | Get              | 													|                        | 		   |
-|                  | Update           | 													|                        | 		   |
-|                  | Delete           | 													|                        | 		   |
-|Consume Ticket    | Created          | 													| ticket-created         | pass    |
-|                  | Deleted          | 													| ticket-deleted         | pass    |
-|Consume Customer  | Created          | 													| customer-created       | pass	   |
-|                  | Deleted          | 													| customer-deleted       | pass    |
-|Consume Order     |                  | 													| stock-reversed         | pass    |
-|				   |                  | 													| stock-reversed-failed  | pass	   |
-|				   |                  | 													| order-validated        | pass	   |
-
-
+| Entity           | Action           | Url                                                 | Event - Queue            | Status  |
+|------------------|------------------|-----------------------------------------------------|--------------------------|---------|
+| Order	           | Create           | api/v1/orders                                       | order-created            | pass	 |
+|                  | Get              | api/v1/orders                                       |                          |		 |
+|                  | Get              | api/v1/orders/{orderId}                             |                          |		 |
+|                  | Update           | api/v1/orders/{orderId}                             |                          |		 |
+|                  | Delete           | api/v1/orders/{orderId}                             |                          |		 |
+| OrderDetails	   | Create           | 													|                          |		 |
+|                  | Get              | 													|                          | 		 |
+|                  | Get              | 													|                          | 		 |
+|                  | Update           | 													|                          | 		 |
+|                  | Delete           | 													|                          | 		 |
+|Consume Ticket    | Created          | 													| ticket-created           | pass    |
+|                  | Deleted          | 													| ticket-deleted           | pass    |
+|Consume Customer  | Created          | 													| customer-created         | pass	 |
+|                  | Deleted          | 													| customer-deleted         | pass    |
+|Consume Order     |                  | 													| stock-reversed           | pass    |
+|				   |                  | 													| stock-reversed-failed    | pass	 |
+|				   |                  | 													| order-validated          | pass	 |
+|				   |                  | 													| payment-processed        | 	     |
+|				   |                  | 													| payment-processed-failed | 	     |
 
 ## Service Payment
 
-| Entity           | Action           | Url                                                 | Event - Queue          | Status   |
-|------------------|------------------|-----------------------------------------------------|------------------------|----------|
-| Invoice	       | Create           | api/v1/invoices                                     |                        | pass	    |
-|                  | Get              | api/v1/invoices                                     |                        |		    |
-|                  | Get              | api/v1/invoices/{invoiceId}                         |                        |		    |
-|                  | Update           | api/v1/invoices/{invoiceId}                         |                        |		    |
-|                  | Delete           | api/v1/invoices/{invoiceId}                         |                        |		    |
-| Consume Customer | Created          | 													| customer-created       | pass	    |
-|                  | Deleted          | 													| customer-deleted       | pass     |
-| Consume Order    | Created          | 													| order-validated        | pass     |
+| Entity           | Action           | Url                                                 | Event - Queue            | Status   |
+|------------------|------------------|-----------------------------------------------------|--------------------------|----------|
+| Invoice	       | Create           | api/v1/invoices                                     |                          | pass	  |
+|                  | Get              | api/v1/invoices                                     |                          |		  |
+|                  | Get              | api/v1/invoices/{invoiceId}                         |                          |		  |
+|                  | Update           | api/v1/invoices/{invoiceId}/payment                 | payment-processed        | pass	  |
+|                  | Update           | api/v1/invoices/{invoiceId}/cancel                  | payment-processed-failed | pass	  |
+|                  | Delete           | api/v1/invoices/{invoiceId}                         |                          |		  |
+| Consume Customer | Created          | 													| customer-created         | pass	  |
+|                  | Deleted          | 													| customer-deleted         | pass     |
+| Consume Order    | Created          | 													| order-validated          | pass     |
 
 
