@@ -58,7 +58,7 @@ public static class DomainEvent
 
         public Guid OrderId { get; set; }
         public Guid CustomerId { get; set; }
-        public string TransactionId { get; set; }
+        public string TransactionCode { get; set; }
     }
 
     public record PaymentProcessedFailed : IDomainEvent
@@ -70,7 +70,7 @@ public static class DomainEvent
         public Guid CustomerId { get; set; }
         public string Reason { get; set; }
         public decimal TotalMoney { get; set; }
-        public string TransactionId { get; set; }
+        //public string TransactionCode { get; set; }
     }
 
     public record OrderCompleted : IDomainEvent
@@ -79,7 +79,7 @@ public static class DomainEvent
         public DateTimeOffset TimeStamp { get; set; }
 
         public Guid OrderId { get; set; }
-        public string TransactionId { get; set; }
+        public string TransactionCode { get; set; }
     }
 
     public record OrderCancelled : IDomainEvent

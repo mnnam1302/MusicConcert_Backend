@@ -1,10 +1,12 @@
 ﻿using Contracts.JsonConverters;
+using Infrastructure.BackgroundJobs;
 using Infrastructure.DependencyInjection.Options;
 using Infrastructure.PipelineObserves;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Quartz;
 using System.Reflection;
 
 namespace Infrastructure.DependencyInjection.Extensions;
@@ -62,6 +64,8 @@ public static class ServiceCollectionExtensions
 
                 bus.ConnectConsumeObserver(new LoggingConsumeObserver());
                 bus.ConnectReceiveObserver(new LoggingReceiveObserver());
+                bus.ConnectSendObserver(new LoggingSendObserver());
+                bus.ConnectPublishObserver(new LoggingPublishObserver());
 
                 bus.MessageTopology.SetEntityNameFormatter(new KebabCaseEntityNameFormatter());
 
@@ -71,5 +75,26 @@ public static class ServiceCollectionExtensions
         });
 
         return services;
+    }
+
+    public static void AddQuartzInfrastructure(this IServiceCollection services)
+    {
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(ProducerOutboxMessageJob));
+            configure
+                .AddJob<ProducerOutboxMessageJob>(jobKey)
+                .AddTrigger(trigger
+                    => trigger.ForJob(jobKey)
+                        .WithSimpleSchedule(schedule =>
+                        {
+                            schedule.WithInterval(TimeSpan.FromMilliseconds(100));
+                            schedule.RepeatForever();
+                        }));
+
+            configure.UseMicrosoftDependencyInjectionJobFactory();
+        });
+
+        services.AddQuartzHostedService();
     }
 }
