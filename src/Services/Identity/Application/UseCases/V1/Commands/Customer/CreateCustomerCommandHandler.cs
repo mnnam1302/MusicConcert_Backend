@@ -26,20 +26,26 @@ public class CreateCustomerCommandHandler : ICommandHandler<Command.CreateCustom
 
     public async Task<Result> Handle(Command.CreateCustomerCommand request, CancellationToken cancellationToken)
     {
-        // Step 01: check email existing?
+        /*
+            1. check email existing
+            2. hash password
+            3. create customer
+            4. save db
+         */
+
+        //1.
         var holderCustomer = await _customerRepository.FindSingleAsync(x => x.Email == request.Email, cancellationToken);
 
         if (holderCustomer is not null)
             throw new CustomerException.CustomerAlreadyExistsException(request.Email);
 
-        // Step 02: Hash password
-        var passwordSalt = _hashPasswordService.GenerateSalt();
-        var passwordHash = _hashPasswordService.HashPassword(request.Password, passwordSalt);
+        //2.
+        var passwordHashed = _hashPasswordService.HashPassword(request.Password);
 
-        // Step 03: Create customer
-        var customer = Domain.Entities.AppCustomer.Create(request.FirstName, request.LastName, request.PhoneNumber, request.DateOfBirth, request.Address, request.Email, passwordHash, passwordSalt);
+        //3.
+        var customer = Domain.Entities.AppCustomer.Create(request.FirstName, request.LastName, request.PhoneNumber, request.DateOfBirth, request.Address, request.Email, passwordHashed);
 
-        // Step 04: Persist db
+        //4.
         _customerRepository.Add(customer);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

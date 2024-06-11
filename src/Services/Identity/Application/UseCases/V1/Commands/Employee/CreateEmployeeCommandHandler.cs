@@ -29,7 +29,14 @@ public class CreateEmployeeCommandHandler : ICommandHandler<Command.CreateEmploy
 
     public async Task<Result> Handle(Command.CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        // Step 01: check email existing?
+        /*
+            1. Check email existing
+            2. Hash password
+            3. Create employee
+            4. Save employee
+         */
+
+        //1.
         var holderEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken);
 
         if (holderEmployee is not null)
@@ -41,12 +48,14 @@ public class CreateEmployeeCommandHandler : ICommandHandler<Command.CreateEmploy
                 ?? throw new OrganizationException.OrganizationNotFoundException(request.OrganizationId.Value);
         }
 
-        // Step 02: Hash password
-        var passwordSalt = _hashPasswordService.GenerateSalt();
-        var passwordHash = _hashPasswordService.HashPassword(request.Password, passwordSalt);
+        //2.
+        //var passwordSalt = _hashPasswordService.GenerateSalt();
+        //var passwordHash = _hashPasswordService.HashPassword(request.Password, passwordSalt);
 
-        // Step 03: Create employee
-        var employee = Domain.Entities.AppEmployee.Create(request.FirstName, request.LastName, request.PhoneNumber, request.DateOfBirth, request.OrganizationId, request.Email, passwordHash, passwordSalt);
+        var passwordHash = _hashPasswordService.HashPassword(request.Password);
+
+        //3.
+        var employee = Domain.Entities.AppEmployee.Create(request.FirstName, request.LastName, request.PhoneNumber, request.DateOfBirth, request.OrganizationId, request.Email, passwordHash);
 
         // Step 04: Persist employee
         _employeeRepository.Add(employee);

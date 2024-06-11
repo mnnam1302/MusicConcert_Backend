@@ -25,17 +25,30 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
 
     public async Task<Result<Response.AuthenticatedResponse>> Handle(Query.LoginEmployeeQuery request, CancellationToken cancellationToken)
     {
-        // Step 01: Check email existing?
+        /*
+            1. Check email existing
+            2. Check password
+            3. Get Claims
+            4. Generate Token
+            5. Set cache
+         */
+
+        //1.
         var holderEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
             ?? throw new EmployeeException.EmployeeNotFoundByEmailException(request.Email);
 
-        // Step 02: Check password
-        bool isAuthenticated = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash, holderEmployee.PasswordSalt);
+        //2.
+        //bool isAuthenticated = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash, holderEmployee.PasswordSalt);
 
-        if (!isAuthenticated)
+        //if (!isAuthenticated)
+        //    throw new IdentityException.AuthenticationException();
+
+        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash);
+
+        if (!isMatch)
             throw new IdentityException.AuthenticationException();
 
-        // Step 03: Get Claims
+        //3.
         var claims = new List<Claim>
         {
             new (ClaimTypes.NameIdentifier, holderEmployee.Id.ToString()),
@@ -43,7 +56,7 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
             new (ClaimTypes.Email, holderEmployee.Email),
         };
 
-        // Step 04: Generate Token
+        //4.
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
         var refershToken = _jwtTokenService.GenerateRefreshToken();
 
@@ -54,7 +67,7 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
         };
 
-        // Step 05: Set cache
+        //5.
         await _cacheService.SetAsync($"session:{request.Email}", result, cancellationToken);
 
         return Result.Success(result);

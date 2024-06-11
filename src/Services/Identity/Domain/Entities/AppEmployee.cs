@@ -14,7 +14,7 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
     {
     }
 
-    private AppEmployee(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash, string passwordSalt)
+    private AppEmployee(Guid id, string firstName, string lastName, string fullName, string phoneNumber, string email, string passwordHash)
     {
         Id = id;
         FirstName = firstName;
@@ -23,17 +23,16 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
         PhoneNumber = phoneNumber;
         Email = email;
         PasswordHash = passwordHash;
-        PasswordSalt = passwordSalt;
     }
 
-    public static AppEmployee Create(string firstName, string lastName, string phoneNumber, DateTime? dateofBirth, Guid? organizationId, string email, string passwordHash, string passwordSalt)
+    public static AppEmployee Create(string firstName, string lastName, string phoneNumber, DateTime? dateofBirth, Guid? organizationId, string email, string passwordHash)
     {
         string fullName = $"{firstName} {lastName}";
 
         if (fullName.Length > 40)
             throw new EmployeeException.EmployeeFieldException(nameof(FullName));
 
-        var employee = new AppEmployee(Guid.NewGuid(), firstName, lastName, fullName, phoneNumber, email, passwordHash, passwordSalt);
+        var employee = new AppEmployee(Guid.NewGuid(), firstName, lastName, fullName, phoneNumber, email, passwordHash);
 
         if (dateofBirth.HasValue)
             employee.AssignDateOfBirth(dateofBirth.Value);
@@ -75,7 +74,6 @@ public class AppEmployee : AggregateRoot<Guid>, IEntity<Guid>, ISoftDeleted
     
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
-    public string PasswordSalt { get; private set; }
 
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedOnUtc { get; set; }

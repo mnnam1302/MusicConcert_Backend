@@ -24,7 +24,6 @@ internal class AppCustomerConfiguration : IEntityTypeConfiguration<AppCustomer>
             .IsRequired();
 
         builder.Property(x => x.PasswordHash).IsRequired();
-        builder.Property(x => x.PasswordSalt).IsRequired();
 
         builder.Property(x => x.PhoneNumber).HasMaxLength(20);
 
