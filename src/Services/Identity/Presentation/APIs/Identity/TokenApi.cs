@@ -18,7 +18,6 @@ public class TokenApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("/employee/refresh", EmployeeRefreshTokenV1);
-
         group1.MapPost("/customer/refresh", CustomerRefreshTokenV1);
     }
 

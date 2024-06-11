@@ -17,11 +17,11 @@ public class AuthApi : ApiEndpoint, ICarterModule
         var group1 = app.NewVersionedApi("Authentication")
             .MapGroup(BaseUrl).HasApiVersion(1);
 
-        group1.MapGet("employee/sign-in", SignInEmployeesV1);
-        group1.MapGet("employee/sign-out", SignOutEmployeesV1);
+        group1.MapPost("employee/sign-in", SignInEmployeesV1);
+        group1.MapPost("employee/sign-out", SignOutEmployeesV1);
 
-        group1.MapGet("customer/sign-in", SignInCustomersV1);
-        group1.MapGet("customer/sign-out", SignOutCustomersV1);
+        group1.MapPost("customer/sign-in", SignInCustomersV1);
+        group1.MapPost("customer/sign-out", SignOutCustomersV1);
     }
 
     private static async Task<IResult> SignInEmployeesV1(ISender sender, [FromBody] Contracts.Services.V1.Identity.AppEmployee.Query.LoginEmployeeQuery request)
