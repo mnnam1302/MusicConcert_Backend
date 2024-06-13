@@ -57,7 +57,7 @@ public class UpdateEventCommandHandler : ICommandHandler<Command.UpdateEventComm
         }
 
         // Step 03: Update event
-        holderEvent.Update(request.Name, request.Description, request.IsPublished);
+        holderEvent.Update(request.Name, request.Description);
         
         // Step 04: Persistence into DB
         _eventRepository.Update(holderEvent);

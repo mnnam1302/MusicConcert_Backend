@@ -23,13 +23,24 @@ public class EventApi : ApiEndpoint, ICarterModule
         group1.MapPost("", CreateEventsV1);
         group1.MapGet("", GetEventsV1);
         group1.MapGet("{eventId}", GetEventsByIdV1);
-        group1.MapPut("{eventId}", UpdateEventsV1);
+        group1.MapPut("{eventId}/publish", UpdateEventsV1);
         group1.MapDelete("{eventId}", DeleteEventsV1);
     }
 
-    private static async Task<IResult> GetEventsV1(ISender sender)
+    private static async Task<IResult> GetEventsV1(ISender sender,
+        string? searchTerm = null,
+        string? sortColumn = null,
+        string? sortOrder = null,
+        int pageIndex = 1,
+        int pageSize = 10)
     {
-        var query = new Query.GetEventsQuery();
+        var query = new Query.GetEventsQuery(
+            searchTerm,
+            sortColumn,
+            SortOrderExtension.ConvertStringToSortOrder(sortOrder),
+            pageIndex,
+            pageSize);
+
         var result = await sender.Send(query);
 
         if (result.IsFailure)
@@ -74,8 +85,6 @@ public class EventApi : ApiEndpoint, ICarterModule
             Id = eventId,
             Name = form[nameof(Command.UpdateEventCommand.Name)],
             Description = form[nameof(Command.UpdateEventCommand.Description)],
-            IsPublished = string.IsNullOrEmpty(form[nameof(Command.UpdateEventCommand.IsPublished)]) 
-                    ? false : true,
             LogoImage = files[nameof(Command.UpdateEventCommand.LogoImage)],
             LayoutImage = files[nameof(Command.UpdateEventCommand.LayoutImage)]
         };
