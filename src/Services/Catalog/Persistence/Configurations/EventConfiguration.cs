@@ -17,9 +17,6 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(x => x.Description)
-            .HasMaxLength(255);
-
         //builder.Property(x => x.StartDate)
         //    .IsRequired();
 

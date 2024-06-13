@@ -91,12 +91,12 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         Status = EventStatus.Cancelled;
     }
 
-    public void UpdateLogoImage(string logoImage)
+    public void WithLogoImage(string logoImage)
     {
         LogoImage = logoImage;
     }
 
-    public void UpdateLayoutImage(string layoutImage)
+    public void WithLayoutImage(string layoutImage)
     {
         LayoutImage = layoutImage;
     }

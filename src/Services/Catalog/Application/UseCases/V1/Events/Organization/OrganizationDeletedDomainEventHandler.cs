@@ -21,7 +21,7 @@ public class OrganizationDeletedDomainEventHandler : ICommandHandler<DomainEvent
     public async Task<Result> Handle(DomainEvent.OrganizationDeleted request, CancellationToken cancellationToken)
     {
         // Step 01: Check if the organization already exists
-        var organizationInfo = await _organizationInfoRepository.FindSingleAsync(x => x.OrganizaitonId.Equals(request.Id), cancellationToken)
+        var organizationInfo = await _organizationInfoRepository.FindByIdAsync(request.Id, cancellationToken)
             ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.Id);
 
         // Step 02: Remove the organization

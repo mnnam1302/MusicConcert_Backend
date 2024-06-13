@@ -30,8 +30,10 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
 
         // Handle search - Search City and District
         var productQuery = string.IsNullOrEmpty(request.SearchTerm)
-            ? _eventRepository.FindAll()
-            : _eventRepository.FindAll(x => x.City.Contains(request.SearchTerm) || x.District.Contains(request.SearchTerm));
+            ? _eventRepository.FindAll(x => x.StartedOnUtc >= request.StartedDate)
+            : _eventRepository.FindAll(x => (x.City.Contains(request.SearchTerm) 
+                                            || x.District.Contains(request.SearchTerm))
+                                            && x.StartedOnUtc >= request.StartedDate);
 
 
         // Handle sort

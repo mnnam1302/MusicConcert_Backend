@@ -20,13 +20,11 @@ public class CustomerDeletedConsumerHandler : ICommandHandler<DomainEvent.Custom
 
     public async Task<Result> Handle(DomainEvent.CustomerDeleted request, CancellationToken cancellationToken)
     {
-        // Step 01: check customer info exists?
-        //var customerHolder = await _customerInfoRepository.FindSingleAsync(x => x.CustomerId.Equals(request.Id), cancellationToken)
-        //    ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.Id);
+        //1. check customer info exists?
         var customerHolder = await _customerInfoRepository.FindByIdAsync(request.Id, cancellationToken)
             ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.Id);
 
-        // Step 02: remove customer info
+        //2. remove customer info
         _customerInfoRepository.Remove(customerHolder);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

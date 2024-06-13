@@ -8,13 +8,10 @@ public class OrganizationInfo : Entity<Guid>, IAuditable, ISoftDeleted
 
     public OrganizationInfo(Guid organizationId, string name)
     {
-        Id = Guid.NewGuid();
-        OrganizaitonId = organizationId;
+        Id = organizationId;
         Name = name;
     }
 
-    public Guid OrganizaitonId { get; private set; }
-    
     public string Name { get; private set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }

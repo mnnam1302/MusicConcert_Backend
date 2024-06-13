@@ -4,17 +4,34 @@ namespace Domain.Entities;
 
 public class CustomerInfo : Entity<Guid>, IAuditable, ISoftDeleted
 {
-    public CustomerInfo()
+    protected CustomerInfo()
     {
     }
 
-    public CustomerInfo(Guid customerId)
+    public CustomerInfo(Guid customerId, string fullName, string email, string phoneNumber)
     {
-        Id = customerId; // Surrogate key in Service Order
-        //CustomerId = customerId;
+        Id = customerId;
+        FullName = fullName;
+        Email = email;
+        PhoneNumer = phoneNumber;
     }
 
-    //public Guid CustomerId { get; private set; }
+    public static CustomerInfo Create(Guid customerId, string fullName, string email, string phoneNumber)
+    {
+        var customerInfo = new CustomerInfo(customerId, fullName, email, phoneNumber);
+        return customerInfo;
+    }
+
+    public void Update(string fullName, string email, string phoneNumber)
+    {
+        FullName = fullName;
+        Email = email;
+        PhoneNumer = phoneNumber;
+    }
+
+    public string FullName { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumer { get; set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

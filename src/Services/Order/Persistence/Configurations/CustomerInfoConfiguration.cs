@@ -13,7 +13,14 @@ public class CustomerInfoConfiguration : IEntityTypeConfiguration<CustomerInfo>
 
         builder.HasKey(x => x.Id);
 
-        //builder.Property(x => x.CustomerId)
-        //    .IsRequired();
+        builder.Property(x => x.FullName)
+            .IsRequired();
+
+        builder.Property(x => x.Email);
+
+        builder.Property(x => x.PhoneNumer);
+
+        builder.Property(x => x.IsDeleted)
+            .HasDefaultValue(false);
     }
 }
