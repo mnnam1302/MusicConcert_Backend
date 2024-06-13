@@ -21,7 +21,7 @@ public static class Command
         string? Adrress,
         string? District,
         string? City,
-        string? Country) : ICommand;
+        string? Country) : ICommand<Response.CreateEventResponse>;
 
     public record UpdateEventCommand : ICommand
     {

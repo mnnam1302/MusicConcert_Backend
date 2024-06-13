@@ -46,13 +46,13 @@ public class UpdateEventCommandHandler : ICommandHandler<Command.UpdateEventComm
             if (request.LogoImage is not null)
             {
                 var logoImageUrl = await _firebaseService.UploadImage(request.LogoImage);
-                holderEvent.UpdateLogoImage(logoImageUrl); // Domain driven design
+                holderEvent.WithLogoImage(logoImageUrl); // Domain driven design
             }
 
             if (request.LayoutImage is not null)
             {
                 var layoutImageUrl = await _firebaseService.UploadImage(request.LayoutImage);
-                holderEvent.UpdateLayoutImage(layoutImageUrl); // Domain driven design
+                holderEvent.WithLayoutImage(layoutImageUrl); // Domain driven design
             }
         }
 

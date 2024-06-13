@@ -16,11 +16,9 @@ public class CustomerInfoConfiguration
         builder.Property(x => x.FullName)
             .IsRequired();
 
-        builder.Property(x => x.Email)
-            .IsRequired();
+        builder.Property(x => x.Email);
 
-        builder.Property(x => x.PhoneNumer)
-            .IsRequired();
+        builder.Property(x => x.PhoneNumer);
 
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false);

@@ -22,7 +22,7 @@ public class OrganizationCreatedDomainEventHandler : ICommandHandler<DomainEvent
     public async Task<Result> Handle(DomainEvent.OrganizationCreated request, CancellationToken cancellationToken)
     {
         // Step 01: Check if the organization already exists
-        var organizationHolder = await _organizationInfoRepository.FindSingleAsync(x => x.OrganizaitonId.Equals(request.Id), cancellationToken);
+        var organizationHolder = await _organizationInfoRepository.FindByIdAsync(request.Id, cancellationToken);
 
         if (organizationHolder is not null)
             throw new OrganizationInfoException.OrganizaitonInfoAlreadyExistsException(request.Id);

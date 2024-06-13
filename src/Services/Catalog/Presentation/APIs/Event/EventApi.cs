@@ -31,6 +31,7 @@ public class EventApi : ApiEndpoint, ICarterModule
         string? searchTerm = null,
         string? sortColumn = null,
         string? sortOrder = null,
+        DateTime? startedDate = null,
         int pageIndex = 1,
         int pageSize = 10)
     {
@@ -38,6 +39,7 @@ public class EventApi : ApiEndpoint, ICarterModule
             searchTerm,
             sortColumn,
             SortOrderExtension.ConvertStringToSortOrder(sortOrder),
+            startedDate is not null ? startedDate : DateTime.Now, 
             pageIndex,
             pageSize);
 

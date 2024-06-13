@@ -7,7 +7,7 @@ using Domain.Exceptions;
 
 namespace Application.UseCases.V1.Commands.Event;
 
-public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventCommand>
+public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventCommand, Response.CreateEventResponse>
 {
     private readonly IRepositoryBase<Domain.Entities.Event, Guid> _eventRepository;
     private readonly IRepositoryBase<Domain.Entities.OrganizationInfo, Guid> _organizationInfoRepository;
@@ -26,28 +26,34 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<Result> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Response.CreateEventResponse>> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
-        // Step 01: check organization existing?
+        /*
+            1. check organization existing
+            2. check category existing
+            3. Create event
+            4. save in db
+         */
+
+        //1.
         Guid organizationId = new();
         if (request.OrganizationId.HasValue)
         {
-            var organizationInfoHolder = await _organizationInfoRepository.FindSingleAsync(
-                x => x.OrganizaitonId.Equals(request.OrganizationId.Value), cancellationToken)
+            var organizationInfoHolder = await _organizationInfoRepository.FindByIdAsync(request.OrganizationId.Value, cancellationToken)
                 ?? throw new OrganizationInfoException.OrganizationNotFoundException(request.OrganizationId.Value);
 
             // Using suggrorate key here
             organizationId = organizationInfoHolder.Id;
         }
 
-        // Step 02: check category existing?
+        //2.
         if (request.CategoryId.HasValue)
         {
             var category = await _categoryRepository.FindByIdAsync(request.CategoryId.Value, cancellationToken)
                 ?? throw new CategoryException.CategoryNotFoundException(request.CategoryId.Value);
         }
 
-        // Step 03: Create event
+        //3.
         var @event = Domain.Entities.Event.Create(
             request.Name,
             request.Description,
@@ -55,7 +61,6 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
             request.EndedDateOnUtc,
             request.Capacity,
             request.CategoryId, 
-            //request.OrganizationId,
             organizationId,
             request.MeetUrl,
             request.Adrress,
@@ -65,10 +70,15 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
             request.EventType);
 
         
-        // Peristence into DB
+        //4.
         _eventRepository.Add(@event);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        var result = new Response.CreateEventResponse(
+            @event.Id,
+            @event.Name,
+            @event.Description);
+
+        return Result.Success(result);
     }
 }
