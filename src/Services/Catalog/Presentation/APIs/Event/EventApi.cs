@@ -23,6 +23,7 @@ public class EventApi : ApiEndpoint, ICarterModule
         group1.MapPost("", CreateEventsV1);
         group1.MapGet("", GetEventsV1);
         group1.MapGet("{eventId}", GetEventsByIdV1);
+        group1.MapGet("{eventId}/tickets", GetTicketsByEventIdV1);
         group1.MapPut("{eventId}/publish", UpdateEventsV1);
         group1.MapDelete("{eventId}", DeleteEventsV1);
     }
@@ -58,6 +59,18 @@ public class EventApi : ApiEndpoint, ICarterModule
 
         if (result.IsFailure)
             HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetTicketsByEventIdV1(ISender sender, Guid eventId)
+    {
+        var query = new Contracts.Services.V1.Catalog.Ticket.Query.GetTicketsByEventId(eventId);
+
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            return HandlerFailure(result);
 
         return Results.Ok(result);
     }
