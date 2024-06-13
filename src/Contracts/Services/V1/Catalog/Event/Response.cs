@@ -9,6 +9,7 @@ public static class Response
         string? LogoImage,
         DateTimeOffset StartedOnUtc,
         DateTimeOffset EndedOnUtc,
+        DateTimeOffset? PublishedOnUtc,
         string EventType,
         int Capacity);
 

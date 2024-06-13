@@ -72,10 +72,9 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
     /// </summary>
     /// <param name="name"></param>
     /// <param name="description"></param>
-    /// <param name="publishedDateOnUtc"></param>
     /// <param name="logoImage"></param>
     /// <param name="layoutImage"></param>
-    public void Update(string? name, string? description, bool publishedDateOnUtc)
+    public void Update(string? name, string? description)
     {
         if (!string.IsNullOrWhiteSpace(name))
             AssignName(name);
@@ -83,8 +82,8 @@ public class Event : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         if (!string.IsNullOrWhiteSpace(description))
             AssignDescription(description);
 
-        if (publishedDateOnUtc)
-            AssignPublishedEvent();
+        // Published Event
+        AssignPublishedEvent();
     }
 
     public void Delete()

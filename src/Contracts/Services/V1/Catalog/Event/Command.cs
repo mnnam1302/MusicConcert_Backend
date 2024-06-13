@@ -28,7 +28,6 @@ public static class Command
         public Guid Id { get; init; }
         public string? Name { get; init; }
         public string? Description { get; init; }
-        public bool IsPublished { get; init; }
 
         public IFormFile? LogoImage { get; init; }
         public IFormFile? LayoutImage { get; init; }

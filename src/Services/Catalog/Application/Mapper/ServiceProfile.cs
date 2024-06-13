@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contracts.Abstractions.Paging;
 
 namespace Application.Mapper;
 
@@ -11,5 +12,6 @@ public class ServiceProfile : Profile
         //CreateMap<List<Domain.Entities.Category>, List<Response.CategoryResponse>>(); 
 
         CreateMap<Domain.Entities.Event, Contracts.Services.V1.Catalog.Event.Response.EventResponse>();
+        CreateMap<PagedResult<Domain.Entities.Event>, PagedResult<Contracts.Services.V1.Catalog.Event.Response.EventResponse>>();
     }
 }
