@@ -38,8 +38,8 @@ public class PaymentInvoiceCommandHandler : ICommandHandler<Command.PaymentInvoi
          */
 
         //1.
-        var invoice = await _invoiceRepository.FindByIdAsync(request.InvoiceId, cancellationToken)
-            ?? throw new InvoiceException.InvoiceNotFoundException(request.InvoiceId);
+        var invoice = await _invoiceRepository.FindByIdAsync(request.InvoiceId.Value, cancellationToken)
+            ?? throw new InvoiceException.InvoiceNotFoundException(request.InvoiceId.Value);
 
         //2.
         if (invoice.OrderInfoId != request.OrderId)

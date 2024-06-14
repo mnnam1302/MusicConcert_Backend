@@ -73,7 +73,7 @@ public static class DomainEvent
         //public string TransactionCode { get; set; }
     }
 
-    public record OrderCompleted : IDomainEvent
+    public record OrderCompleted : IDomainEvent, ICommand
     {
         public Guid EventId { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
