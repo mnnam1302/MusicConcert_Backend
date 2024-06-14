@@ -1,6 +1,8 @@
-﻿using Contracts.JsonConverters;
+﻿using Application.Abstractions;
+using Contracts.JsonConverters;
 using Infrastructure.BackgroundJobs;
 using Infrastructure.DependencyInjection.Options;
+using Infrastructure.Notification;
 using Infrastructure.PipelineObservers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +15,15 @@ namespace Infrastructure.DependencyInjection.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    public static IServiceCollection AddServiceInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<EmailOptions>(configuration.GetSection(nameof(EmailOptions)));
+
+        services.AddTransient<IEmailService, EmailService>();
+
+        return services;
+    }
+
     public static IServiceCollection AddMasstransitRabbitMQInfrastructure(this IServiceCollection services,
     IConfiguration configuration)
     {
