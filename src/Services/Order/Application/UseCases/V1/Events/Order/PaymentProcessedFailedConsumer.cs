@@ -33,7 +33,8 @@ public class PaymentProcessedFailedConsumer : ICommandHandler<DomainEvent.Paymen
         //1.
         var orderHolder = await _orderRepository.FindByIdAsync(
                 request.OrderId,
-                cancellationToken)
+                cancellationToken,
+                order => order.OrderDetails)
             ?? throw new OrderException.OrderNotFoundException(request.OrderId);
 
         //2.
@@ -41,7 +42,24 @@ public class PaymentProcessedFailedConsumer : ICommandHandler<DomainEvent.Paymen
             throw new OrderException.OrderNotBelongCustomerException(request.OrderId);
 
         //3.
-        orderHolder.AssignPaymentProcessedFailed(OrderStatus.OrderCancelled, request.Reason);
+        //3.1 event OrderCancelledByPaymentFailed => Khôi phục stock
+        var orderCancelledByPayment = new DomainEvent.OrderCanceledByPaymentFailed
+        {
+            EventId = Guid.NewGuid(),
+            TimeStamp = DateTime.UtcNow,
+            OrderId = orderHolder.Id,
+
+            Details = orderHolder.OrderDetails.Select(od => new DomainEvent.OrderDetailCanceled
+            {
+                Id = od.Id,
+                OrderId = od.OrderId,
+                TicketId = od.TicketInfoId,
+                Quantity = od.Quantity
+            }).ToList()
+        };
+
+        //3.2 Update Status OrderCancelled and event OrderCancelled => Notification
+        orderHolder.AssignPaymentProcessedFailed(OrderStatus.OrderCancelled, request.Reason, orderCancelledByPayment);
 
         //4.
         _orderRepository.Update(orderHolder);

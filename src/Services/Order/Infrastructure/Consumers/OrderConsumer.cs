@@ -47,4 +47,12 @@ public static class OrderConsumer
         {
         }
     }
+
+    public class OrderCancelledConsumer : Consumer<DomainEvent.OrderCancelled>
+    {
+        public OrderCancelledConsumer(ISender sender)
+            : base(sender)
+        {
+        }
+    }
 }

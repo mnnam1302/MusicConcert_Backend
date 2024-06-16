@@ -62,6 +62,15 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
         return this;
     }
 
+    public Ticket ReverseQuantity(int reverseNumber)
+    {
+        if (UnitInStock == 0)
+            Status = TicketStatus.Available;
+
+        UnitInStock += reverseNumber;
+        return this;
+    }
+
     public string Name { get; private set; }
     public decimal UnitPrice { get; private set; }
     public int UnitInStock { get; private set; }

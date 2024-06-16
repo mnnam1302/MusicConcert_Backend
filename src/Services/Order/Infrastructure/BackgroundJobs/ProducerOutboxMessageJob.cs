@@ -96,6 +96,18 @@ public class ProducerOutboxMessageJob : IJob
                             context.CorrelationId = context.Message.OrderId);
                         break;
 
+                    case (nameof(DomainEvent.OrderCanceledByPaymentFailed)):
+                        var orderCanceledByPaymentFailed = JsonConvert.DeserializeObject<DomainEvent.OrderCanceledByPaymentFailed>(
+                            outboxMessage.Content,
+                            new JsonSerializerSettings
+                            {
+                                TypeNameHandling = TypeNameHandling.All
+                            });
+                        
+                        await _publishEndpoint.Publish(orderCanceledByPaymentFailed, context =>
+                                                   context.CorrelationId = context.Message.OrderId);
+                        break;
+
                     default:
                         break;
                 }

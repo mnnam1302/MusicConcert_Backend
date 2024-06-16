@@ -62,7 +62,7 @@ public class Invoice : AggregateRoot<Guid>, IAuditable, ISoftDeleted
             TimeStamp = DateTimeOffset.UtcNow,
             OrderId = OrderInfoId.Value,
             CustomerId = CustomerInfoId.Value,
-            Reason = "Customer cancel payment.",
+            Reason = "Khách hàng chọn hủy bỏ đơn hàng",
             TotalMoney = TotalPrice
         });
 

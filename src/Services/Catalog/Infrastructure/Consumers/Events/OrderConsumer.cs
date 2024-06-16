@@ -13,4 +13,12 @@ public static class OrderConsumer
         {
         }
     }
+
+    public class OrderCanceledByPaymentFailedConsumer : Consumer<DomainEvent.OrderCanceledByPaymentFailed>
+    {
+        public OrderCanceledByPaymentFailedConsumer(ISender sender)
+            : base(sender)
+        {
+        }
+    }
 }

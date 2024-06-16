@@ -1,5 +1,6 @@
 ﻿namespace Contracts.Services.V1.Order;
 
-public class Response
+public static class Response
 {
+    public record OrderCanceledResponse(Guid OrderId, string? CanceledReason);
 }

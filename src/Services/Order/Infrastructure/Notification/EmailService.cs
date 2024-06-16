@@ -30,16 +30,19 @@ public class EmailService : IEmailService
         //{
         //    Text = messageBody
         //};
+
         var builder = new BodyBuilder();
-        builder.HtmlBody = $"{messageBody} \n" +
-                           $"Music Concert xin cảm ơn quý khách hàng đã tin tưởng.";
+        builder.HtmlBody = messageBody;
+
         message.Body = builder.ToMessageBody();
 
-        using var client = new SmtpClient();
-        await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, SecureSocketOptions.StartTls);
-        await client.AuthenticateAsync(_emailOptions.Email, _emailOptions.Password);
+        using (var client = new SmtpClient())
+        {
+            await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(_emailOptions.Email, _emailOptions.Password);
 
-        await client.SendAsync(message);
-        client.Disconnect(true);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
     }
 }

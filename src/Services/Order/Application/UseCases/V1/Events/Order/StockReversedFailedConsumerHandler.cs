@@ -23,14 +23,25 @@ public class StockReversedFailedConsumerHandler : ICommandHandler<DomainEvent.St
 
     public async Task<Result> Handle(DomainEvent.StockReversedFailed request, CancellationToken cancellationToken)
     {
-        // Step 01: Check order existsing?
+        /*
+            1. check order existing
+            2. update Status OrderCancelled
+            3. save order
+         */
+
+        //1.
         var orderHolder = await _orderRepository.FindByIdAsync(request.OrderId, cancellationToken)
             ?? throw new OrderException.OrderNotFoundException(request.OrderId);
 
-        // Step 02: Update status 'OrderCancelled' -> RaiseEvent: OrderCancelled (Notification Service)
+        //2.
+        // V1 Có nên RaiseEvent Cancelled here => Theo mình nên retrun Result attaced Reason for User
         orderHolder.AssignValidatedFailed(OrderStatus.OrderCancelled, request.Reason);
 
-        // Step 03: Persistence into database
+        // V2: ý tưởng ổn -> nhưng Response nó đã trả về lúc Order => Chỗ này consumer nên không trả về
+        // Solution gửi vô một cái Hub dùng socketio thông báo cho người dùng ở ứng dụng
+        //orderHolder.AssignValidatedFailed(OrderStatus.OrderCancelled);
+
+        //3.
         _orderRepository.Update(orderHolder);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
