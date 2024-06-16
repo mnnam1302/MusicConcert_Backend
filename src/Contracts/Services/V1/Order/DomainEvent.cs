@@ -24,10 +24,10 @@ public static class DomainEvent
 
     public record StockReversed : IDomainEvent, ICommand
     {
-        public Guid EventId { get; set; }
-        public DateTimeOffset TimeStamp { get; set; }
+        public Guid EventId { get; init; }
+        public DateTimeOffset TimeStamp { get; init; }
 
-        public Guid OrderId { get; set; }
+        public Guid OrderId { get; init; }
     }
 
     public record StockReversedFailed : IDomainEvent, ICommand
@@ -82,7 +82,7 @@ public static class DomainEvent
         public string TransactionCode { get; set; }
     }
 
-    public record OrderCancelled : IDomainEvent
+    public record OrderCancelled : IDomainEvent, ICommand
     {
         public Guid EventId { get; set; }
         public DateTimeOffset TimeStamp { get; set; }
@@ -91,4 +91,19 @@ public static class DomainEvent
         public Guid CustomerId { get; set; }
         public string Reason { get; set; }
     }
+
+    public record OrderCanceledByPaymentFailed : IDomainEvent, ICommand
+    {
+        public Guid EventId { get; init; }
+        public DateTimeOffset TimeStamp { get; init; }
+
+        public Guid OrderId { get; init; }
+        public List<OrderDetailCanceled> Details { get; set; } = new();
+    }
+
+    public readonly record struct OrderDetailCanceled(
+        Guid Id,
+        Guid OrderId,
+        Guid TicketId,
+        int Quantity);
 }

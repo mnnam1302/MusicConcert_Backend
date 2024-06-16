@@ -56,7 +56,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                     TimeStamp = DateTimeOffset.UtcNow,
                     OrderId = request.OrderId,
                     CustomerId = request.CustomerId,
-                    Reason = $"TicketId: {orderDetail.TicketId} is not existing.",
+                    Reason = $"Ticket with Id: {orderDetail.TicketId} is not existing.",
                 };
 
                 await _publishEndpoint.Publish(stockkReversedFailed, context => context.CorrelationId = context.Message.OrderId);
@@ -72,7 +72,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                     TimeStamp = DateTimeOffset.UtcNow,
                     OrderId = request.OrderId,
                     CustomerId = request.CustomerId,
-                    Reason = $"TicketId: {ticketHolder.Id} and Name: {ticketHolder.Name} with Quantity {ticketHolder.UnitInStock} is not enough.",
+                    Reason = $"Ticket `{ticketHolder.Name}` với Id: {ticketHolder.Id} is not enough.",
                 };
 
                 await _publishEndpoint.Publish(stockkReversedFailed, context => context.CorrelationId = context.Message.OrderId);

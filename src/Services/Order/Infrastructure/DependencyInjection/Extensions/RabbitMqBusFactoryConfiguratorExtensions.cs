@@ -52,6 +52,10 @@ public static class RabbitMqBusFactoryConfiguratorExtensions
         cfg.ConfigureEventReceiveEndpoint<
             OrderConsumer.OrderCompletedConsumer,
             Contracts.Services.V1.Order.DomainEvent.OrderCompleted>(context);
+
+        cfg.ConfigureEventReceiveEndpoint<
+            OrderConsumer.OrderCancelledConsumer,
+            Contracts.Services.V1.Order.DomainEvent.OrderCancelled>(context);
     }
 
     private static void ConfigureEventReceiveEndpoint<TConsumer, TEvent>(this IRabbitMqBusFactoryConfigurator bus, IRegistrationContext context)

@@ -109,10 +109,14 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
         return this;
     }
 
-    public Order AssignPaymentProcessedFailed(OrderStatus status, string reason)
+    public Order AssignPaymentProcessedFailed(OrderStatus status, string reason, DomainEvent.OrderCanceledByPaymentFailed @eventCanceledByPayment)
     {
         Status = status;
 
+        // OrderCancelledByPaymentFailed -> Catalog service
+        RaiseDomainEvent(@eventCanceledByPayment);
+
+        // OrderCancelled -> Notidication service
         RaiseDomainEvent(new DomainEvent.OrderCancelled
         {
             EventId = Guid.NewGuid(),
@@ -121,6 +125,9 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
             CustomerId = CustomerInfoId,
             Reason = reason
         });
+
+        // OrderCancelledByPaymentFailed -> Catalog service
+
 
         return this;
     }
