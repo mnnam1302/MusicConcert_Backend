@@ -37,9 +37,12 @@ public class AppCustomerApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
 
-    private static async Task<IResult> GetCustomersV1(ISender sender)
+    private static async Task<IResult> GetCustomersV1(
+        ISender sender,
+        int pageIndex = 1,
+        int pageSize = 10)
     {
-        var query = new Query.GetCustomersQuery();
+        var query = new Query.GetCustomersQuery(pageIndex, pageSize);
         var result = await sender.Send(query);
 
         if (result.IsFailure)

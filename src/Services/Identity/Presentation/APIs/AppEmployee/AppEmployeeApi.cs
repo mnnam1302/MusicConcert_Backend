@@ -19,12 +19,16 @@ public class AppEmployeeApi : ApiEndpoint, ICarterModule
             .MapGroup(BaseUrl).HasApiVersion(1);
 
         group1.MapPost("", CreateEmployeesV1);
-        group1.MapGet("{employeeId}", GetEmployeesByIdV1);
-        //group1.MapGet("", () => "");
         //group1.MapPut("employeeId", () => "");
         group1.MapDelete("{employeeId}", DeleteEmployeesV1);
+
+        // QUERY //
+        //group1.MapGet("", () => "");
+        group1.MapGet("{employeeId}", GetEmployeesByIdV1);
+        group1.MapGet("", GetEmployeesForOrganizationV1);
     }
 
+    // QUERY //
     private static async Task<IResult> GetEmployeesByIdV1(ISender sender, Guid employeeId)
     {
         var query = new Query.GetEmployeeByIdQuery(employeeId);
@@ -45,7 +49,27 @@ public class AppEmployeeApi : ApiEndpoint, ICarterModule
 
         return Results.Ok(result);
     }
-    
+
+    private static async Task<IResult> GetEmployeesForOrganizationV1(
+        ISender sender,
+        Guid? organizationId = null,
+        int pageIndex = 1,
+        int pageSize = 10)
+    {
+        var query = new Contracts.Services.V1.Identity.AppEmployee.Query.GetEmployeesByOrganizationQuery(
+            organizationId,
+            pageIndex,
+            pageSize);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    // END QUERY //
+
     private static async Task<IResult> DeleteEmployeesV1(ISender sender, Guid employeeId)
     {
         var command = new Command.DeleteEmployeeCommand(employeeId);

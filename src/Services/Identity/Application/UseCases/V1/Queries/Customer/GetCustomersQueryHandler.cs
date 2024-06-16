@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Contracts.Abstractions.Message;
+using Contracts.Abstractions.Paging;
 using Contracts.Abstractions.Shared;
 using Contracts.Services.V1.Identity.Customer;
 using Domain.Abstractions.Repositories;
 
 namespace Application.UseCases.V1.Queries.Customer;
 
-public class GetCustomersQueryHandler : IQueryHandler<Query.GetCustomersQuery, List<Response.CustomerResponse>>
+public class GetCustomersQueryHandler : IQueryHandler<Query.GetCustomersQuery, PagedResult<Response.CustomerResponse>>
 {
     private readonly IRepositoryBase<Domain.Entities.AppCustomer, Guid> _customerRepository;
     private readonly IMapper _mapper;
@@ -17,13 +18,20 @@ public class GetCustomersQueryHandler : IQueryHandler<Query.GetCustomersQuery, L
         _mapper = mapper;
     }
 
-    public async Task<Result<List<Response.CustomerResponse>>> Handle(Query.GetCustomersQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<Response.CustomerResponse>>> Handle(Query.GetCustomersQuery request, CancellationToken cancellationToken)
     {
-        // Step 01: Get customers
-        var customersHolder = await _customerRepository.FindAllAsync(cancellationToken: cancellationToken);
+        //1. get all customers
+        var customersHolder = _customerRepository.FindAll();
+
+        //2. Page
+        var customers = await PagedResult<Domain.Entities.AppCustomer>.CreateAsync(
+            customersHolder, 
+            request.PageIndex, 
+            request.PageSize, 
+            cancellationToken);
 
         // Step 02: Mapping
-        var result = _mapper.Map<List<Response.CustomerResponse>>(customersHolder);
+        var result = _mapper.Map<PagedResult<Response.CustomerResponse>>(customers);
 
         return Result.Success(result);
     }
