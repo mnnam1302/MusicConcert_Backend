@@ -15,11 +15,13 @@ public static class Response
         string Country,
         string ZipCode);
 
-    public record OrganizationResponse(
-        Guid Id,
-        string Name,
-        string Phone,
-        string HomePage,
-        string City,
-        string Country);
+    public record OrganizationResponse
+    {
+        public Guid Id { get; init; }
+        public string Name { get; init; }
+        public string Phone { get; init; }
+        public string HomePage { get; init; }
+        public string City { get; init; }
+        public string Country { get; init; }
+    }
 }
