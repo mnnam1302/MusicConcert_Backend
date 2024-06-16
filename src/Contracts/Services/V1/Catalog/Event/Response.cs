@@ -1,4 +1,7 @@
-﻿namespace Contracts.Services.V1.Catalog.Event;
+﻿using MassTransit.SagaStateMachine;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace Contracts.Services.V1.Catalog.Event;
 
 public static class Response
 {
@@ -13,11 +16,13 @@ public static class Response
         string Name,
         string? Description,
         string? LogoImage,
+        string Status,
         DateTimeOffset StartedOnUtc,
         DateTimeOffset EndedOnUtc,
         DateTimeOffset? PublishedOnUtc,
         string EventType,
-        int Capacity);
+        int Capacity,
+        bool IsDeleted);
 
     public record EventDetailsReponse
     {
@@ -29,8 +34,10 @@ public static class Response
         public string OrganizationName { get; init; }
         public string? LogoImage { get; init; }
         public string? LayoutImage { get; init; }
-        public DateTimeOffset StartedDateOnUtc { get; init; }
-        public DateTimeOffset EndedDateOnUtc { get; init; }
+        public string Status { get; init; }
+        public DateTimeOffset StartedOnUtc { get; init; }
+        public DateTimeOffset EndedOnUtc { get; init; }
+        public DateTimeOffset? PublishedOnUtc { get; init; }
         public int Capacity { get; init; }
         public string? MeetUrl { get; init; }
         public string? Addrees { get; init; }

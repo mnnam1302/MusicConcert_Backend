@@ -7,5 +7,11 @@ public static class Query
 {
     public record GetEventByIdQuery(Guid Id) : IQuery<Response.EventDetailsReponse>;
 
-    public record GetEventsQuery(string? SearchTerm, string? SortColumn, string? SortOrder, DateTime? StartedDate, int PageIndex, int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
+    public record GetEventsQuery(
+        string? SearchTerm, 
+        string? SortColumn, 
+        string? SortOrder, 
+        DateTime? StartedDate, 
+        int PageIndex, 
+        int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
 }

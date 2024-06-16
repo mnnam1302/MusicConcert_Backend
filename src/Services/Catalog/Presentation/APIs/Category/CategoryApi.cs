@@ -25,7 +25,7 @@ public class CategoryApi : ApiEndpoint, ICarterModule
         group1.MapDelete("{categoryId}", DeleteCategoriesV1);
     }
 
-    public static async Task<IResult> GetCategoriesByIdV1(ISender sender, Guid categoryId)
+    private static async Task<IResult> GetCategoriesByIdV1(ISender sender, Guid categoryId)
     {
         var query = new Query.GetCategoryByIdQuery(categoryId);
         var result = await sender.Send(query);
@@ -36,9 +36,12 @@ public class CategoryApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
 
-    public static async Task<IResult> GetCategoriesV1(ISender sender)
+    private static async Task<IResult> GetCategoriesV1(
+        ISender sender,
+        int pageIndex = 1,
+        int pageSize = 10)
     {
-        var query = new Query.GetCategoriesQuery();
+        var query = new Query.GetCategoriesQuery(pageIndex, pageSize);
         var result = await sender.Send(query);
 
         if (result.IsFailure)

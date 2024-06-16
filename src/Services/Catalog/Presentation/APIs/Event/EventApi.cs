@@ -24,7 +24,7 @@ public class EventApi : ApiEndpoint, ICarterModule
         group1.MapGet("", GetEventsV1);
         group1.MapGet("{eventId}", GetEventsByIdV1);
         group1.MapGet("{eventId}/tickets", GetTicketsByEventIdV1);
-        group1.MapPut("{eventId}/publish", UpdateEventsV1);
+        group1.MapPut("/publish/{eventId}", UpdateEventsV1);
         group1.MapDelete("{eventId}", DeleteEventsV1);
     }
 

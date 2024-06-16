@@ -24,19 +24,16 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
 
     public async Task<Result<PagedResult<Response.EventResponse>>> Handle(Query.GetEventsQuery request, CancellationToken cancellationToken)
     {
-        //var holderEvents = await _eventRepository.FindAllAsync(cancellationToken: cancellationToken);
-        //var result = _mapper.Map<List<Response.EventResponse>>(holderEvents);
-        //return Result.Success(result);
-
-        // Handle search - Search City and District
+        //1.
+        // search - Search City and District
+        // filter - StartedDate
         var productQuery = string.IsNullOrEmpty(request.SearchTerm)
             ? _eventRepository.FindAll(x => x.StartedOnUtc >= request.StartedDate)
-            : _eventRepository.FindAll(x => (x.City.Contains(request.SearchTerm) 
-                                            || x.District.Contains(request.SearchTerm))
-                                            && x.StartedOnUtc >= request.StartedDate);
+            : _eventRepository.FindAll(x => 
+                (x.City.Contains(request.SearchTerm) || x.District.Contains(request.SearchTerm))
+                && x.StartedOnUtc >= request.StartedDate);
 
-
-        // Handle sort
+        //2. sort
         productQuery = request.SortOrder == SortOrder.Descending
             ? productQuery.OrderByDescending(GetSortProperty(request))
             : productQuery.OrderBy(GetSortProperty(request));
@@ -47,6 +44,7 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
                 request.PageSize, 
                 cancellationToken);
 
+        //3. mapping
         var result = _mapper.Map<PagedResult<Response.EventResponse>>(products);
         return Result.Success(result);
     }
