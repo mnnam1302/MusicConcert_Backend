@@ -29,8 +29,9 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
         // filter - StartedDate
         var productQuery = string.IsNullOrEmpty(request.SearchTerm)
             ? _eventRepository.FindAll(x => x.StartedOnUtc >= request.StartedDate)
-            : _eventRepository.FindAll(x => 
-                (x.City.Contains(request.SearchTerm) || x.District.Contains(request.SearchTerm))
+            : _eventRepository.FindAll(x =>
+                //(x.City.Contains(request.SearchTerm) || x.District.Contains(request.SearchTerm))
+                (x.City.Contains(request.SearchTerm))
                 && x.StartedOnUtc >= request.StartedDate);
 
         //2. sort
