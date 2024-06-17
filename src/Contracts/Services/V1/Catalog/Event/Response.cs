@@ -1,7 +1,4 @@
-﻿using MassTransit.SagaStateMachine;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace Contracts.Services.V1.Catalog.Event;
+﻿namespace Contracts.Services.V1.Catalog.Event;
 
 public static class Response
 {
@@ -9,7 +6,6 @@ public static class Response
         Guid Id,
         string Name,
         string? Description);
-
 
     public record EventResponse(
         Guid Id,
@@ -44,5 +40,7 @@ public static class Response
         public string? District { get; init; }
         public string? City { get; init; }
         public string? Country { get; init; }
+
+        public List<Contracts.Services.V1.Catalog.Ticket.Response.TicketResponse> Tickets { get; init; }
     }
 }

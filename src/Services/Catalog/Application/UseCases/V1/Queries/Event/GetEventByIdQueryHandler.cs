@@ -27,7 +27,8 @@ public class GetEventByIdQueryHandler : IQueryHandler<Query.GetEventByIdQuery, R
                 request.Id,
                 cancellationToken,
                 e => e.Category,
-                e => e.OrganizationInfo)
+                e => e.OrganizationInfo,
+                e => e.Tickets)
             ?? throw new EventException.EventNotFoundException(request.Id);
 
         //2. mapping

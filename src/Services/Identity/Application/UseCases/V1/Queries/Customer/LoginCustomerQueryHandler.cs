@@ -60,7 +60,8 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
         {
             AccessToken = accessToken,
             RefreshToken = refershToken,
-            RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
+            //RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
+            RefreshTokenExpiryTime = DateTime.Now.AddDays(1)
         };
 
         //5.
