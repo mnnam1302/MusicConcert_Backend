@@ -4,6 +4,11 @@ public static class InvoiceException
 {
     public class InvoiceNotFoundException : NotFoundException
     {
+        public InvoiceNotFoundException()
+            : base("Invoice was not found.")
+        {
+        }
+
         public InvoiceNotFoundException(Guid invoiceId)
             : base($"Invoice with Id {invoiceId} was not found.")
         {

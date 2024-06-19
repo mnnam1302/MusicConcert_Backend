@@ -1,5 +1,5 @@
 ﻿using Carter;
-using Contracts.Services.V1.Payment;
+using Contracts.Services.V1.Payment.Invoice;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -25,8 +25,8 @@ public class InvoiceApi : ApiEndpoint, ICarterModule
         //group1.MapDelete("{invoiceId}", DeleteInvoicesV1);
     }
 
-    private static async Task<IResult> PaymentInvoicesV1(ISender sender, 
-        Guid invoiceId, 
+    private static async Task<IResult> PaymentInvoicesV1(ISender sender,
+        Guid invoiceId,
         [FromBody] Command.PaymentInvoiceCommand request)
     {
         var command = new Command.PaymentInvoiceCommand(invoiceId, request.OrderId, request.CustomerId, request.TransactionCode);

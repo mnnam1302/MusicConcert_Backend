@@ -1,6 +1,6 @@
 ﻿using Contracts.Abstractions.Message;
 
-namespace Contracts.Services.V1.Payment;
+namespace Contracts.Services.V1.Payment.Invoice;
 
 public static class Command
 {

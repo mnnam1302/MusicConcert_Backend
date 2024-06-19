@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters;
 
 namespace Application.UseCases.V1.Commands.Order;
 
-public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderCommand>
+public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderCommand, Response.OrderResponse>
 {
     private readonly IRepositoryBase<Domain.Entities.Order, Guid> _orderRepository;
     private readonly IRepositoryBase<Domain.Entities.CustomerInfo, Guid> _customerInfoRepository;
@@ -27,13 +27,20 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Response.OrderResponse>> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        // Step 01: Check customer existsing
+        /*
+            1. Check customer existsing
+            2. Check ticket existing
+            3. Create order
+            4. Persistence into database
+         */
+
+        // 1.
         var customerHolder = await _customerInfoRepository.FindByIdAsync(request.CustomerId, cancellationToken)
            ?? throw new CustomerInfoException.CustomerInfoNotFoundException(request.CustomerId);
 
-        // Step 02: Check ticket existing ** Cách này không tối ưu => Gửi một lần xuống luôn
+        // 2.
         var ticketIds = request.Details.Select(x => x.TicketId).ToList();
         
         var ticketExisting = await _ticketInfoRepository.FindAllAsync(x => ticketIds.Contains(x.Id), cancellationToken);
@@ -42,13 +49,21 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
             throw new TicketInfoException.TicketInfoNotExistsingException(
                 "There is existing at least one TicketId was not found.");
 
-        // Step 03: Create order
+        // 3.
         var order = Domain.Entities.Order.Create(customerHolder.Id, request.Details);
 
-        // Step 04: Persistence into database
+        // 4.
         _orderRepository.Add(order);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success();
+        // 5.
+        var result = new Response.OrderResponse
+        {
+            Id = order.Id,
+            Status = order.Status,
+            TotalPrice = order.OrderDetails.Sum(x => x.UnitPrice * x.Quantity)
+        };
+
+        return Result.Success(result);
     }
 }
