@@ -2,5 +2,10 @@
 
 public static class Response
 {
-    public record OrderCanceledResponse(Guid OrderId, string? CanceledReason);
+    public record OrderResponse
+    {
+        public Guid Id { get; init; }
+        public string Status { get; init; }
+        public decimal TotalPrice { get; init; }
+    }
 }

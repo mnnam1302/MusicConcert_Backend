@@ -1,6 +1,6 @@
 ﻿using Contracts.Abstractions.Message;
 using Contracts.Abstractions.Shared;
-using Contracts.Services.V1.Payment;
+using Contracts.Services.V1.Payment.Invoice;
 using Domain.Abstractions;
 using Domain.Abstractions.Repositories;
 using Domain.Exceptions;

@@ -25,27 +25,20 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
         _publishEndpoint = publishEndpoint;
     }
 
-    /// <summary>
-    /// Check ticketId existsing
-    /// Check quantity of ticket
-    ///     Update quantity of ticket
-    ///     If extsing at least one Ticket is not enough => Publish event OrderValidatedFailed
-    ///         Lưu ý: 
-    ///             + Ví dụ User đặt Ticket 3 vé, nhưng chỉ còn 2 vé => không đủ
-    ///             + Chỉ publish event Validated-Failed và 2 vé này vẫn bth, người sau nếu thỏa thì đặt vé
-    ///             + Hạn chế throw exception nếu thật sự không cần thiết
-    /// Publish event OrderValidated
-    /// Persistence into database
-    /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="TicketException.TicketNotFoundException"></exception>
     public async Task<Result> Handle(DomainEvent.OrderCreated request, CancellationToken cancellationToken)
     {
+        /*
+            1. check each TicketId existsing            -> If failed -> StockReversedFailed
+            2. check Ticket's quantity is enough        -> If failed -> StockReversedFailed
+            3. update quantity of ticket
+            4. save into database
+            5. publish event OrderValidated - Success
+
+            Note: Should't not throw error here
+         */
         foreach (var orderDetail in request.Details)
         {
-            // Step 01: Check ticketId existsing
+            // 1.
             var ticketHolder = await _ticketRepository.FindByIdAsync(orderDetail.TicketId, cancellationToken);
             
             if (ticketHolder is null)
@@ -63,7 +56,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                 return Result.Success();
             }
 
-            // Step 02: Check quantity
+            // 2.
             if (ticketHolder.UnitInStock < orderDetail.Quantity)
             {
                 var stockkReversedFailed = new Contracts.Services.V1.Order.DomainEvent.StockReversedFailed
@@ -79,12 +72,12 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
                 return Result.Success();
             }
 
-            // Step 03: Update quantity cho OrderDetail này => xử lý OrderDetail tiếp theo
+            // 3.
             ticketHolder.AssignQuantity(orderDetail.Quantity);
             _ticketRepository.Update(ticketHolder);
         }
 
-        // Step 04: Publish event OrderValidated - Success => Order and all OrderDetails passed
+        // 4.
         var stockReversed = new DomainEvent.StockReversed
         {
             EventId = Guid.NewGuid(),
@@ -94,7 +87,7 @@ public class OrderCreatedConsumerHandler : ICommandHandler<DomainEvent.OrderCrea
 
         await _publishEndpoint.Publish(stockReversed, context => context.CorrelationId = context.Message.OrderId);
 
-        // Step 04: Save changes
+        // 5.
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
