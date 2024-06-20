@@ -34,16 +34,11 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
          */
 
         //1.
-        var holderEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
+        var foundEmployee = await _employeeRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
             ?? throw new EmployeeException.EmployeeNotFoundByEmailException(request.Email);
 
         //2.
-        //bool isAuthenticated = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash, holderEmployee.PasswordSalt);
-
-        //if (!isAuthenticated)
-        //    throw new IdentityException.AuthenticationException();
-
-        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, holderEmployee.PasswordHash);
+        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, foundEmployee.PasswordHash);
 
         if (!isMatch)
             throw new IdentityException.AuthenticationException();
@@ -51,9 +46,9 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
         //3.
         var claims = new List<Claim>
         {
-            new (ClaimTypes.NameIdentifier, holderEmployee.Id.ToString()),
-            new (ClaimTypes.Name, holderEmployee.FullName),
-            new (ClaimTypes.Email, holderEmployee.Email),
+            new (ClaimTypes.NameIdentifier, foundEmployee.Id.ToString()),
+            new (ClaimTypes.Name, foundEmployee.FullName),
+            new (ClaimTypes.Email, foundEmployee.Email),
         };
 
         //4.
@@ -62,13 +57,14 @@ public class EmployeeLoginQueryHandler : IQueryHandler<Query.LoginEmployeeQuery,
 
         var result = new Response.AuthenticatedResponse
         {
+            UserId = foundEmployee.Id,
             AccessToken = accessToken,
             RefreshToken = refershToken,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
         };
 
         //5.
-        await _cacheService.SetAsync($"session:{request.Email}", result, cancellationToken);
+        await _cacheService.SetAsync($"session:{foundEmployee.Email}", result, cancellationToken);
 
         return Result.Success(result);
     }

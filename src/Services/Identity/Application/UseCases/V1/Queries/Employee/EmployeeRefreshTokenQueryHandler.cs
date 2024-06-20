@@ -22,25 +22,37 @@ public class EmployeeRefreshTokenQueryHandler : IQueryHandler<Query.EmployeeRefr
 
     public async Task<Result<Response.AuthenticatedResponse>> Handle(Query.EmployeeRefreshTokenQuery request, CancellationToken cancellationToken)
     {
-        // Step 01: Check cache
+        /*
+            1. check email => Get cache by email
+            2. verify access token -> check email input and redis
+            3. check refresh token input and redis
+            4. generate new token
+            5. update cache
+         */
+
+        // 1.
         var authenticated = await _cacheService.GetAsync<Response.AuthenticatedResponse>($"session:{request.Email}", cancellationToken)
             ?? throw new IdentityException.TokenException("Can not get value from Redis.");
 
-        // Step 02: Verify access token
+        // 2.
         var principles = _jwtTokenService.GetPrincipalFromExpiredToken(request.AccessToken);
         var emailKey = principles.FindFirstValue(ClaimTypes.Email).ToString();
 
-        // Step 03: Check refresh token
+        if (emailKey != request.Email)
+            throw new IdentityException.TokenException("Request token invalid!");
+
+        // 3.
         if (authenticated.RefreshToken != request.RefreshToken || authenticated.RefreshTokenExpiryTime <= DateTime.Now)
             throw new IdentityException.TokenException("Request token invalid!");
 
-        // Step 04: Generate new token
+        // 4.
         var accessToken = _jwtTokenService.GenerateAccessToken(principles.Claims);
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
-        // Step 05: Update cache
+        // 5.
         var result = new Response.AuthenticatedResponse
         {
+            UserId = authenticated.UserId,
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)

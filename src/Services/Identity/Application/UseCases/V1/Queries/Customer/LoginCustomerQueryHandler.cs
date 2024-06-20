@@ -35,11 +35,11 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
          */
 
         //1.
-        var holderCustomer = await _customerRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
+        var foundCustomer = await _customerRepository.FindSingleAsync(x => x.Email.Equals(request.Email), cancellationToken)
             ?? throw new CustomerException.CustomerNotFoundByEmailException(request.Email);
 
         //2.
-        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, holderCustomer.PasswordHash);
+        bool isMatch = _hashPasswordService.VerifyPassword(request.Password, foundCustomer.PasswordHash);
 
         if (!isMatch)
             throw new IdentityException.AuthenticationException();
@@ -47,9 +47,9 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
         //3.
         var claims = new List<Claim>
         {
-            new (ClaimTypes.NameIdentifier, holderCustomer.Id.ToString()),
-            new (ClaimTypes.Name, holderCustomer.FullName),
-            new (ClaimTypes.Email, holderCustomer.Email),
+            new (ClaimTypes.NameIdentifier, foundCustomer.Id.ToString()),
+            new (ClaimTypes.Name, foundCustomer.FullName),
+            new (ClaimTypes.Email, foundCustomer.Email),
         };
 
         //4.
@@ -58,6 +58,7 @@ public class LoginCustomerQueryHandler : IQueryHandler<Query.LoginCustomerQuery,
 
         var result = new Response.AuthenticatedResponse
         {
+            UserId = foundCustomer.Id,
             AccessToken = accessToken,
             RefreshToken = refershToken,
             //RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
