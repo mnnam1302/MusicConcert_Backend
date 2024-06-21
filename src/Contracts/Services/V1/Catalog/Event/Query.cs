@@ -14,4 +14,12 @@ public static class Query
         DateTime? StartedDate, 
         int PageIndex, 
         int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
+
+
+    public record GetEventsByOrganizationId(
+        Guid OrganizationId,
+        string? City,
+        Guid? eventId,
+        int PageIndex,
+        int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
 }

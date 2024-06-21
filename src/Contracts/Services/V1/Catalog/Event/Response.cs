@@ -12,13 +12,11 @@ public static class Response
         string Name,
         string? Description,
         string? LogoImage,
-        string Status,
         DateTimeOffset StartedOnUtc,
         DateTimeOffset EndedOnUtc,
-        DateTimeOffset? PublishedOnUtc,
         string EventType,
-        int Capacity,
-        bool IsDeleted);
+        string? District,
+        string? City);
 
     public record EventDetailsReponse
     {
