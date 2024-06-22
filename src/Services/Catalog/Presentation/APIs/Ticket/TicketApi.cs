@@ -20,8 +20,14 @@ public class TicketApi : ApiEndpoint, ICarterModule
 
         group1.MapPost("", CreateTicketV1);
         group1.MapDelete("{ticketId}", DeleteTicketsV1);
+
+        var group2 = app.NewVersionedApi("Ticket")
+            .MapGroup(BaseUrl).HasApiVersion(2);
+
+        group2.MapPost("", CreateTicketV2);
     }
 
+    #region V1
     private static async Task<IResult> CreateTicketV1(ISender sender, [FromBody] Command.CreateTicket command)
     {
         var result = await sender.Send(command);
@@ -42,4 +48,20 @@ public class TicketApi : ApiEndpoint, ICarterModule
 
         return Results.Ok(result);
     }
+
+    #endregion V1
+
+    #region V2
+
+    private static async Task<IResult> CreateTicketV2(ISender sender, [FromBody] Command.CreateTicketCommandV2 command)
+    {
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    #endregion V2
 }
