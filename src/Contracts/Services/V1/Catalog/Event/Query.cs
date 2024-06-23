@@ -7,6 +7,7 @@ public static class Query
 {
     public record GetEventByIdQuery(Guid Id) : IQuery<Response.EventDetailsReponse>;
 
+    // Side Customer
     public record GetEventsQuery(
         string? SearchTerm, 
         string? SortColumn, 
@@ -20,6 +21,14 @@ public static class Query
         Guid OrganizationId,
         string? City,
         Guid? eventId,
+        int PageIndex,
+        int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
+
+
+    // Side Organization
+    public record GetEventsBasedOnStatusByOrganizationId(
+        Guid OrganizationId,
+        string? Status,
         int PageIndex,
         int PageSize) : IQuery<PagedResult<Response.EventResponse>>;
 }
