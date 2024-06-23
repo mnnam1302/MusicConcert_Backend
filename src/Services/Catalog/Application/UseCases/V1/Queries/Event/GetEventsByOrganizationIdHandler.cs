@@ -4,6 +4,7 @@ using Contracts.Abstractions.Paging;
 using Contracts.Abstractions.Shared;
 using Contracts.Services.V1.Catalog.Event;
 using Domain.Abstractions.Repositories;
+using Domain.Enumerations;
 using Domain.Exceptions;
 
 namespace Application.UseCases.V1.Queries.Event;
@@ -36,11 +37,12 @@ public class GetEventsByOrganizationIdHandler : IQueryHandler<Query.GetEventsByO
         
         // 1.
         var events = string.IsNullOrEmpty(request.City)
-            ? _eventRepository.FindAll(x => x.OrganizationInfoId == request.OrganizationId)
+            ? _eventRepository.FindAll(x => x.OrganizationInfoId == request.OrganizationId && x.Status == EventStatus.Published)
             : _eventRepository.FindAll(x => 
                         x.OrganizationInfoId.Equals(request.OrganizationId)
                         && x.Id != request.eventId
-                        && x.City.Equals(request.City));
+                        && x.City.Equals(request.City)
+                        && x.Status == EventStatus.Published);
 
         // 2.
         var pagedEvents = await PagedResult<Domain.Entities.Event>.CreateAsync(events, request.PageIndex, request.PageSize, cancellationToken);

@@ -5,6 +5,7 @@ using Contracts.Abstractions.Shared;
 using Contracts.Enumerations;
 using Contracts.Services.V1.Catalog.Event;
 using Domain.Abstractions.Repositories;
+using Domain.Enumerations;
 using System.Linq.Expressions;
 
 namespace Application.UseCases.V1.Queries.Event;
@@ -28,11 +29,11 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
         // search - Search City and District
         // filter - StartedDate
         var productQuery = string.IsNullOrEmpty(request.SearchTerm)
-            ? _eventRepository.FindAll(x => x.StartedOnUtc >= request.StartedDate)
+            ? _eventRepository.FindAll(x => x.StartedOnUtc >= request.StartedDate && x.Status == EventStatus.Published)
             : _eventRepository.FindAll(x =>
-                //(x.City.Contains(request.SearchTerm) || x.District.Contains(request.SearchTerm))
-                (x.City.Contains(request.SearchTerm))
-                && x.StartedOnUtc >= request.StartedDate);
+                                    x.City.Contains(request.SearchTerm)
+                                    && x.StartedOnUtc >= request.StartedDate
+                                    && x.Status == EventStatus.Published);
 
         //2. sort
         productQuery = request.SortOrder == SortOrder.Descending
@@ -56,7 +57,8 @@ public class GetEventsQueryHandler : IQueryHandler<Query.GetEventsQuery, PagedRe
             "name" => @event => @event.Name,
             "createdonutc" => @event => @event.CreatedOnUtc,
             "publishedonutc" => @event => @event.PublishedOnUtc,
-            _ => product => product.CreatedOnUtc
+            "startedonutc" => @event => @event.StartedOnUtc,
+            _ => @event => @event.CreatedOnUtc
 
             // _ => product => product.CreatedOnUtc // Default sort Descensing by CreatedOnUtc
         };
