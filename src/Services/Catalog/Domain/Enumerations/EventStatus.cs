@@ -11,8 +11,7 @@ public class EventStatus : SmartEnum<EventStatus>
 
     public static readonly EventStatus NonPublished = new(nameof(NonPublished), 1);
     public static readonly EventStatus Published = new(nameof(Published), 2);
-    public static readonly EventStatus Completed = new(nameof(Completed), 3);
-    public static readonly EventStatus Cancelled = new(nameof(Cancelled), 4);
+    public static readonly EventStatus Cancelled = new(nameof(Cancelled), 3);
 
     public static implicit operator EventStatus(string name) 
         => FromName(name);

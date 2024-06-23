@@ -34,7 +34,7 @@ public class GetEventsByOrganizationIdHandler : IQueryHandler<Query.GetEventsByO
             2. paging
             3. mapping
          */
-        
+
         // 1.
         var events = string.IsNullOrEmpty(request.City)
             ? _eventRepository.FindAll(x => x.OrganizationInfoId == request.OrganizationId && x.Status == EventStatus.Published)

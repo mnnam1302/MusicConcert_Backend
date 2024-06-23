@@ -18,10 +18,10 @@ public class OrganizationInfoApi : ApiEndpoint, ICarterModule
         var group1 = app.NewVersionedApi("OrganizationInfo")
             .MapGroup(BaseUrl).HasApiVersion(1);
 
-        // QUERY //
-
+        // QUERY - Customer //
         group1.MapGet("{organizationId}/events", GetEventsByOrganizaitonIdV1);
-        // END QUERY //
+
+        group1.MapGet("{organizationId}/events_filter", GetEventsBasedOnStatusByOrganizationIdV1);
     }
 
     private static async Task<IResult> GetEventsByOrganizaitonIdV1(ISender sender, [FromRoute] Guid organizationId,
@@ -39,4 +39,17 @@ public class OrganizationInfoApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
 
+    private static async Task<IResult> GetEventsBasedOnStatusByOrganizationIdV1(ISender sender, [FromRoute] Guid organizationId,
+        string? status = null,
+        int pageIndex = 1,
+        int pageSize = 10)
+    {
+        var query = new Query.GetEventsBasedOnStatusByOrganizationId(organizationId, status, pageIndex, pageSize);
+        var result = await sender.Send(query);
+
+        if (result.IsFailure)
+            HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
 }

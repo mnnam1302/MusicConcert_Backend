@@ -14,6 +14,7 @@ public static class Response
         string? LogoImage,
         DateTimeOffset StartedOnUtc,
         DateTimeOffset EndedOnUtc,
+        string Status,
         string EventType,
         string? District,
         string? City);

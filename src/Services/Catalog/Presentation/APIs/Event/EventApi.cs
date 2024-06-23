@@ -19,15 +19,13 @@ public class EventApi : ApiEndpoint, ICarterModule
         var group1 = app.NewVersionedApi("Event")
             .MapGroup(BaseUrl).HasApiVersion(1);
 
-
         // QUERY //
-        
         group1.MapPost("", CreateEventsV1);
         group1.MapGet("", GetEventsV1);
         group1.MapGet("{eventId}", GetEventsByIdV1);
         group1.MapGet("{eventId}/tickets", GetTicketsByEventIdV1);
-        // END QUERY //
-
+      
+        // COMMAND //
         group1.MapPut("/publish/{eventId}", UpdateEventsV1);
         group1.MapDelete("{eventId}", DeleteEventsV1);
     }
