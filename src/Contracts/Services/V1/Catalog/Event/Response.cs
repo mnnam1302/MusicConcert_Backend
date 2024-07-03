@@ -26,6 +26,7 @@ public static class Response
         public string? Description { get; init; }
         public string CategoryName { get; init; }
         public string EventType { get; init; }
+        public Guid OrganizationInfoId { get; init; }
         public string OrganizationName { get; init; }
         public string? LogoImage { get; init; }
         public string? LayoutImage { get; init; }
@@ -35,7 +36,7 @@ public static class Response
         public DateTimeOffset? PublishedOnUtc { get; init; }
         public int Capacity { get; init; }
         public string? MeetUrl { get; init; }
-        public string? Addrees { get; init; }
+        public string? Address { get; init; }
         public string? District { get; init; }
         public string? City { get; init; }
         public string? Country { get; init; }

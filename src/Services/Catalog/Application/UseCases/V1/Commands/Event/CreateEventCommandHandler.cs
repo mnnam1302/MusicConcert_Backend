@@ -28,7 +28,7 @@ public class CreateEventCommandHandler : ICommandHandler<Command.CreateEventComm
 
     public async Task<Result<Response.CreateEventResponse>> Handle(Command.CreateEventCommand request, CancellationToken cancellationToken)
     {
-        /*
+         /*
             1. check organization existing
             2. check category existing
             3. Create event
