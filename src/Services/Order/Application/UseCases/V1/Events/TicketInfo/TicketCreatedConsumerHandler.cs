@@ -28,7 +28,7 @@ public class TicketCreatedConsumerHandler : ICommandHandler<DomainEvent.TicketCr
             throw new TicketInfoException.TicketInfoAlreadyExistsException(request.Id);
 
         // Step 02: create ticket info
-        var ticketInfo = new Domain.Entities.TicketInfo(request.Id);
+        var ticketInfo = new Domain.Entities.TicketInfo(request.Id, request.Name);
 
         // Step 03: persist into database
         _ticketInfoRepository.Add(ticketInfo);

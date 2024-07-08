@@ -23,8 +23,8 @@ public class InvoiceApi : ApiEndpoint, ICarterModule
         group1.MapGet("customers/{customerId}", GetInvoicesByCustomerIdV1);
 
         // Command
-        group1.MapPut("{invoiceId}/payment", PaymentInvoicesV1);
-        group1.MapPut("{invoiceId}/cancel", CancelInvoicesV1);
+        //group1.MapPut("{invoiceId}/payment", PaymentInvoicesV1);
+        //group1.MapPut("{invoiceId}/cancel", CancelInvoicesV1);
     }
 
     private static async Task<IResult> PaymentInvoicesV1(ISender sender,

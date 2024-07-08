@@ -18,11 +18,25 @@ public class OrderApi : ApiEndpoint, ICarterModule
         var group1 = app.NewVersionedApi("Orders")
             .MapGroup(BaseUrl).HasApiVersion(1);
 
+        group1.MapGet("{orderId}", GetOrderByIdV1);
         group1.MapPost("", CreateOrdersV1);
     }
 
     private static async Task<IResult> CreateOrdersV1(ISender sender, [FromBody] Command.CreateOrderCommand command)
     {
+        var result = await sender.Send(command);
+
+        if (result.IsFailure)
+            return HandlerFailure(result);
+
+        return Results.Ok(result);
+    }
+
+    private static async Task<IResult> GetOrderByIdV1(
+        ISender sender, 
+        Guid orderId)
+    {
+        var command = new Query.GetOrderByIdQuery(orderId);
         var result = await sender.Send(command);
 
         if (result.IsFailure)

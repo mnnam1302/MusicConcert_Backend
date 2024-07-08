@@ -47,6 +47,7 @@ builder.Services
 
 // Application
 builder.Services.AddMediatRApplication();
+builder.Services.AddAutoMapperApplication();
 
 // Persistence
 builder.Services.AddSqlServerPersistence(builder.Configuration);

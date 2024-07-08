@@ -8,13 +8,13 @@ public class TicketInfo : Entity<Guid>, IAuditable, ISoftDeleted
     {
     }
 
-    public TicketInfo(Guid ticketId)
+    public TicketInfo(Guid ticketId, string name)
     {
         Id = ticketId;
-        //TicketId = ticketId;
+        Name = name;
     }
 
-    //public Guid TicketId { get; private set; }
+    public string Name { get; private set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

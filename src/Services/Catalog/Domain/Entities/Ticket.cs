@@ -26,7 +26,8 @@ public class Ticket : AggregateRoot<Guid>, ISoftDeleted, IAuditable
         ticket.RaiseDomainEvent(new Contracts.Services.V1.Catalog.Ticket.DomainEvent.TicketCreated(
             Guid.NewGuid(),
             DateTimeOffset.UtcNow,
-            ticket.Id));
+            ticket.Id,
+            ticket.Name));
 
         return ticket;
     }
