@@ -128,7 +128,6 @@ public class Order : AggregateRoot<Guid>, IAuditable, ISoftDeleted
 
         // OrderCancelledByPaymentFailed -> Catalog service
 
-
         return this;
     }
 

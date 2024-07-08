@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Formatters;
 
 namespace Application.UseCases.V1.Commands.Order;
 
-public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderCommand, Response.OrderResponse>
+public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderCommand, Response.CreateOrderResponse>
 {
     private readonly IRepositoryBase<Domain.Entities.Order, Guid> _orderRepository;
     private readonly IRepositoryBase<Domain.Entities.CustomerInfo, Guid> _customerInfoRepository;
@@ -27,7 +27,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Response.OrderResponse>> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Response.CreateOrderResponse>> Handle(Command.CreateOrderCommand request, CancellationToken cancellationToken)
     {
         /*
             1. Check customer existsing
@@ -57,7 +57,7 @@ public class CreateOrderCommandHandler : ICommandHandler<Command.CreateOrderComm
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         // 5.
-        var result = new Response.OrderResponse
+        var result = new Response.CreateOrderResponse
         {
             Id = order.Id,
             Status = order.Status,
