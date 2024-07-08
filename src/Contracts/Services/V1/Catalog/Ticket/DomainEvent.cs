@@ -7,7 +7,8 @@ public static class DomainEvent
     public record TicketCreated(
         Guid EventId,
         DateTimeOffset TimeStamp,
-        Guid Id) : IDomainEvent, ICommand;
+        Guid Id,
+        string Name) : IDomainEvent, ICommand;
 
     public record TicketDeleted(
         Guid EventId,
