@@ -26,6 +26,10 @@ public class ProfileService : Profile
             Contracts.Services.V1.Identity.Customer.Response.CustomerDetailsResponse>();
 
         CreateMap<
+            Domain.Entities.AppCustomer,
+            Contracts.Services.V1.Identity.Customer.Response.CustomerResponse>();
+
+        CreateMap<
             PagedResult<Domain.Entities.AppCustomer>,
             PagedResult<Contracts.Services.V1.Identity.Customer.Response.CustomerResponse>>();
 
